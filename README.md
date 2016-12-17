@@ -1,5 +1,7 @@
-# ea-docs
-Embedded Artistry Templates & Documents
+# embedded-resources
+Embedded Artistry Public Resources
+
+Contains templates, documents, and source code examples from embeddedartistry.com
 
 # requirements
 This repository requires git-lfs.  If you do not have this installed, please visit https://git-lfs.github.com
