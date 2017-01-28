@@ -159,7 +159,7 @@ class Client1 {
 public:
     static void func(uint32_t v)
     {
-        printf("static member callback: %u\n", v);
+        printf("static member callback: 0x%x\n", v);
     }
 };
 
@@ -171,7 +171,7 @@ class Client2 {
 public:
     void func(uint32_t v) const
     {
-        printf("instance member callback: %u\n", v);
+        printf("instance member callback: 0x%x\n", v);
     }
 };
 
@@ -181,7 +181,7 @@ public:
 extern "C" {
 static void c_client_callback(uint32_t v)
 {
-    printf("C function callback: %u\n", v);
+    printf("C function callback: 0x%x\n", v);
 }
 }
 
@@ -195,11 +195,11 @@ int main()
     BasicDriver bd(0xDEADBEEF); //create basic driver instance
     Client2 c2;
 
-    printf("Starting examples using the BasicDriver");
+    printf("Starting examples using the BasicDriver\n");
     // register a lambda function as a callback
     bd.register_callback(
         [](uint32_t v) {
-            printf("lambda callback: %u\n", v);
+            printf("lambda callback: 0x%x\n", v);
         });
 
     /**
@@ -222,7 +222,7 @@ int main()
     // call all the registered callbacks
     bd.callback();
 
-    printf("End of examples using the BasicDriver");
+    printf("End of examples using the BasicDriver\n");
 
     /**
     * Examples using the Event Driver.
@@ -231,12 +231,12 @@ int main()
     */
     EventDriver ed(0xFEEDBEEF);
 
-    printf("Beginning of examples using the EventDriver");
+    printf("Beginning of examples using the EventDriver\n");
 
     // register a lambda function as a callback
     ed.register_callback(
         [](uint32_t v) {
-            printf("lambda callback: %u\n", v);
+            printf("lambda callback: 0x%x\n", v);
         }, VIDEO_START);
 
     // register client2 cb using std::bind
@@ -253,7 +253,7 @@ int main()
     // call all the registered callbacks
     ed.callback();
 
-    printf("End of examples using the EventDriver");
+    printf("End of examples using the EventDriver\n");
 
     /**
     * Examples using the Arg Driver.
@@ -261,12 +261,12 @@ int main()
     */
     ArgDriver ad;
 
-    printf("Beginning of examples using the ArgDriver");
+    printf("Beginning of examples using the ArgDriver\n");
 
     // register a lambda function as a callback
     ad.register_callback(
         [](uint32_t v) {
-            printf("lambda callback: %u\n", v);
+            printf("lambda callback: 0x%x\n", v);
         }, 0x0);
 
     // register client2 cb using std::bind
@@ -283,7 +283,7 @@ int main()
     // call all the registered callbacks
     ad.callback();
 
-    printf("End of examples using the ArgDriver");
+    printf("End of examples using the ArgDriver\n");
 
     return 0;
 }
