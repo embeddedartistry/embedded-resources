@@ -40,8 +40,6 @@ private:
 dispatch_queue::dispatch_queue(std::string name, size_t thread_cnt) :
 	name_(name), threads_(thread_cnt)
 {
-	std::lock_guard<std::mutex> lock(lock_);
-
 	printf("Creating dispatch queue: %s\n", name.c_str());
 	printf("Dispatch threads: %zu\n", thread_cnt);
 
