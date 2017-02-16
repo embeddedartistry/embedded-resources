@@ -9,8 +9,8 @@
 * These are example addresses for the purposes of compiling.
 * The addresses used should be externally defined in another file for your system
 */
-#define DRAM_START 0x10008000
-#define DRAM_END 0x1000FFFF
+#define HEAP_START 0x10008000
+#define HEAP_END 0x1000FFFF
 
 /*
 * In this example, we treat malloc as a function pointer
@@ -57,7 +57,7 @@ volatile malloc_ptr_t malloc = &init_malloc;
 
 /*
  * init_malloc must be called before memory allocation calls are made
- * This sets up a byte pool for the heap using the defined DRAM_START and DRAM_END macros
+ * This sets up a byte pool for the heap using the defined HEAP_START and HEAP_END macros
  * Size is passed to do_malloc and allocated to the caller
  */
 
@@ -65,8 +65,8 @@ void * init_malloc(size_t size)
 {
 	assert(size > 0);
 
-	uintptr_t heap_start = (uintptr_t)DRAM_START;
-	uintptr_t heap_size = (uintptr_t)DRAM_END - heap_start;
+	uintptr_t heap_start = (uintptr_t)HEAP_START;
+	uintptr_t heap_size = (uintptr_t)HEAP_END - heap_start;
 
 	/**
 	* When we enter into init_malloc, we check the current value of the malloc pointer
@@ -80,7 +80,7 @@ void * init_malloc(size_t size)
 
 		/**
 		* This is ThreadX's API to create a byte pool using a memory block.
-		* We are essentially just wrapping ThreadX APIs into a standard form
+		* We are essentially just wrapping ThreadX APIs into a simpler form
 		*/
 		r = tx_byte_pool_create(&malloc_pool_, "Heap Memory Pool",
 				(void *)heap_start,
