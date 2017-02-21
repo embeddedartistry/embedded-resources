@@ -25,9 +25,8 @@
 #define memalign(align, size) aligned_malloc(align, size)
 
 //Number of bytes we're using for storing the aligned pointer offset
-typedef uint8_t offset_t;
+typedef uint16_t offset_t;
 #define PTR_OFFSET_SZ sizeof(offset_t)
-#define CACHE_LINE_SZ 32
 
 /**
 * Function Prototypes
