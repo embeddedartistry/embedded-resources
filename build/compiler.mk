@@ -21,8 +21,13 @@ ifeq ($(shell clang -v 2>&1 | grep -c "clang version"), 1)
 # using normal clang
 export CC := clang
 export CXX := $(CC)++
-export AR := ar
-export AS := as
+export AR := llvm-ar
+export AS := llvm-as
+ifeq ($(shell brew info llvm 2>&1 | grep -c "Built from source on"), 1)
+#we are using a homebrew clang, need new flags
+LDFLAGS += -L/usr/local/opt/llvm/lib -Wl,-rpath,/usr/local/opt/llvm/lib
+CPPFLAGS += -I/usr/local/opt/llvm/include -I/usr/local/opt/llvm/include/c++/v1/
+endif
 else
 ifeq ($(shell clang -v 2>&1 | grep -c "Apple LLVM version"), 1)
 # using apple clang
