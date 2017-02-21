@@ -2,4 +2,4 @@
 *.o
 *.a
 *.bin
-buildresults/**
+**/buildresults/**/*
