@@ -114,14 +114,14 @@ int main(void)
 
 	void * x = aligned_malloc(8, 100);
 	void * y = aligned_malloc(32, 1035);
-	void * z = aligned_malloc(3, 8);
+	void * z = aligned_malloc(4, 8);
 
 	printf("Raw malloc pointers, no alignment enforced:\n");
 	printf("\t%p, %p, %p\n", p, q, r);
 	printf("\tNote: you may see 4-8 byte alignment on host PC\n");
 	printf("aligned to 8: %p\n", x);
 	printf("aligned to 32: %p\n", y);
-	printf("aligned to 3: %p\n", z);
+	printf("aligned to 4: %p\n", z);
 
 	aligned_free(x), x = NULL;
 	aligned_free(y), y = NULL;
