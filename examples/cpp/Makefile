@@ -12,7 +12,7 @@ BUILDRESULTS ?= buildresults/
 include $(BUILDTOP)/build/compiler.mk
 include $(BUILDTOP)/build/rules.mk
 
-all: callbacks dispatch shared_ptr
+all: callbacks dispatch shared_ptr aligned_ptr
 
 callbacks: callbacks.o
 	$(Q)[ -d "$(BUILDRESULTS)" ] || mkdir -p $(BUILDRESULTS)
@@ -28,6 +28,16 @@ shared_ptr: shared_ptr.o
 	$(Q)[ -d "$(BUILDRESULTS)" ] || mkdir -p $(BUILDRESULTS)
 	$(Q) echo Linking Stack Dir example
 	$(Q) $(CXX) $(LDFLAGS) $(BUILDRESULTS)/$< -o $(BUILDRESULTS)/$@
+
+aligned_ptr: smart_ptr_aligned.o malloc_aligned
+	$(Q)[ -d "$(BUILDRESULTS)" ] || mkdir -p $(BUILDRESULTS)
+	$(Q) echo Linking Aligned Smart Pointer example
+	$(Q) $(CXX) $(LDFLAGS) $(BUILDRESULTS)/$< $(BUILDRESULTS)/malloc_aligned.o -o $(BUILDRESULTS)/$@
+
+malloc_aligned:
+	$(Q)[ -d "$(BUILDRESULTS)" ] || mkdir -p $(BUILDRESULTS)
+	$(Q) echo Compiling aligned malloc C example
+	$(Q)$(CC) $(CPPFLAGS) $(CFLAGS) -c -o $(BUILDRESULTS)/malloc_aligned.o ../c/malloc_aligned.c
 
 .PHONY: clean
 clean:
