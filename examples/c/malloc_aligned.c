@@ -4,13 +4,16 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+//contains aligned_malloc and aligned_free prototypes
+#include "memory.h"
+
 /**
 * Definitions
 */
 #pragma mark - Definitions -
 
 //you can #undef this to compile malloc_aligned as a usable library.
-#define COMPILE_AS_EXAMPLE
+//#undef COMPILE_AS_EXAMPLE
 
 /**
 * Simple macro for making sure memory addresses are aligned
@@ -27,13 +30,6 @@
 //Number of bytes we're using for storing the aligned pointer offset
 typedef uint16_t offset_t;
 #define PTR_OFFSET_SZ sizeof(offset_t)
-
-/**
-* Function Prototypes
-*/
-#pragma mark - Function Prototypes -
-void * aligned_malloc(size_t align, size_t size);
-void aligned_free(void * ptr);
 
 /**
 * APIs
