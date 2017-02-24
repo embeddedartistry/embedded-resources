@@ -17,7 +17,6 @@ static void aligned_free_wrapper(void * ptr)
 */
 template<class T> using unique_ptr_aligned = std::unique_ptr<T, decltype(&aligned_free)>;
 
-
 template<class T>
 unique_ptr_aligned<T> aligned_ptr(size_t align, size_t size)
 {
