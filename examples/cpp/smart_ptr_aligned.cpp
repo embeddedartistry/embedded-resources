@@ -17,6 +17,13 @@ static void aligned_free_wrapper(void * ptr)
 */
 template<class T> using unique_ptr_aligned = std::unique_ptr<T, decltype(&aligned_free)>;
 
+
+template<class T>
+unique_ptr_aligned<T> aligned_ptr(size_t align, size_t size)
+{
+	return unique_ptr_aligned<T>(static_cast<T*>(aligned_malloc(align, size)), &aligned_free_wrapper);
+}
+
 int main(void)
 {
 	/**
@@ -25,7 +32,7 @@ int main(void)
 	* Note that rather than calling new(uint8_t), we call aligned_malloc to get our aligned memory
 	*/
 	unique_ptr_aligned<uint8_t[]> x(static_cast<uint8_t*>(aligned_malloc(8, 1024)), &aligned_free_wrapper);
-	unique_ptr_aligned<uint8_t[]> y(static_cast<uint8_t*>(aligned_malloc(32, 1024)), &aligned_free_wrapper);
+	auto y = aligned_ptr<uint8_t>(32, 100);
 
 	/**
 	* Why don't we need a shared pointer to also have an alias?
