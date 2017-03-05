@@ -9,6 +9,11 @@ endif
 BUILDTOP ?= ../..
 BUILDRESULTS ?= buildresults/
 
+ARCH := -arch armv7
+CFLAGS += $(ARCH) -fno-builtin -static -nodefaultlibs
+LDFLAGS += $(ARCH) -L$(shell pwd)/$(BUILDRESULTS) -L$(BUILDTOP)/buildresults/ -nodefaultlibs -nostartfiles
+#CFLAGS += -pipe -fPIC? -ffreestanding?
+
 include $(BUILDTOP)/build/compiler.mk
 include $(BUILDTOP)/build/rules.mk
 
