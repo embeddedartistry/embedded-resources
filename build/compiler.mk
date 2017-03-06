@@ -16,6 +16,7 @@ export CXXFLAGS = $(CFLAGS) -std=c++14
 export ASFLAGS :=
 export LDFLAGS :=
 export LDLIBS :=
+export INCLUDES :=
 
 ifeq ($(shell clang -v 2>&1 | grep -c "clang version"), 1)
 # using normal clang
