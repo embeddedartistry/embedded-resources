@@ -12,9 +12,6 @@
 */
 #pragma mark - Definitions -
 
-//you can #undef this to compile malloc_aligned as a usable library.
-//#undef COMPILE_AS_EXAMPLE
-
 /**
 * Simple macro for making sure memory addresses are aligned
 * to the nearest power of two
@@ -23,9 +20,6 @@
 #define align_up(num, align) \
 	(((num) + ((align) - 1)) & ~((align) - 1))
 #endif
-
-//Convenience macro for memalign, the linux API
-#define memalign(align, size) aligned_malloc(align, size)
 
 //Number of bytes we're using for storing the aligned pointer offset
 typedef uint16_t offset_t;
