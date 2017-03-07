@@ -13,7 +13,7 @@ endif
 export BUILDTOP := $(shell pwd)
 export BUILDRESULTS := $(shell pwd)/buildresults/
 
-all: c cpp interview
+all: c cpp interview libc
 
 .PHONY: c
 c:
@@ -30,7 +30,17 @@ interview:
 	$(Q)echo Building Interview Examples
 	$(Q)make -C interview/
 
+.PHONY: libc
+libc:
+	$(Q)echo Building libc
+	$(Q)make -C examples/libc
+
 .PHONY: clean
 clean:
 	$(Q)echo Cleaning Build Output
-	$(Q)rm -rf $(RESULTSROOT)
+	$(Q)rm -rf $(BUILDRESULTS)
+	$(Q)make -C examples/libc clean
+	$(Q)make -C interview clean
+	$(Q)make -C examples/cpp clean
+	$(Q)make -C examples/c clean
+
