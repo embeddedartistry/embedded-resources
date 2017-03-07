@@ -11,12 +11,10 @@ export WARNINGS := -Wall -Wchar-subscripts -Wcomment -Wformat=2 -Wimplicit-int \
   -Wdeprecated
 export DISABLED_WARNINGS := -Wno-deprecated-declarations -Wno-empty-body
 export ERRORS := -Werror=return-stack-address -Werror=return-type
-export CFLAGS := $(CFLAGS) $(WARNINGS) $(ERRORS) $(DISABLED_WARNINGS)
-export CXXFLAGS = $(CFLAGS) -std=c++14
 export ASFLAGS :=
 export LDFLAGS :=
 export LDLIBS :=
-export INCLUDES :=
+export INCLUDES := -Iexamples/libcpp -Iexamples/libc
 
 ifeq ($(shell clang -v 2>&1 | grep -c "clang version"), 1)
 # using normal clang
@@ -48,3 +46,6 @@ $(error Compiler not supported! Please file a bug!)
 endif
 endif
 endif
+
+export CFLAGS := $(CFLAGS) $(WARNINGS) $(ERRORS) $(DISABLED_WARNINGS)
+export CXXFLAGS = $(CFLAGS) -std=c++14
