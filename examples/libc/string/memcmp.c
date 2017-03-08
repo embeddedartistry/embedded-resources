@@ -17,11 +17,5 @@ int __attribute__((weak)) memcmp(const void *p1, const void *p2, size_t n)
 		i++, p1 = 1 + (uint8_t *)p1, p2 = 1 + (uint8_t *)p2);
 
 	//if i == length, then we have passed the test
-	if (i == n)
-	{
-		return 0;
-	}
-
-	// otherwise our memory wasn't equal, and we return the value.
-	return *(uint8_t *)p1 - *(uint8_t *)p2;
+    return (i == n) ? 0 : (*(uint8_t *)p1 - *(uint8_t *)p2);
 }
