@@ -20,12 +20,13 @@ LDFLAGS += -Wl,-preload -Wl,-all_load -Wl,-dead_strip -Wl,-prebind
 
 include $(BUILDTOP)/build/rules.mk
 
-STRING_SOURCES := string/memmove.o string/memcmp.o string/memset.o string/memcpy.o
-LIBC_SOURCES := malloc_aligned.o malloc_freelist.o memory.o $(STRING_SOURCES)
+STRING_SOURCES := $(wildcard string/*.c)
+LIBC_SOURCES := $(wildcard *.c)
+LIBC_OBJ := $(LIBC_SOURCES:.c=.o) $(STRING_SOURCES:.c=.o)
 
 all: libc
 
-libc: $(LIBC_SOURCES)
+libc: $(LIBC_OBJ)
 	$(Q)[ -d "$(BUILDRESULTS)" ] || mkdir -p $(BUILDRESULTS)
 	$(Q) echo Generating libc.a
 	$(Q)$(AR) crs $(BUILDRESULTS)/libc.a $(addprefix $(BUILDRESULTS),$(^F))
