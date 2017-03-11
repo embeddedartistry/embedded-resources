@@ -22,7 +22,8 @@ include $(BUILDTOP)/build/rules.mk
 
 STRING_SOURCES := $(wildcard string/*.c)
 LIBC_SOURCES := $(wildcard *.c)
-LIBC_OBJ := $(LIBC_SOURCES:.c=.o) $(STRING_SOURCES:.c=.o)
+STDLIB_SOURCES := $(wildcard stdlib/*.c)
+LIBC_OBJ := $(LIBC_SOURCES:.c=.o) $(STRING_SOURCES:.c=.o) $(STDLIB_SOURCES:.c=.o)
 
 all: libc
 
