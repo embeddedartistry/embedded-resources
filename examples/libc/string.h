@@ -25,6 +25,7 @@ char *strncpy(char * restrict dst, const char * restrict src, size_t maxlen);
 char *strnstr(const char *s, const char *find, size_t slen);
 int strcmp(const char *s1, const char *s2);
 int strncmp(const char *s1, const char *s2, size_t n);
+char *strndup(const char *str, size_t n);
 
 #ifdef __cplusplus
 }
