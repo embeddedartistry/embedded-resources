@@ -52,9 +52,11 @@ dispatch_queue::dispatch_queue(std::string name, size_t thread_cnt) :
 
 dispatch_queue::~dispatch_queue()
 {
+	printf("Destructor: Destroying dispatch threads...\n");
+
 	// Signal to dispatch threads that it's time to wrap up
 	quit_ = true;
-	printf("Destructor: Destroying dispatch threads...\n");
+	cv_.notify_all();
 
 	// Wait for threads to finish before we exit
 	for(size_t i = 0; i < threads_.size(); i++)
