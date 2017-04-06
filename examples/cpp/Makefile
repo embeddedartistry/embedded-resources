@@ -12,21 +12,26 @@ BUILDRESULTS ?= buildresults/
 include $(BUILDTOP)/build/compiler.mk
 include $(BUILDTOP)/build/rules.mk
 
-all: callbacks dispatch shared_ptr aligned_ptr
+all: callbacks dispatch shared_ptr aligned_ptr circular_buffer
+
+circular_buffer: circular_buffer.o
+	$(Q)[ -d "$(BUILDRESULTS)" ] || mkdir -p $(BUILDRESULTS)
+	$(Q) echo Linking circular_buffer example
+	$(Q) $(CXX) $(LDFLAGS) $(addprefix $(BUILDRESULTS),$^) -o $(BUILDRESULTS)/$@
 
 callbacks: callbacks.o
 	$(Q)[ -d "$(BUILDRESULTS)" ] || mkdir -p $(BUILDRESULTS)
-	$(Q) echo Linking bad C example
+	$(Q) echo Linking callbacks example
 	$(Q) $(CXX) $(LDFLAGS) $(addprefix $(BUILDRESULTS),$^) -o $(BUILDRESULTS)/$@
 
 dispatch: dispatch.o
 	$(Q)[ -d "$(BUILDRESULTS)" ] || mkdir -p $(BUILDRESULTS)
-	$(Q) echo Linking offsetof example
+	$(Q) echo Linking dispatch example
 	$(Q) $(CXX) $(LDFLAGS) $(BUILDRESULTS)/$< -o $(BUILDRESULTS)/$@
 
 shared_ptr: shared_ptr.o
 	$(Q)[ -d "$(BUILDRESULTS)" ] || mkdir -p $(BUILDRESULTS)
-	$(Q) echo Linking Stack Dir example
+	$(Q) echo Linking shared_ptr example
 	$(Q) $(CXX) $(LDFLAGS) $(BUILDRESULTS)/$< -o $(BUILDRESULTS)/$@
 
 aligned_ptr: smart_ptr_aligned.o malloc_aligned
