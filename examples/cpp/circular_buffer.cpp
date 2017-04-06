@@ -28,7 +28,7 @@ public:
 
 		if(head_ == tail_)
 		{
-			tail_++;
+			tail_ = (tail_ + 1) % size_;
 		}
 	}
 
