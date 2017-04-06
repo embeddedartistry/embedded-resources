@@ -12,10 +12,15 @@ BUILDRESULTS ?= buildresults/
 include $(BUILDTOP)/build/compiler.mk
 include $(BUILDTOP)/build/rules.mk
 
-all: freelist malloc_tx malloc_aligned
+all: freelist malloc_tx malloc_aligned circular_buffer
 
 # We are enabling example code here.
 CPPFLAGS += -DCOMPILE_AS_EXAMPLE
+
+circular_buffer: circular_buffer.o
+	$(Q)[ -d "$(BUILDRESULTS)" ] || mkdir -p $(BUILDRESULTS)
+	$(Q) echo Linking circular buffer example
+	$(Q) $(CC) $(LDFLAGS) $(addprefix $(BUILDRESULTS),$^) -o $(BUILDRESULTS)/$@
 
 malloc_aligned: malloc_aligned.o
 	$(Q)[ -d "$(BUILDRESULTS)" ] || mkdir -p $(BUILDRESULTS)
