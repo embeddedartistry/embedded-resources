@@ -3,3 +3,4 @@
 *.a
 *.bin
 **/buildresults/**/*
+**/build/gen/**
