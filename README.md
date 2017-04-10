@@ -4,9 +4,15 @@ Embedded Artistry Public Resources
 Contains templates, documents, and source code examples referenced on https://embeddedartistry.com.
 
 # Requirements
+
+## git-lfs
 This repository requires git-lfs.  If you do not have this installed, please visit https://git-lfs.github.com
 
 If you cloned this repository before installing git-lfs, please run `git lfs pull`.  Otherwise clone will automatically perform a `git lfs pull`.
+
+## premake5
+
+This repository builds with premake5.  I have currently bundled premake for OSX, if you are a linux or windows user please check: https://premake.github.io/download.html
 
 # Structure
 
