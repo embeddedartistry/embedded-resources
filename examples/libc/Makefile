@@ -1,36 +1,35 @@
-ifeq ($(VERBOSE),1)
-export Q :=
-export VERBOSE := 1
-else
-export Q := @
-export VERBOSE := 0
-endif
+# This makefile is used to provide convenient access to the generated  makefile
 
-BUILDTOP ?= ../..
-BUILDRESULTS ?= buildresults/
-include $(BUILDTOP)/build/compiler.mk
+# Export all args to act as a passthrough
+export
 
-# Compiler.mk defines these rules, need to add to them after
-#ARCH := -arch armv7
-CFLAGS += $(ARCH) -fno-builtin -static -nodefaultlibs
-LDFLAGS += $(ARCH) -L$(shell pwd)/$(BUILDRESULTS) -L$(BUILDTOP)/buildresults/
-LDFLAGS += -static -nodefaultlibs -nostartfiles
-LDFLAGS += -Wl,-preload -Wl,-all_load -Wl,-dead_strip -Wl,-prebind
-#CFLAGS += -pipe -fPIC? -ffreestanding?
+ER_TOP ?= ../../
 
-include $(BUILDTOP)/build/rules.mk
+all: build
 
-STRING_SOURCES := $(wildcard string/*.c)
-LIBC_SOURCES := $(wildcard *.c)
-STDLIB_SOURCES := $(wildcard stdlib/*.c)
-LIBC_OBJ := $(LIBC_SOURCES:.c=.o) $(STRING_SOURCES:.c=.o) $(STDLIB_SOURCES:.c=.o)
+.PHONY: build_gen
+build_gen:
+	@$(ER_TOP)/bin/premake5 --file=build/premake5.lua gmake
 
-all: libc
+.PHONY: build
+build: build_gen
+	@make -C build/gen/
 
-libc: $(LIBC_OBJ)
-	$(Q)[ -d "$(BUILDRESULTS)" ] || mkdir -p $(BUILDRESULTS)
-	$(Q) echo Generating libc.a
-	$(Q)$(AR) crs $(BUILDRESULTS)/libc.a $(addprefix $(BUILDRESULTS),$(^F))
+.PHONY: help
+help: build_gen
+	@make -C build/gen/ help
 
+.PHONY: clean
 clean:
-	$(Q)rm -rf $(BUILDRESULTS)
+	@make -C build/gen/ clean
+	@rm -rf buildresults
+
+.PHONY: purify
+purify: clean
+	@rm -rf build/gen
+
+.PHONY: regen
+regen:
+	@$(ER_TOP)/bin/premake5 --file=build/premake5.lua gmake
+
+
