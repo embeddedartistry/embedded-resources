@@ -1,49 +1,35 @@
-ifeq ($(VERBOSE),1)
-export Q :=
-export VERBOSE := 1
-else
-export Q := @
-export VERBOSE := 0
-endif
+# This makefile is used to provide convenient access to the generated  makefile
 
-BUILDTOP ?= ../..
-BUILDRESULTS ?= buildresults/
+# Export all args to act as a passthrough
+export
 
-include $(BUILDTOP)/build/compiler.mk
-include $(BUILDTOP)/build/rules.mk
+ER_TOP ?= ../../
 
-all: callbacks dispatch shared_ptr aligned_ptr circular_buffer
+all: build
 
-circular_buffer: circular_buffer.o
-	$(Q)[ -d "$(BUILDRESULTS)" ] || mkdir -p $(BUILDRESULTS)
-	$(Q) echo Linking circular_buffer example
-	$(Q) $(CXX) $(LDFLAGS) $(addprefix $(BUILDRESULTS),$^) -o $(BUILDRESULTS)/$@
+.PHONY: build_gen
+build_gen:
+	@$(ER_TOP)/bin/premake5 --file=build/premake5.lua gmake
 
-callbacks: callbacks.o
-	$(Q)[ -d "$(BUILDRESULTS)" ] || mkdir -p $(BUILDRESULTS)
-	$(Q) echo Linking callbacks example
-	$(Q) $(CXX) $(LDFLAGS) $(addprefix $(BUILDRESULTS),$^) -o $(BUILDRESULTS)/$@
+.PHONY: build
+build: build_gen
+	@make -C build/gen/
 
-dispatch: dispatch.o
-	$(Q)[ -d "$(BUILDRESULTS)" ] || mkdir -p $(BUILDRESULTS)
-	$(Q) echo Linking dispatch example
-	$(Q) $(CXX) $(LDFLAGS) $(BUILDRESULTS)/$< -o $(BUILDRESULTS)/$@
-
-shared_ptr: shared_ptr.o
-	$(Q)[ -d "$(BUILDRESULTS)" ] || mkdir -p $(BUILDRESULTS)
-	$(Q) echo Linking shared_ptr example
-	$(Q) $(CXX) $(LDFLAGS) $(BUILDRESULTS)/$< -o $(BUILDRESULTS)/$@
-
-aligned_ptr: smart_ptr_aligned.o malloc_aligned
-	$(Q)[ -d "$(BUILDRESULTS)" ] || mkdir -p $(BUILDRESULTS)
-	$(Q) echo Linking Aligned Smart Pointer example
-	$(Q) $(CXX) $(LDFLAGS) $(BUILDRESULTS)/$< $(BUILDRESULTS)/malloc_aligned.o -o $(BUILDRESULTS)/$@
-
-malloc_aligned:
-	$(Q)[ -d "$(BUILDRESULTS)" ] || mkdir -p $(BUILDRESULTS)
-	$(Q) echo Compiling aligned malloc C example
-	$(Q)$(CC) $(CPPFLAGS) $(CFLAGS) -c -o $(BUILDRESULTS)/malloc_aligned.o ../c/malloc_aligned.c
+.PHONY: help
+help: build_gen
+	@make -C build/gen/ help
 
 .PHONY: clean
 clean:
-	$(Q)rm -rf $(BUILDRESULTS)
+	@make -C build/gen/ clean
+	@rm -rf buildresults
+
+.PHONY: purify
+purify: clean
+	@rm -rf build/gen
+
+.PHONY: regen
+regen:
+	@$(ER_TOP)/bin/premake5 --file=build/premake5.lua gmake
+
+
