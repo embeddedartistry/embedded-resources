@@ -1,41 +1,35 @@
-ifeq ($(VERBOSE),1)
-export Q :=
-export VERBOSE := 1
-else
-export Q := @
-export VERBOSE := 0
-endif
+# This makefile is used to provide convenient access to the generated  makefile
 
-BUILDTOP ?= ../..
-BUILDRESULTS ?= buildresults/
+# Export all args to act as a passthrough
+export
 
-include $(BUILDTOP)/build/compiler.mk
-include $(BUILDTOP)/build/rules.mk
+ER_TOP ?= ../../
 
-all: freelist malloc_tx malloc_aligned circular_buffer
+all: build
 
-# We are enabling example code here.
-CPPFLAGS += -DCOMPILE_AS_EXAMPLE
+.PHONY: build_gen
+build_gen:
+	@$(ER_TOP)/bin/premake5 --file=build/premake5.lua gmake
 
-circular_buffer: circular_buffer.o
-	$(Q)[ -d "$(BUILDRESULTS)" ] || mkdir -p $(BUILDRESULTS)
-	$(Q) echo Linking circular buffer example
-	$(Q) $(CC) $(LDFLAGS) $(addprefix $(BUILDRESULTS),$^) -o $(BUILDRESULTS)/$@
+.PHONY: build
+build: build_gen
+	@make -C build/gen/
 
-malloc_aligned: malloc_aligned.o
-	$(Q)[ -d "$(BUILDRESULTS)" ] || mkdir -p $(BUILDRESULTS)
-	$(Q) echo Linking aligned malloc example
-	$(Q) $(CC) $(LDFLAGS) $(addprefix $(BUILDRESULTS),$^) -o $(BUILDRESULTS)/$@
+.PHONY: help
+help: build_gen
+	@make -C build/gen/ help
 
-freelist: malloc_freelist.o malloc_test.o
-	$(Q)[ -d "$(BUILDRESULTS)" ] || mkdir -p $(BUILDRESULTS)
-	$(Q) echo Linking malloc freelist example
-	$(Q) $(CC) $(LDFLAGS) $(addprefix $(BUILDRESULTS),$^) -o $(BUILDRESULTS)/$@
-
-malloc_tx:
-	$(Q) [-d "$(BUILDRESULTS)" || mkdir -p $(BUILDRESULTS)
-	$(Q) echo Compiling malloc_tx object.  THIS WILL NOT LINK!
-	$(CC) $(CPPFLAGS) $(CFLAGS) -fno-builtin -c -o $(BUILDRESULTS)/malloc_threadx.o malloc_threadx.c
-
+.PHONY: clean
 clean:
-	$(Q)rm -rf $(BUILDRESULTS)
+	@make -C build/gen/ clean
+	@rm -rf buildresults
+
+.PHONY: purify
+purify: clean
+	@rm -rf build/gen
+
+.PHONY: regen
+regen:
+	@$(ER_TOP)/bin/premake5 --file=build/premake5.lua gmake
+
+
