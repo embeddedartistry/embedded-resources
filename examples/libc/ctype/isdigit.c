@@ -1,7 +1,6 @@
 // Pulled from musl libc, locale support removed
 
 #include <ctype.h>
-#undef isdigit
 
 int isdigit(int c)
 {
