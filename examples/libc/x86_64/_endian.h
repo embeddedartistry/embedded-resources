@@ -1,0 +1,6 @@
+#ifndef __X86_64_MACHINE_ENDIAN_H_
+#define __X86_64_MACHINE_ENDIAN_H_
+
+#define __BYTE_ORDER __LITTLE_ENDIAN
+
+#endif //__X86_64_MACHINE_ENDIAN_H_

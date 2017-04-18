@@ -69,6 +69,7 @@ workspace "embedded-resources Libc"
       SourceDir,
       SourceDir .. "stdlib/",
       SourceDir .. "string/",
+      SourceDir .. "x86_64/",
     }
 
     -- Library Dependencies
