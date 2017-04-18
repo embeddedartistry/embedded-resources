@@ -1,11 +1,11 @@
 #ifndef __ENDIAN_H_
 #define __ENDIAN_H_
 
-#include <_endian.h> //machine endian header
-
 #define __LITTLE_ENDIAN 1234
 #define __BIG_ENDIAN 4321
 #define __PDP_ENDIAN 3412
+
+#include <_endian.h> //machine endian header
 
 #define BIG_ENDIAN __BIG_ENDIAN
 #define LITTLE_ENDIAN __LITTLE_ENDIAN
