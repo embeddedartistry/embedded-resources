@@ -12,16 +12,6 @@ extern "C" {
 */
 void malloc_addblock(void *addr, size_t size);
 
-/**
-* Free-list malloc implementation
-*/
-void * fl_malloc(size_t size);
-
-/**
-* Corresponding free-list free implementation
-*/
-void fl_free(void * ptr);
-
 #ifdef __cplusplus
 }
 #endif //__cplusplus
