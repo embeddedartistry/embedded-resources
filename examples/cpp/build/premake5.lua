@@ -165,6 +165,96 @@ workspace "embedded-resources C++ Examples"
 
     }
 
+  project "array"
+    kind "ConsoleApp"
+    language "C++"
+    targetdir (RESULTSROOT)
+    targetname "array.bin"
+
+    local SourceDir = ROOT;
+    files
+    {
+      SourceDir .. "array.cpp"
+    }
+
+    filter {} -- clear filter!
+
+    includedirs
+    {
+      SourceDir,
+    }
+
+    -- Library Dependencies
+    libdirs
+    {
+
+    }
+
+    links
+    {
+
+    }
+
+  project "vector"
+    kind "ConsoleApp"
+    language "C++"
+    targetdir (RESULTSROOT)
+    targetname "vector.bin"
+
+    local SourceDir = ROOT;
+    files
+    {
+      SourceDir .. "vector.cpp"
+    }
+
+    filter {} -- clear filter!
+
+    includedirs
+    {
+      SourceDir,
+    }
+
+    -- Library Dependencies
+    libdirs
+    {
+
+    }
+
+    links
+    {
+
+    }
+
+  project "string"
+    kind "ConsoleApp"
+    language "C++"
+    targetdir (RESULTSROOT)
+    targetname "string.bin"
+
+    local SourceDir = ROOT;
+    files
+    {
+      SourceDir .. "string.cpp"
+    }
+
+    filter {} -- clear filter!
+
+    includedirs
+    {
+      SourceDir,
+    }
+
+    -- Library Dependencies
+    libdirs
+    {
+
+    }
+
+    links
+    {
+
+    }
+
   project "callbacks"
     kind "ConsoleApp"
     language "C++"
