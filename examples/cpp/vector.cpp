@@ -8,8 +8,8 @@ void carr_func(int * vec)
 
 int main(void)
 {
-	std::vector<int> v1 = {-1, 3, 5, -8, 0};
-	std::vector<int> v2;
+	std::vector<int> v1 = {-1, 3, 5, -8, 0}; //initialize with list
+	std::vector<int> v2; //don't initialize
 	auto v3(v1); //initialize v3 via copy
 
 	/**
@@ -93,6 +93,7 @@ int main(void)
 	v2.resize(10, -1); //resize to 10. New elements initialized with -1
 
 	v2.pop_back(); //removes last element
+	v2.erase(v2.begin()); //removes first element
 
 	std::cout << std::endl << "v2 resized: " << std::endl;
 	for (const auto & t : v2)
