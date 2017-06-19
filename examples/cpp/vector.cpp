@@ -10,6 +10,7 @@ int main(void)
 {
 	std::vector<int> v1 = {-1, 3, 5, -8, 0};
 	std::vector<int> v2;
+	auto v3(v1); //initialize v3 via copy
 
 	/**
 	* Managing std::vector capacity
