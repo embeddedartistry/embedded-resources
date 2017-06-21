@@ -79,8 +79,10 @@ int main(void)
 
 	v2.insert(v2.begin(), -1); //insert an element - you need an iterator
 	v2.emplace(v2.end(), int(1000)); //construct and place an element at the iterator
-	v2.push_back(0); //adds element to end
-	v2.emplace_back(int(10)); //constructs an element in place at the end
+
+	int x = 10;
+	v2.push_back(x); //adds element to end
+	v2.emplace_back(10); //constructs an element in place at the end
 
 	std::cout << std::endl << "v2: " << std::endl;
 	for (const auto & t : v2)
@@ -113,6 +115,8 @@ int main(void)
 		std::cout << t << " ";
 	}
 	std::cout << std::endl;
+
+	std::cout << "std::vector size: " << sizeof(std::vector<char>) << std::endl;
 
 	return 0;
 }
