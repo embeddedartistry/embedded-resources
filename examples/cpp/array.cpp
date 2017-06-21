@@ -1,7 +1,7 @@
 #include <iostream>
 #include <array>
 
-void carr_func(int * arr)
+void carr_func(int * arr, size_t size)
 {
 	std::cout << "carr_func - arr: " << arr << std::endl;
 }
@@ -56,10 +56,10 @@ int main(void)
 	*/
 
 	//Error:
-	//carr_func(a2);
+	//carr_func(a2, a2.size());
 
 	//OK:
-	carr_func(a2.data());
+	carr_func(a2.data(), a2.size());
 
 	// You can use convenient ranged for loops!
 	std::cout << std::endl << "a3: " << std::endl;
