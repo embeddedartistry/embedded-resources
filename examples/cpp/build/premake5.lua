@@ -284,3 +284,33 @@ workspace "embedded-resources C++ Examples"
     {
 
     }
+
+  project "bounce"
+    kind "ConsoleApp"
+    language "C++"
+    targetdir (RESULTSROOT)
+    targetname "bounce.bin"
+
+    local SourceDir = ROOT;
+    files
+    {
+      SourceDir .. "bounce.cpp"
+    }
+
+    filter {} -- clear filter!
+
+    includedirs
+    {
+      SourceDir,
+    }
+
+    -- Library Dependencies
+    libdirs
+    {
+
+    }
+
+    links
+    {
+
+    }
