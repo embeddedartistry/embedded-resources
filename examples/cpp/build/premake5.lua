@@ -314,3 +314,33 @@ workspace "embedded-resources C++ Examples"
     {
 
     }
+
+  project "c_sbrm"
+    kind "ConsoleApp"
+    language "C++"
+    targetdir (RESULTSROOT)
+    targetname "c_sbrm.bin"
+
+    local SourceDir = ROOT;
+    files
+    {
+      SourceDir .. "c_sbrm.cpp"
+    }
+
+    filter {} -- clear filter!
+
+    includedirs
+    {
+      SourceDir,
+    }
+
+    -- Library Dependencies
+    libdirs
+    {
+
+    }
+
+    links
+    {
+
+    }
