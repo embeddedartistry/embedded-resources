@@ -35,6 +35,11 @@ libc:
 	$(Q)echo Building libc
 	$(Q)make -C examples/libc
 
+.PHONY: libcpp
+libcpp:
+	$(Q)echo Building libcpp
+	$(Q)make -C examples/libcpp
+
 .PHONY: clean
 clean:
 	$(Q)echo Cleaning Build Output
@@ -43,4 +48,5 @@ clean:
 	$(Q)make -C interview clean
 	$(Q)make -C examples/cpp clean
 	$(Q)make -C examples/c clean
+	$(Q)make -C examples/libcpp clean
 
