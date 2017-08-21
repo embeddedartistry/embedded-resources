@@ -1,3 +1,5 @@
+//Build with: dot -Tpng -o flow.png container_flowchart.dot
+
 digraph {
 	headlabel="How to choose the right container"
 
