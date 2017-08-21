@@ -1,3 +1,6 @@
+// Copyright Embedded Artistry LLC 2017
+// Released under CC0 1.0 Universal License
+
 #ifndef __LL_H_
 #define __LL_H_
 
