@@ -1,0 +1,110 @@
+digraph {
+	headlabel="How to choose the right container"
+
+	labelfontsize="36.0";
+
+	/*
+	* Shape descriptions
+	*/
+	node[shape="box", style="filled, rounded", fillcolor="gold1"]
+		start;
+
+	node[shape="diamond", style="filled", fillcolor="lightblue"]
+		orderImportant; LIFO; FIFO; highPriority; sortedByKeys;
+		InsertMiddle; AllowDuplicateKeys; StoreKeySeparate;
+		StoreKeySeparateMulti; keyLookupUnordered;
+		MergeCollections; FindNthElement; InsertFront; AllowDuplicateKeys2;
+		UnsortedStoreKeySeparateMulti; UnsortedStoreKeySeparate;
+
+	node[shape="box", style="filled", fillcolor="palegreen2"]
+		stack; queue; priority_queue; map; set; multi_map; multi_set;
+		vector; unordered_map; unordered_set; unordered_multimap;
+		unordered_multiset; list; deque;
+
+	/**
+	* Node ranking overrides
+	*/
+
+	{rank=same; orderImportant LIFO FIFO highPriority}
+
+	/**
+	* Label Names
+	*/
+
+	orderImportant[label="Is order\nimportant"]
+	keyLookupUnordered[label="Find elements\nwith a key"]
+	sortedByKeys[label="Sorted\nby key"]
+	InsertMiddle[label="Insert/erase\nin middle"]
+	highPriority[label="Highest priority\nelement is\nfirst out"]
+	AllowDuplicateKeys[label="Allow\nduplicates"]
+	AllowDuplicateKeys2[label="Allow\nduplicates"]
+	StoreKeySeparate[label="Use key\nto access\nvalue"]
+	StoreKeySeparateMulti[label="Use key\nto access\nvalue"]
+	UnsortedStoreKeySeparate[label="Use key\nto access\nvalue"]
+	UnsortedStoreKeySeparateMulti[label="Use key\nto access\nvalue"]
+	willVectorWork[label="Will vector\nbe sufficient"]
+	InsertFront[label="Insert/erase\nat front/back"]
+	MergeCollections[label="Need to\nmerge collections"]
+	FindNthElement[label="Need to\nfind Nth\nitem"]
+	SizeVaries[label="Size varies\nsignificantly"]
+
+	/**
+	* Graph Ordering
+	*/
+
+	start -> willVectorWork;
+
+	willVectorWork->vector[label="yes"];
+	willVectorWork->orderImportant[label="no"];
+
+	orderImportant -> keyLookupUnordered[label="no"];
+	orderImportant -> LIFO[label="yes"];
+
+	keyLookupUnordered -> AllowDuplicateKeys2[label="yes"];
+	keyLookupUnordered -> MergeCollections[label="no"];
+
+	AllowDuplicateKeys2->UnsortedStoreKeySeparateMulti[label="yes"];
+	AllowDuplicateKeys2->UnsortedStoreKeySeparate[label="no"];
+
+	UnsortedStoreKeySeparateMulti->unordered_multiset[label="no"];
+	UnsortedStoreKeySeparateMulti->unordered_multimap[label="yes"];
+
+	UnsortedStoreKeySeparate->unordered_set[label="no"];
+	UnsortedStoreKeySeparate->unordered_map[label="yes"]
+
+	LIFO->stack[label="yes"];
+	LIFO->FIFO[label="no"];
+
+	FIFO->queue[label="yes"];
+	FIFO->highPriority[label="no"];
+
+	highPriority->priority_queue[label="yes"];
+	highPriority->sortedByKeys[label="no"];
+
+	sortedByKeys->AllowDuplicateKeys[label="yes"];
+	sortedByKeys->InsertMiddle[label="no"];
+
+	AllowDuplicateKeys->StoreKeySeparate[label="no"];
+	AllowDuplicateKeys->StoreKeySeparateMulti[label="yes"];
+
+	StoreKeySeparate->map[label="yes"];
+	StoreKeySeparate->set[label="no"];
+
+	StoreKeySeparateMulti->multi_map[label="yes"];
+	StoreKeySeparateMulti->multi_set[label="no"];
+
+	InsertMiddle->list[label="yes"];
+	InsertMiddle->InsertFront[label="no"];
+
+	InsertFront->MergeCollections[label="yes"];
+	InsertFront->FindNthElement[label="no"];
+
+	FindNthElement->MergeCollections[label="no"];
+	FindNthElement->SizeVaries[label="yes"];
+
+	MergeCollections->list[label="yes"];
+	MergeCollections->SizeVaries[label="no"];
+
+	SizeVaries->vector[label="no"];
+	SizeVaries->deque[label="yes"];
+}
