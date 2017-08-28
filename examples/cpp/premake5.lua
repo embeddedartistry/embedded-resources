@@ -4,8 +4,8 @@
 -- For reference, please refer to the premake wiki:
 -- https://github.com/premake/premake-core/wiki
 
-local ROOT = "../"
-local RESULTSROOT = "../buildresults/%{cfg.platform}_%{cfg.buildcfg}/"
+local ROOT = "./"
+local RESULTSROOT = ROOT .. "buildresults/%{cfg.platform}_%{cfg.buildcfg}/"
 
 ---------------------------------
 -- [ WORKSPACE CONFIGURATION   --
@@ -19,7 +19,7 @@ workspace "embedded-resources C++ Examples"
   if _ACTION ~= nill then project_action = _ACTION end
 
   -- Where the project/make files are output
-  location(ROOT .. "build/gen")
+  location(ROOT .. "buildresults/build")
 
   -----------------------------------
   -- Global Compiler/Linker Config --

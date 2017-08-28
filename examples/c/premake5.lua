@@ -4,13 +4,13 @@
 -- For reference, please refer to the premake wiki:
 -- https://github.com/premake/premake-core/wiki
 
-local ROOT = "../"
-local RESULTSROOT = "../buildresults/%{cfg.platform}_%{cfg.buildcfg}/"
+local ROOT = "./"
+local RESULTSROOT = ROOT .. "buildresults/%{cfg.platform}_%{cfg.buildcfg}/"
 
 ---------------------------------
 -- [ WORKSPACE CONFIGURATION   --
 ---------------------------------
-workspace "embedded-resources Interview Examples"
+workspace "embedded-resources C Examples"
   configurations { "debug", "release" }
   platforms      { "x86_64", "x86" }
 
@@ -19,7 +19,7 @@ workspace "embedded-resources Interview Examples"
   if _ACTION ~= nill then project_action = _ACTION end
 
   -- Where the project/make files are output
-  location(ROOT .. "build/gen")
+  location(ROOT .. "buildresults/build")
 
   -----------------------------------
   -- Global Compiler/Linker Config --
@@ -44,19 +44,21 @@ workspace "embedded-resources Interview Examples"
   -- [ PROJECT CONFIGURATION ] --
   -------------------------------
 
-  project "bad_c"
+  project "circular_buffer"
     kind "ConsoleApp"
     language "C"
     targetdir (RESULTSROOT)
-    targetname "bad_c.bin"
+    targetname "circular_buffer.bin"
 
     local SourceDir = ROOT;
     files
     {
-      SourceDir .. "bad.c"
+      SourceDir .. "circular_buffer.c",
     }
 
     filter {} -- clear filter!
+
+    buildoptions {"-DCOMPILE_AS_EXAMPLE"}
 
     includedirs
     {
@@ -74,19 +76,21 @@ workspace "embedded-resources Interview Examples"
 
     }
 
-  project "offset_of"
+  project "malloc_aligned"
     kind "ConsoleApp"
     language "C"
     targetdir (RESULTSROOT)
-    targetname "offset_of.bin"
+    targetname "malloc_aligned.bin"
 
     local SourceDir = ROOT;
     files
     {
-      SourceDir .. "offset_of.c"
+      SourceDir .. "malloc_aligned.c",
     }
 
     filter {} -- clear filter!
+
+    buildoptions {"-DCOMPILE_AS_EXAMPLE"}
 
     includedirs
     {
@@ -104,23 +108,59 @@ workspace "embedded-resources Interview Examples"
 
     }
 
-  project "stack_dir"
+  project "malloc_freelist"
     kind "ConsoleApp"
     language "C"
     targetdir (RESULTSROOT)
-    targetname "stack_dir.bin"
+    targetname "malloc_freelist.bin"
 
     local SourceDir = ROOT;
     files
     {
-      SourceDir .. "stack_dir.c"
+      SourceDir .. "malloc_freelist.c",
+      SourceDir .. "malloc_test.c",
     }
+
+    filter {} -- clear filter!
+
+    buildoptions {"-DCOMPILE_AS_EXAMPLE"}
+
+    includedirs
+    {
+      SourceDir,
+    }
+
+    -- Library Dependencies
+    libdirs
+    {
+
+    }
+
+    links
+    {
+
+    }
+
+  project "malloc_threadx"
+    kind "StaticLib"
+    language "C"
+    targetdir (RESULTSROOT)
+    targetname "malloc_threadx"
+
+    local SourceDir = ROOT;
+    files
+    {
+      SourceDir .. "malloc_threadx.c"
+    }
+
+    buildoptions {"-fno-builtin"}
 
     filter {} -- clear filter!
 
     includedirs
     {
       SourceDir,
+      SourceDir .. "rtos/",
     }
 
     -- Library Dependencies
