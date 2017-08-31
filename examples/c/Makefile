@@ -3,7 +3,7 @@
 # Export all args to act as a passthrough
 export
 
-ER_TOP ?= ../../build/
+ER_TOP ?= ../../build
 
 all: build
 
