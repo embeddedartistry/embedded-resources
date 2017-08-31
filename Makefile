@@ -39,6 +39,9 @@ libc:
 clean:
 	$(Q)echo Cleaning Build Output
 	$(Q)rm -rf $(BUILDRESULTS)
+ifneq ("$(wildcard $(BUILDRESULTS))","")
+	$(Q)rm -rf $(BUILDRESULTS)
+endif
 	$(Q)make -C examples/libc clean
 	$(Q)make -C interview clean
 	$(Q)make -C examples/cpp clean
