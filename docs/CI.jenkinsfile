@@ -1,3 +1,6 @@
+#!groovy
+@Library('jenkins-pipeline-lib') _
+
 pipeline
 {
   agent any
@@ -13,17 +16,9 @@ pipeline
   }
   post
   {
-    success
+    always
     {
-      slackSend(message: "${env.JOB_NAME} #${env.BUILD_NUMBER}: Successful (<${env.BUILD_URL}|Open>)", botUser: true, channel: '#sw-notify', color: '#27AE60')
-    }
-    failure
-    {
-      slackSend(message: "${env.JOB_NAME} #${env.BUILD_NUMBER}: FAILED! (<${env.BUILD_URL}|Open>)", botUser: true, channel: '#sw-notify', color: '#E74C3C')
-    }
-    aborted
-    {
-      slackSend(message: "${env.JOB_NAME} #${env.BUILD_NUMBER}: Aborted (<${env.BUILD_URL}|Open>)", botUser: true, channel: '#sw-notify', color: '#D7DBDD')
+      sendNotifications(currentBuild.result,currentBuild.changeSets)
     }
   }
 }
