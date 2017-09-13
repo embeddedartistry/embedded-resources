@@ -29,7 +29,7 @@ pipeline
   {
     always
     {
-      sendNotifications(currentBuild.currentResult)
+      slackNotify(currentBuild.currentResult)
     }
   }
 }
