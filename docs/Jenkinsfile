@@ -4,6 +4,10 @@
 pipeline
 {
   agent any
+  environment
+  {
+    GIT_CHANGE_LOG = gitChangeLog(currentBuild.changeSets)
+  }
   stages
   {
     stage('Setup')
@@ -25,7 +29,7 @@ pipeline
   {
     always
     {
-      sendNotifications(currentBuild.result,currentBuild.changeSets)
+      sendNotifications(currentBuild.currentResult)
     }
   }
 }
