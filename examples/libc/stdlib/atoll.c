@@ -1,10 +1,10 @@
-#include <stdlib.h>
 #include <ctype.h>
 #include <stdbool.h>
+#include <stdlib.h>
 
-long long atoll(const char *str)
+long long atoll(const char* str)
 {
-	long long val=0;
+	long long val = 0;
 	bool neg = false;
 
 	while(isspace(*str))
@@ -12,15 +12,16 @@ long long atoll(const char *str)
 		str++;
 	}
 
-	switch (*str) {
+	switch(*str)
+	{
 		case '-':
 			neg = true;
-			//Intentional fallthrough
+		// Intentional fallthrough
 		case '+':
 			str++;
 	}
 
-	while (isdigit(*str))
+	while(isdigit(*str))
 	{
 		val = (10 * val) + (*str++ - '0');
 	}

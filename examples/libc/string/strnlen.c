@@ -18,12 +18,11 @@
 
 #include <string.h>
 
-size_t
-strnlen(const char *str, size_t maxlen)
+size_t strnlen(const char* str, size_t maxlen)
 {
-	const char *cp;
+	const char* cp;
 
-	for (cp = str; maxlen != 0 && *cp != '\0'; cp++, maxlen--)
+	for(cp = str; maxlen != 0 && *cp != '\0'; cp++, maxlen--)
 		;
 
 	return (size_t)(cp - str);

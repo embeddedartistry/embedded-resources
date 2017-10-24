@@ -1,5 +1,5 @@
-#ifndef	_CTYPE_H
-#define	_CTYPE_H
+#ifndef _CTYPE_H
+#define _CTYPE_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -7,6 +7,7 @@ extern "C" {
 
 int isalnum(int);
 int isalpha(int);
+int isascii(int);
 int isblank(int);
 int iscntrl(int);
 int isdigit(int);
@@ -19,6 +20,7 @@ int isupper(int);
 int isxdigit(int);
 int tolower(int);
 int toupper(int);
+int toascii(int);
 
 #ifdef __cplusplus
 }

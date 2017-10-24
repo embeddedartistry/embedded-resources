@@ -29,9 +29,7 @@
 
 #include <stdlib.h>
 
-int
-abs(j)
-	int j;
+int abs(j) int j;
 {
-	return(j < 0 ? -j : j);
+	return (j < 0 ? -j : j);
 }

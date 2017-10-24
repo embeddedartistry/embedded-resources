@@ -30,11 +30,9 @@
  * SUCH DAMAGE.
  */
 
-#include <stdlib.h>		/* div_t */
+#include <stdlib.h> /* div_t */
 
-div_t
-div(num, denom)
-	int num, denom;
+div_t div(num, denom) int num, denom;
 {
 	div_t r;
 
@@ -63,7 +61,8 @@ div(num, denom)
 	 * In that case, to get the right answer, add 1 to r.quot and
 	 * subtract denom from r.rem.
 	 */
-	if (num >= 0 && r.rem < 0) {
+	if(num >= 0 && r.rem < 0)
+	{
 		r.quot++;
 		r.rem -= denom;
 	}

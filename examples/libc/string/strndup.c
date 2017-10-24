@@ -38,18 +38,26 @@ __FBSDID("$FreeBSD: src/lib/libc/string/strndup.c,v 1.1 2008/12/06 09:37:54 kib 
 #include <stdlib.h>
 #include <string.h>
 
-char *
-strndup(const char *str, size_t n)
+char* strndup(const char* str, size_t n)
 {
 	size_t len;
-	char *copy;
+	char* copy = NULL;
 
-	for (len = 0; len < n && str[len]; len++)
-		continue;
+	if(str && n)
+	{
+		for(len = 0; len < n && str[len]; len++)
+		{
+			continue;
+		}
 
-	if ((copy = malloc(len + 1)) == NULL)
-		return (NULL);
-	memcpy(copy, str, len);
-	copy[len] = '\0';
-	return (copy);
+		if((copy = malloc(len + 1)) == NULL)
+		{
+			return (NULL);
+		}
+
+		memcpy(copy, str, len);
+		copy[len] = '\0';
+	}
+
+	return copy;
 }

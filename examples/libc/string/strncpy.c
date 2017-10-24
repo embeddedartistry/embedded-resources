@@ -21,22 +21,25 @@
  * @APPLE_LICENSE_HEADER_END@
  */
 
-#include "../string.h"
+#include <string.h>
 
-char *
-strncpy(char * restrict dst, const char * restrict src, size_t maxlen) {
-    const size_t srclen = strnlen(src, maxlen);
-    if (srclen < maxlen) {
-        //  The stpncpy() and strncpy() functions copy at most maxlen
-        //  characters from src into dst.
-        memcpy(dst, src, srclen);
-        //  If src is less than maxlen characters long, the remainder
-        //  of dst is filled with '\0' characters.
-        memset(dst+srclen, 0, maxlen-srclen);
-    } else {
-        //  Otherwise, dst is not terminated.
-        memcpy(dst, src, maxlen);
-    }
-    //  The strcpy() and strncpy() functions return dst.
-    return dst;
+char* strncpy(char* __restrict dst, const char* __restrict src, size_t maxlen)
+{
+	const size_t srclen = strnlen(src, maxlen);
+	if(srclen < maxlen)
+	{
+		//  The stpncpy() and strncpy() functions copy at most maxlen
+		//  characters from src into dst.
+		memcpy(dst, src, srclen);
+		//  If src is less than maxlen characters long, the remainder
+		//  of dst is filled with '\0' characters.
+		memset(dst + srclen, 0, maxlen - srclen);
+	}
+	else
+	{
+		//  Otherwise, dst is not terminated.
+		memcpy(dst, src, maxlen);
+	}
+	//  The strcpy() and strncpy() functions return dst.
+	return dst;
 }

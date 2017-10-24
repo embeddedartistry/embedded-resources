@@ -35,9 +35,9 @@
 
 #include <string.h>
 
-char* strstr(char* string, char* substring)
+char* strstr(const char* string, const char* substring)
 {
-	char *a, *b;
+	const char *a, *b;
 
 	/* First scan quickly through the two strings looking for a
 	 * single-character match.  When it's found, then compare the
@@ -48,7 +48,7 @@ char* strstr(char* string, char* substring)
 
 	if(*b == 0)
 	{
-		return string;
+		return (char*)string;
 	}
 
 	for(; *string != 0; string += 1)
@@ -64,7 +64,7 @@ char* strstr(char* string, char* substring)
 		{
 			if(*b == 0)
 			{
-				return string;
+				return (char*)string;
 			}
 			if(*a++ != *b++)
 			{

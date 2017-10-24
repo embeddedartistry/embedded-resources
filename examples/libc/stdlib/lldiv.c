@@ -27,14 +27,14 @@
 #include <stdlib.h>
 
 /* See comments in div.c for implementation details. */
-lldiv_t
-lldiv(long long numer, long long denom)
+lldiv_t lldiv(long long numer, long long denom)
 {
 	lldiv_t retval;
 
 	retval.quot = numer / denom;
 	retval.rem = numer % denom;
-	if (numer >= 0 && retval.rem < 0) {
+	if(numer >= 0 && retval.rem < 0)
+	{
 		retval.quot++;
 		retval.rem -= denom;
 	}
