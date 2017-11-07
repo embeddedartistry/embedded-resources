@@ -130,17 +130,17 @@ This project uses [Semantic Versioning](http://semver.org/). For a list of avail
 
 Provide any instructions or contact information for users who need to get further help with your project.
 
-# Further Reading
-
-Provide links to other relevant documentation here
-
-**[Back to top](#table-of-contents)**
-
 # Contributing
 
 Provide details about how people can contribute to your project. If you have a contributing guide, mention it here. e.g.:
 
-Interested in contributing to this project? Please review [CONTRIBUTING.md](docs/CONTRIBUTING.md) for details on our code of conduct and development process.
+We encourage public contributions! Please review [CONTRIBUTING.md](docs/CONTRIBUTING.md) for details on our code of conduct and development process.
+
+**[Back to top](#table-of-contents)**
+
+# Further Reading
+
+Provide links to other relevant documentation here
 
 **[Back to top](#table-of-contents)**
 
