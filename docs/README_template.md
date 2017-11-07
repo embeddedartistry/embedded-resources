@@ -164,7 +164,7 @@ See also the list of [contributors](https://github.com/your/project/contributors
 
 Provide proper credits, shoutouts, and honorable mentions here. Also provide links to relevant repositories, blog posts, or contributors worth mentioning.
 
-Give proper credits. This could be a link to any repo which inspired you to build this project, any blogposts or links to people who contrbuted in this project.
+Give proper credits. This could be a link to any repo which inspired you to build this project, any blogposts or links to people who contributed in this project.
 
 
 * Hat tip to anyone who's code was used
