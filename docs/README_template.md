@@ -17,6 +17,7 @@ Provide an introductory paragraph, describing:
 1. [Release Process](#release-process)
 	1. [Versioning](#versioning)
 	1. [Payload](#payload)
+1. [How to Get Help](#how-to-get-help)
 1. [Further Reading](#further-reading)
 1. [Contributing](#contributing)
 1. [License](#license)
@@ -124,6 +125,10 @@ This project uses [Semantic Versioning](http://semver.org/). For a list of avail
 ## Payload
 
 **[Back to top](#table-of-contents)**
+
+# How to Get Help
+
+Provide any instructions or contact information for users who need to get further help with your project.
 
 # Further Reading
 
