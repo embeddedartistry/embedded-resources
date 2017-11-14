@@ -4,6 +4,7 @@ Provide an introductory paragraph, describing:
 
 * What your project does
 * Why people should consider using your project
+* Link to project home page
 
 ## Table of Contents
 
@@ -28,7 +29,8 @@ Provide an introductory paragraph, describing:
 
 Here you can provide more details about the project
 * What features does your project provide?
-* What is the motivation behind your project - why should we use or maintain it?
+* Short motivation for the project? (Don't be too long winded)
+* Links to the project site
 
 ```
 Show some example code to describe what your project does
