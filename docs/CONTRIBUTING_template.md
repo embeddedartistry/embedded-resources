@@ -27,7 +27,6 @@ If you're not looking for some kinds of contributions, note that up front:
 	1. [Style Guidelines](#style-guidelines)
 	1. [Code Formatting Rules](#code-formatting)
 	1. [Whitespace Cleanup](#whitespace-cleanup)
-	1. [Pre-submission Checklist](#pre-submission-checklist)
 1. [Pull Request Guidelines](#pull-request-guidelines)
 	1. [Review Process](#review-process)
 	1. [Addressing Feedback](#addressing-feedback)
