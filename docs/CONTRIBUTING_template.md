@@ -269,7 +269,7 @@ Once a PR has been submitted, your changes will be reviewed and constructive fee
 
 If a maintainer asks you to "rebase" your PR, they're saying that a lot of code has changed, and that you need to update your fork so it's easier to merge.
 
-To update your forked respository, follow these steps:
+To update your forked repository, follow these steps:
 
 ```
 # Fetch upstream master and merge with your repo's master branch
