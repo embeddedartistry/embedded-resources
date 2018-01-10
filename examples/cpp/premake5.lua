@@ -344,3 +344,34 @@ workspace "embedded-resources C++ Examples"
     {
 
     }
+
+  project "dispatch_threadx"
+    kind "StaticLib"
+    language "C++"
+    targetdir (RESULTSROOT)
+    targetname "dispatch_threadx.a"
+
+    local SourceDir = ROOT;
+    files
+    {
+      SourceDir .. "dispatch_threadx.cpp"
+    }
+
+    filter {} -- clear filter!
+
+    includedirs
+    {
+      SourceDir,
+      SourceDir .. "../rtos"
+    }
+
+    -- Library Dependencies
+    libdirs
+    {
+
+    }
+
+    links
+    {
+
+    }
