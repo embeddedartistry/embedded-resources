@@ -160,7 +160,7 @@ workspace "embedded-resources C Examples"
     includedirs
     {
       SourceDir,
-      SourceDir .. "rtos/",
+      SourceDir .. "../rtos/",
     }
 
     -- Library Dependencies

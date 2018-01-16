@@ -1,7 +1,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include <assert.h>
-#include "rtos/tx_api.h"
+#include <tx_api.h>
 
 #pragma mark - Definitions -
 
