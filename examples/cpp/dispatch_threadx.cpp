@@ -19,9 +19,6 @@
 #define DISPATCH_Q_PRIORITY 15
 #define DISPATCH_TIME_SLICE 5
 
-// Strlen of "(1000000000)" (MAX_INT number of digits) + '\0'
-#define MAX_INT_FORMAT_LEN	13
-
 /// Thread type
 struct tx_thread_t {
 	TX_THREAD thread;
@@ -114,17 +111,8 @@ dispatch_queue::dispatch_queue(std::string name, size_t thread_cnt, size_t threa
 //TODO: review
 dispatch_queue::~dispatch_queue()
 {
-	printf("Destructor: Destroying dispatch threads...\n");
-
-	uint8_t status = tx_mutex_get(&mutex_, TX_WAIT_FOREVER);
-	assert(status == TX_SUCCESS && "Failed to lock mutex!");
-
 	// Signal to dispatch threads that it's time to wrap up
 	quit_ = true;
-
-	// Release the mutex
-	status = tx_mutex_put(&mutex_);
-	assert(status == TX_SUCCESS && "Failed to unlock mutex!");
 
 	// We will join each thread to confirm exiting
 	for (size_t i = 0; i < threads_.size(); ++i) {
@@ -153,7 +141,6 @@ dispatch_queue::~dispatch_queue()
 	}
 
 	// Cleanup event flags and mutex
-
 	tx_event_flags_delete(&notify_flags_);
 
 	status = tx_mutex_delete(&mutex_);
