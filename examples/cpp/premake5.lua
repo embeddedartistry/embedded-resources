@@ -362,7 +362,7 @@ workspace "embedded-resources C++ Examples"
     includedirs
     {
       SourceDir,
-      SourceDir .. "../rtos"
+      SourceDir .. "../rtos/threadx"
     }
 
     -- Library Dependencies
