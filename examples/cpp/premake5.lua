@@ -375,3 +375,34 @@ workspace "embedded-resources C++ Examples"
     {
 
     }
+
+    project "dispatch_freertos"
+    kind "StaticLib"
+    language "C++"
+    targetdir (RESULTSROOT)
+    targetname "dispatch_freertos.a"
+
+    local SourceDir = ROOT;
+    files
+    {
+      SourceDir .. "dispatch_freertos.cpp"
+    }
+
+    filter {} -- clear filter!
+
+    includedirs
+    {
+      SourceDir,
+      SourceDir .. "../rtos"
+    }
+
+    -- Library Dependencies
+    libdirs
+    {
+
+    }
+
+    links
+    {
+
+    }
