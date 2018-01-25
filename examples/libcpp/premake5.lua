@@ -50,6 +50,8 @@ workspace "embedded-resources libcpp"
     targetdir (RESULTSROOT)
     targetname "cpp_threadx"
 
+    defines { "THREADX=1", "_LIBCPP_NO_EXCEPTIONS", "THREADING=1" }
+
     local SourceDir = ROOT;
     files
     {
@@ -57,8 +59,6 @@ workspace "embedded-resources libcpp"
       SourceDir .. "mutex",
       SourceDir .. "__mutex_base"
     }
-
-    defines { "THREADX=1", "_LIBCPP_NO_EXCEPTIONS", "THREADING=1" }
 
     -- fPIC -ffreestanding?
     buildoptions {"-fno-builtin", "-static", "-nodefaultlibs"}
