@@ -20,7 +20,6 @@
 
 /// Example thread priority and time slice
 #define DISPATCH_Q_PRIORITY 15
-#define DISPATCH_TIME_SLICE 5
 
 /// Thread type
 struct freertos_thread_t {
@@ -108,8 +107,6 @@ dispatch_queue::dispatch_queue(std::string name, size_t thread_cnt, size_t threa
 	}
 }
 
-
-//TODO: review
 dispatch_queue::~dispatch_queue()
 {
 	BaseType_t status;
