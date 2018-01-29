@@ -57,7 +57,10 @@ workspace "embedded-resources libcpp"
     {
       SourceDir .. "mutex.cpp",
       SourceDir .. "mutex",
-      SourceDir .. "__mutex_base"
+      SourceDir .. "__mutex_base",
+      SourceDir .. "__threading_support",
+      SourceDir .. "__external_threading",
+      SourceDir .. "__external_threading_threadx"
     }
 
     -- fPIC -ffreestanding?

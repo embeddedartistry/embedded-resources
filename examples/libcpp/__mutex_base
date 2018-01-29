@@ -47,11 +47,15 @@ class _LIBCPP_TYPE_VIS _LIBCPP_THREAD_SAFETY_ANNOTATION(capability("mutex")) mut
 
 public:
     _LIBCPP_INLINE_VISIBILITY
+#if defined(_MUTEX_REQUIRES_INITIALIZATION) && (_MUTEX_REQUIRES_INITIALIZATION == 1)
+    mutex();
+#else
 #ifndef _LIBCPP_CXX03_LANG
     constexpr mutex() = default;
 #else
     mutex() _NOEXCEPT {__m_ = (__libcpp_mutex_t)_LIBCPP_MUTEX_INITIALIZER;}
 #endif
+#endif //_MUTEX_REQUIRES_INITIALIZATION
     ~mutex();
 
 private:
@@ -67,8 +71,12 @@ public:
     _LIBCPP_INLINE_VISIBILITY native_handle_type native_handle() {return &__m_;}
 };
 
+#if defined(_MUTEX_REQUIRES_INITIALIZATION) && (_MUTEX_REQUIRES_INITIALIZATION == 1)
+#warning "Non-standard implementation: Mutex constructor requires initialization and may throw"
+#else
 static_assert(is_nothrow_default_constructible<mutex>::value,
               "the default constructor for std::mutex must be nothrow");
+#endif
 
 struct _LIBCPP_TYPE_VIS defer_lock_t {};
 struct _LIBCPP_TYPE_VIS try_to_lock_t {};
