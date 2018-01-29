@@ -50,7 +50,7 @@ workspace "embedded-resources libcpp"
     targetdir (RESULTSROOT)
     targetname "cpp_threadx"
 
-    defines { "THREADX=1", "_LIBCPP_NO_EXCEPTIONS", "THREADING=1" }
+    defines { "THREADX=1", "_LIBCPP_NO_EXCEPTIONS", "THREADING=1", "_LIBCPP_HAS_THREAD_API_EXTERNAL" }
 
     local SourceDir = ROOT;
     files

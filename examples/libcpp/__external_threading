@@ -1,0 +1,20 @@
+// -*- C++ -*-
+//===----------------------------------------------------------------------===//
+//
+//                     The LLVM Compiler Infrastructure
+//
+// This file is dual licensed under the MIT and the University of Illinois Open
+// Source Licenses. See LICENSE.TXT for details.
+//
+//===----------------------------------------------------------------------===//
+
+#ifndef _LIBCPP_EXTERNAL_THREADING_SUPPORT
+#define _LIBCPP_EXTERNAL_THREADING_SUPPORT
+
+#if THREADX
+#include <__external_threading_threadx>
+#elif FREERTOS
+#include <__external_threading_freertos>
+#endif
+
+#endif //_LIBCPP_EXTERNAL_THREADING_SUPPORT
