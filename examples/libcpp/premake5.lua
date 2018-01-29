@@ -100,10 +100,13 @@ workspace "embedded-resources libcpp"
     {
       SourceDir .. "mutex.cpp",
       SourceDir .. "mutex",
-      SourceDir .. "__mutex_base"
+      SourceDir .. "__mutex_base",
+      SourceDir .. "__threading_support",
+      SourceDir .. "__external_threading",
+      SourceDir .. "__external_threading_freertos"
     }
 
-    defines { "FREERTOS=1", "_LIBCPP_NO_EXCEPTIONS", "THREADING=1" }
+    defines { "FREERTOS=1", "_LIBCPP_NO_EXCEPTIONS", "THREADING=1", "_LIBCPP_HAS_THREAD_API_EXTERNAL" }
 
     -- fPIC -ffreestanding?
     buildoptions {"-fno-builtin", "-static", "-nodefaultlibs"}
