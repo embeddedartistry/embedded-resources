@@ -22,7 +22,7 @@ const try_to_lock_t try_to_lock = {};
 const adopt_lock_t  adopt_lock = {};
 
 #if defined(_MUTEX_REQUIRES_INITIALIZATION) && (_MUTEX_REQUIRES_INITIALIZATION == 1)
-mutex::mutex()
+mutex::mutex() _NOEXCEPT
 {
 	int ec = __libcpp_mutex_init(&__m_);
     if (ec)
