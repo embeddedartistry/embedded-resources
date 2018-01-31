@@ -24,7 +24,6 @@
 _LIBCPP_PUSH_MACROS
 #include <__undef_macros>
 
-
 _LIBCPP_BEGIN_NAMESPACE_STD
 
 #ifndef _LIBCPP_HAS_NO_THREADS
@@ -48,6 +47,8 @@ class _LIBCPP_TYPE_VIS _LIBCPP_THREAD_SAFETY_ANNOTATION(capability("mutex")) mut
 public:
     _LIBCPP_INLINE_VISIBILITY
 #if defined(_MUTEX_REQUIRES_INITIALIZATION) && (_MUTEX_REQUIRES_INITIALIZATION == 1)
+    // We currently deviate from the standard on this point
+    // Since some of our mutexes require dynamic initialization
     mutex() _NOEXCEPT;
 #else
 #ifndef _LIBCPP_CXX03_LANG
