@@ -163,13 +163,6 @@ int __libcpp_tls_set(__libcpp_tls_key __key, void *__p);
 
 #pragma mark - Mutex Function Definitions -
 
-int __libcpp_mutex_init(__libcpp_mutex_t *__m)
-{
-  *__m = xSemaphoreCreateMutex();
-
-  return (*__m == NULL);
-}
-
 int __libcpp_recursive_mutex_init(__libcpp_recursive_mutex_t *__m)
 {
   *__m = xSemaphoreCreateRecursiveMutex();
@@ -179,7 +172,6 @@ int __libcpp_recursive_mutex_init(__libcpp_recursive_mutex_t *__m)
 
 int __libcpp_recursive_mutex_lock(__libcpp_recursive_mutex_t *__m)
 {
-  //tx mutex is already recursive
   return xSemaphoreTakeRecursive(*__m, portMAX_DELAY);
 }
 
@@ -199,6 +191,13 @@ int __libcpp_recursive_mutex_destroy(__libcpp_recursive_mutex_t *__m)
   vSemaphoreDelete(*__m);
 
   return 0;
+}
+
+int __libcpp_mutex_init(__libcpp_mutex_t *__m)
+{
+  *__m = xSemaphoreCreateMutex();
+
+  return (*__m == NULL);
 }
 
 int __libcpp_mutex_lock(__libcpp_mutex_t *__m)
