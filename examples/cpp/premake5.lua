@@ -376,6 +376,47 @@ workspace "embedded-resources C++ Examples"
 
     }
 
+  project "dispatch_threadx_stdmutex"
+    kind "StaticLib"
+    language "C++"
+    targetdir (RESULTSROOT)
+    targetname "dispatch_threadx_stdmutex.a"
+
+    defines { "THREADX=1", "_LIBCPP_NO_EXCEPTIONS", "THREADING=1", "_LIBCPP_HAS_THREAD_API_EXTERNAL" }
+
+    buildoptions {"-fno-builtin", "-static", "-nodefaultlibs"}
+    linkoptions {"-static", "-nodefaultlibs", "-nostartfiles",
+                "-Wl,-preload -Wl,-all_load", "-Wl,-dead_strip", "-Wl,-prebind"}
+
+    local SourceDir = ROOT;
+    files
+    {
+      SourceDir .. "dispatch_threadx_stdmutex.cpp",
+      SourceDir .. "../libcpp/mutex.cpp",
+    }
+
+    filter {} -- clear filter!
+
+    includedirs
+    {
+      SourceDir,
+      SourceDir .. "../rtos",
+      SourceDir .. "../libcpp",
+      "/usr/local/opt/llvm/include/c++/v1/",
+      "/usr/local/opt/llvm/include"
+    }
+
+    -- Library Dependencies
+    libdirs
+    {
+
+    }
+
+    links
+    {
+
+    }
+
     project "dispatch_freertos"
     kind "StaticLib"
     language "C++"
