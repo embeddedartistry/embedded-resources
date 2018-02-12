@@ -14,7 +14,11 @@
 #if THREADX
 #include <__external_threading_threadx>
 #elif FREERTOS
+#ifdef USE_CONSTEXPR_MUTEX
+#include <__external_threading_freertos_constexpr>
+#else
 #include <__external_threading_freertos>
+#endif //USE_CONSTEXPR_MUTEX
 #endif
 
 #endif //_LIBCPP_EXTERNAL_THREADING_SUPPORT

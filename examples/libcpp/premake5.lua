@@ -133,3 +133,48 @@ workspace "embedded-resources libcpp"
     {
 
     }
+
+  project "libcpp_freertos_constexpr"
+    kind "StaticLib"
+    language "C++"
+    targetdir (RESULTSROOT)
+    targetname "cpp_freertos_constexpr"
+
+    local SourceDir = ROOT;
+    files
+    {
+      SourceDir .. "mutex.cpp",
+      SourceDir .. "mutex",
+      SourceDir .. "__mutex_base",
+      SourceDir .. "__threading_support",
+      SourceDir .. "__external_threading",
+      SourceDir .. "__external_threading_freertos_constexpr"
+    }
+
+    defines { "FREERTOS=1", "_LIBCPP_NO_EXCEPTIONS", "THREADING=1", "_LIBCPP_HAS_THREAD_API_EXTERNAL", "USE_CONSTEXPR_MUTEX" }
+
+    -- fPIC -ffreestanding?
+    buildoptions {"-fno-builtin", "-static", "-nodefaultlibs"}
+    linkoptions {"-static", "-nodefaultlibs", "-nostartfiles",
+                "-Wl,-preload -Wl,-all_load", "-Wl,-dead_strip", "-Wl,-prebind"}
+
+    filter {} -- clear filter!
+
+    includedirs
+    {
+      SourceDir,
+      SourceDir .. "../rtos",
+      "/usr/local/opt/llvm/include/c++/v1/",
+      "/usr/local/opt/llvm/include"
+    }
+
+    -- Library Dependencies
+    libdirs
+    {
+
+    }
+
+    links
+    {
+
+    }
