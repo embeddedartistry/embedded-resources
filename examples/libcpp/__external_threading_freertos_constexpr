@@ -13,6 +13,7 @@
 
 #include <freertos/FreeRTOS.h>
 #include <freertos/semphr.h>
+#include <freertos/task.h>
 
 #ifndef _LIBCPP_HAS_NO_PRAGMA_SYSTEM_HEADER
 #pragma GCC system_header
@@ -31,10 +32,19 @@ _LIBCPP_BEGIN_NAMESPACE_STD
 
 #define _LIBCPP_THREAD_ABI_VISIBILITY _LIBCPP_FUNC_VIS
 
-// Mutex
-typedef SemaphoreHandle_t __libcpp_mutex_t;
+struct __libcpp_mutex_t;
 
-#define _LIBCPP_MUTEX_INITIALIZER 0
+typedef int(*mutex_fptr_t)(__libcpp_mutex_t*);
+
+struct __libcpp_mutex_t
+{
+  volatile SemaphoreHandle_t mutex;
+
+  // Function pointer to init
+  volatile mutex_fptr_t init;
+};
+
+#define _LIBCPP_MUTEX_INITIALIZER {0, &__libcpp_mutex_init}
 
 typedef SemaphoreHandle_t __libcpp_recursive_mutex_t;
 
@@ -76,6 +86,9 @@ int __libcpp_recursive_mutex_unlock(__libcpp_recursive_mutex_t *__m);
 
 _LIBCPP_THREAD_ABI_VISIBILITY
 int __libcpp_recursive_mutex_destroy(__libcpp_recursive_mutex_t *__m);
+
+_LIBCPP_THREAD_ABI_VISIBILITY
+int __libcpp_mutex_init(__libcpp_recursive_mutex_t *__m);
 
 _LIBCPP_THREAD_ABI_VISIBILITY _LIBCPP_NO_THREAD_SAFETY_ANALYSIS
 int __libcpp_mutex_lock(__libcpp_mutex_t *__m);
@@ -175,7 +188,7 @@ bool __libcpp_recursive_mutex_trylock(__libcpp_recursive_mutex_t *__m)
   return xSemaphoreTakeRecursive(*__m, 0);
 }
 
-int __libcpp_recursive_mutex_unlock(__libcpp_mutex_t *__m)
+int __libcpp_recursive_mutex_unlock(__libcpp_recursive_mutex_t *__m)
 {
   return xSemaphoreGiveRecursive(*__m);
 }
@@ -187,43 +200,62 @@ int __libcpp_recursive_mutex_destroy(__libcpp_recursive_mutex_t *__m)
   return 0;
 }
 
+int __libcpp_mutex_init(__libcpp_mutex_t *__m)
+{
+  __m->mutex = xSemaphoreCreateMutex();
+
+  return (__m->mutex == NULL);
+}
+
 int __libcpp_mutex_lock(__libcpp_mutex_t *__m)
 {
-  if(__sync_bool_compare_and_swap(__m, _LIBCPP_MUTEX_INITIALIZER, xSemaphoreCreateMutex()))
+  if(__sync_bool_compare_and_swap(&__m->init, __libcpp_mutex_init, NULL))
   {
-    if(*__m == _LIBCPP_MUTEX_INITIALIZER)
+    if(__m->mutex == NULL)
     {
       __throw_system_error(-1, "mutex initialization failed");
     }
   }
 
-  return xSemaphoreTake(*__m, portMAX_DELAY);
+  // Wait for initialization to finish
+  while(!__m->mutex)
+  {
+    vTaskDelay(1);
+  }
+
+  return xSemaphoreTake(__m->mutex, portMAX_DELAY);
 }
 
 bool __libcpp_mutex_trylock(__libcpp_mutex_t *__m)
 {
-  if(__sync_bool_compare_and_swap(__m, _LIBCPP_MUTEX_INITIALIZER, xSemaphoreCreateMutex()))
+  if(__sync_bool_compare_and_swap(&__m->init, __libcpp_mutex_init, NULL))
   {
-    if(*__m == _LIBCPP_MUTEX_INITIALIZER)
+    if(__m->mutex == NULL)
     {
       __throw_system_error(-1, "mutex initialization failed");
     }
   }
 
+  // Wait for initialization to finish
+  while(!__m->mutex)
+  {
+    vTaskDelay(1);
+  }
+
   //intentional no wait for try_lock
-  return xSemaphoreTake(*__m, 0);
+  return xSemaphoreTake(__m->mutex, 0);
 }
 
 int __libcpp_mutex_unlock(__libcpp_mutex_t *__m)
 {
-  return xSemaphoreGive(*__m);
+  return xSemaphoreGive(__m->mutex);
 }
 
 int __libcpp_mutex_destroy(__libcpp_mutex_t *__m)
 {
-  if(*__m != _LIBCPP_MUTEX_INITIALIZER)
+  if(__m->mutex != NULL)
   {
-    vSemaphoreDelete(*__m);
+    vSemaphoreDelete(__m->mutex);
   }
 
   return 0;
