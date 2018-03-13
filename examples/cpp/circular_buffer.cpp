@@ -32,7 +32,7 @@ public:
 		}
 	}
 
-	T get(void)
+	T get(void) const
 	{
 		std::lock_guard<std::mutex> lock(mutex_);
 
@@ -54,19 +54,19 @@ public:
 		head_ = tail_;
 	}
 
-	bool empty(void)
+	bool empty(void) const
 	{
 		//if head and tail are equal, we are empty
 		return head_ == tail_;
 	}
 
-	bool full(void)
+	bool full(void) const
 	{
 		//If tail is ahead the head by 1, we are full
 		return ((head_ + 1) % size_) == tail_;
 	}
 
-	size_t size(void)
+	size_t size(void) const
 	{
 		return size_ - 1;
 	}
