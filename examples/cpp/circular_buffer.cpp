@@ -12,7 +12,7 @@
 template <class T>
 class circular_buffer {
 public:
-	circular_buffer(size_t size) :
+	explicit circular_buffer(size_t size) :
 		buf_(std::unique_ptr<T[]>(new T[size])),
 		size_(size)
 	{
