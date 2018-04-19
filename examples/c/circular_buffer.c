@@ -22,8 +22,8 @@ int circular_buf_put(circular_buf_t * cbuf, uint8_t data);
 //TODO: int circular_buf_put_range(circular_buf_t cbuf, uint8_t * data, size_t len);
 int circular_buf_get(circular_buf_t * cbuf, uint8_t * data);
 //TODO: int circular_buf_get_range(circular_buf_t cbuf, uint8_t *data, size_t len);
-bool circular_buf_empty(circular_buf_t cbuf);
-bool circular_buf_full(circular_buf_t cbuf);
+bool circular_buf_empty(circular_buf_t * cbuf);
+bool circular_buf_full(circular_buf_t * cbuf);
 
 int circular_buf_reset(circular_buf_t * cbuf)
 {
@@ -63,7 +63,7 @@ int circular_buf_get(circular_buf_t * cbuf, uint8_t * data)
 {
     int r = -1;
 
-    if(cbuf && data && !circular_buf_empty(*cbuf))
+    if(cbuf && data && !circular_buf_empty(cbuf))
     {
         *data = cbuf->buffer[cbuf->tail];
         cbuf->tail = (cbuf->tail + 1) % cbuf->size;
@@ -74,18 +74,18 @@ int circular_buf_get(circular_buf_t * cbuf, uint8_t * data)
     return r;
 }
 
-bool circular_buf_empty(circular_buf_t cbuf)
+bool circular_buf_empty(circular_buf_t* cbuf)
 {
 	// We define empty as head == tail
-    return (cbuf.head == cbuf.tail);
+    return (cbuf && (cbuf->head == cbuf->tail));
 }
 
-bool circular_buf_full(circular_buf_t cbuf)
+bool circular_buf_full(circular_buf_t* cbuf)
 {
 	// We determine "full" case by head being one position behind the tail
 	// Note that this means we are wasting one space in the buffer!
 	// Instead, you could have an "empty" flag and determine buffer full that way
-    return ((cbuf.head + 1) % cbuf.size) == cbuf.tail;
+    return (cbuf && ((cbuf->head + 1) % cbuf->size) == cbuf->tail);
 }
 
 int main(void)
@@ -99,7 +99,7 @@ int main(void)
 
 	cbuf.buffer = malloc(cbuf.size);
 
-	printf("Full: %d, empty: %d\n", circular_buf_full(cbuf), circular_buf_empty(cbuf));
+	printf("Full: %d, empty: %d\n", circular_buf_full(&cbuf), circular_buf_empty(&cbuf));
 
 	printf("Adding 9 values\n");
 	for(uint8_t i = 0; i < cbuf.size - 1; i++)
@@ -107,10 +107,10 @@ int main(void)
 		circular_buf_put(&cbuf, i);
 	}
 
-	printf("Full: %d, empty: %d\n", circular_buf_full(cbuf), circular_buf_empty(cbuf));
+	printf("Full: %d, empty: %d\n", circular_buf_full(&cbuf), circular_buf_empty(&cbuf));
 
 	printf("Reading back values: ");
-	while(!circular_buf_empty(cbuf))
+	while(!circular_buf_empty(&cbuf))
 	{
 		uint8_t data;
 		circular_buf_get(&cbuf, &data);
@@ -124,10 +124,10 @@ int main(void)
 		circular_buf_put(&cbuf, i);
 	}
 
-	printf("Full: %d, empty: %d\n", circular_buf_full(cbuf), circular_buf_empty(cbuf));
+	printf("Full: %d, empty: %d\n", circular_buf_full(&cbuf), circular_buf_empty(&cbuf));
 
 	printf("Reading back values: ");
-	while(!circular_buf_empty(cbuf))
+	while(!circular_buf_empty(&cbuf))
 	{
 		uint8_t data;
 		circular_buf_get(&cbuf, &data);
