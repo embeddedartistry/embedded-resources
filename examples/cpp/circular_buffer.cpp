@@ -32,7 +32,7 @@ public:
 		}
 	}
 
-	T get(void) const
+	T get(void)
 	{
 		std::lock_guard<std::mutex> lock(mutex_);
 
