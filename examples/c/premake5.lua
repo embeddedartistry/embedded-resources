@@ -53,7 +53,8 @@ workspace "embedded-resources C Examples"
     local SourceDir = ROOT;
     files
     {
-      SourceDir .. "circular_buffer.c",
+      SourceDir .. "circular_buffer_test.c",
+      SourceDir .. "circular_buffer/*"
     }
 
     filter {} -- clear filter!
