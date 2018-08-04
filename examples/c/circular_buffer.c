@@ -3,6 +3,7 @@
 #include <stdint.h>
 #include <stddef.h>
 #include <stdbool.h>
+#include <assert.h>
 
 typedef struct {
 	uint8_t * buffer;
@@ -17,7 +18,8 @@ typedef struct {
 * You are not seeing an accidental off-by-one.
 */
 
-int circular_buf_reset(circular_buf_t * cbuf);
+/// Reset the circular buffer to empty, head == tail.
+void circular_buf_reset(circular_buf_t * cbuf);
 /// Put Version 1 allows you to keep adding entries if the buffer is full
 int circular_buf_put(circular_buf_t * cbuf, uint8_t data);
 /// Put Version 2 returns an error if the buffer is full
@@ -28,45 +30,36 @@ int circular_buf_get(circular_buf_t * cbuf, uint8_t * data);
 bool circular_buf_empty(circular_buf_t * cbuf);
 bool circular_buf_full(circular_buf_t * cbuf);
 
-int circular_buf_reset(circular_buf_t * cbuf)
+void circular_buf_reset(circular_buf_t * cbuf)
 {
-    int r = -1;
+    assert(cbuf);
 
-    if(cbuf)
-    {
-        cbuf->head = 0;
-        cbuf->tail = 0;
-        r = 0;
-    }
-
-    return r;
+    cbuf->head = 0;
+    cbuf->tail = 0;
 }
 
 int circular_buf_put(circular_buf_t * cbuf, uint8_t data)
 {
-    int r = -1;
+	assert(cbuf);
 
-    if(cbuf)
+    cbuf->buffer[cbuf->head] = data;
+    cbuf->head = (cbuf->head + 1) % cbuf->size;
+
+    if(cbuf->head == cbuf->tail)
     {
-        cbuf->buffer[cbuf->head] = data;
-        cbuf->head = (cbuf->head + 1) % cbuf->size;
-
-        if(cbuf->head == cbuf->tail)
-        {
-            cbuf->tail = (cbuf->tail + 1) % cbuf->size;
-        }
-
-        r = 0;
+        cbuf->tail = (cbuf->tail + 1) % cbuf->size;
     }
 
-    return r;
+    return 0;
 }
 
 int circular_buf_put2(circular_buf_t * cbuf, uint8_t data)
 {
     int r = -1;
 
-    if(cbuf && !circular_buf_full(cbuf))
+    assert(cbuf);
+
+    if(!circular_buf_full(cbuf))
     {
         cbuf->buffer[cbuf->head] = data;
         cbuf->head = (cbuf->head + 1) % cbuf->size;
@@ -84,9 +77,11 @@ int circular_buf_put2(circular_buf_t * cbuf, uint8_t data)
 
 int circular_buf_get(circular_buf_t * cbuf, uint8_t * data)
 {
+    assert(cbuf && data);
+
     int r = -1;
 
-    if(cbuf && data && !circular_buf_empty(cbuf))
+    if(!circular_buf_empty(cbuf))
     {
         *data = cbuf->buffer[cbuf->tail];
         cbuf->tail = (cbuf->tail + 1) % cbuf->size;
@@ -99,16 +94,20 @@ int circular_buf_get(circular_buf_t * cbuf, uint8_t * data)
 
 bool circular_buf_empty(circular_buf_t* cbuf)
 {
+	assert(cbuf);
+
 	// We define empty as head == tail
-    return (cbuf && (cbuf->head == cbuf->tail));
+    return (cbuf->head == cbuf->tail);
 }
 
 bool circular_buf_full(circular_buf_t* cbuf)
 {
+	assert(cbuf);
+
 	// We determine "full" case by head being one position behind the tail
 	// Note that this means we are wasting one space in the buffer!
 	// Instead, you could have an "empty" flag and determine buffer full that way
-    return (cbuf && ((cbuf->head + 1) % cbuf->size) == cbuf->tail);
+    return (((cbuf->head + 1) % cbuf->size) == cbuf->tail);
 }
 
 int main(void)
