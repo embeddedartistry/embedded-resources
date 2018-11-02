@@ -174,7 +174,7 @@ void dispatch_queue::dispatch_thread_handler(void)
 
 	do {
 		//after wait, we own the lock
-		if(q_.size() && !quit_)
+		if(!quit_ && q_.size())
 		{
 			auto op = std::move(q_.front());
 			q_.pop();

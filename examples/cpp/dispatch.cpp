@@ -45,8 +45,7 @@ dispatch_queue::dispatch_queue(std::string name, size_t thread_cnt) :
 
 	for(size_t i = 0; i < threads_.size(); i++)
 	{
-		threads_[i] = std::thread(
-			std::bind(&dispatch_queue::dispatch_thread_handler, this));
+		threads_[i] = std::thread(&dispatch_queue::dispatch_thread_handler, this);
 	}
 }
 
@@ -55,7 +54,9 @@ dispatch_queue::~dispatch_queue()
 	printf("Destructor: Destroying dispatch threads...\n");
 
 	// Signal to dispatch threads that it's time to wrap up
+	std::unique_lock<std::mutex> lock(lock_);
 	quit_ = true;
+	lock.unlock();
 	cv_.notify_all();
 
 	// Wait for threads to finish before we exit
@@ -102,7 +103,7 @@ void dispatch_queue::dispatch_thread_handler(void)
 		});
 
 		//after wait, we own the lock
-		if(q_.size() && !quit_)
+		if(!quit_ && q_.size())
 		{
 			auto op = std::move(q_.front());
 			q_.pop();
