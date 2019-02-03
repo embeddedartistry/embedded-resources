@@ -3,19 +3,60 @@
 #include <memory>
 #include <mutex>
 
+/* DBJ 2019-02-03 --  standard ISO C++ is C++17, is this ok in the context of this project? */
+/* DBJ 2019-02-03 --  re-use this whenever you need functions to work in presence of multiple threads
+   see the usage bellow
+*/
+struct lock_unlock final {
+ mutable std::mutex mux_;
+ lock_unlock() noexcept { mux_.lock(); }
+~lock_unlock() { mux_.unlock(); }
+};
+
 template <class T>
 class circular_buffer {
 public:
+	/* DBJ 2019-02-03 -- Please consider, implementing copy semantics of this class
+	std::unique_ptr can not be copied, thus compiler will refuse the default copy operator 
+	of circular_buffer, since it's member 'buf_'  can not be copied
+	circular_buffer move will work since std::unique_ptr can be moved
+	*/
+	
+	/* DBJ 2019-02-03 -- Please consider
+	constexpr inline std::uintmax_t MAX_CAPACITY = UINT16_MAX;
+	UINT16_MAX is competely arbitrary 
+	*/
+
+	/* DBJ 2019-02-03 -- Please consider limiting the types this buffer can hold
+	   for example:
+	static_assert(	! std::is_pointer_v<T>, "\n\nNo pointers please\n" );
+	static_assert(	! std::is_reference_v<T>, "\n\nNo references please\n" );
+	*/
+
+	/* DBJ 2019-02-03 -- Please consider simple  buffer non-destructive "reading" behaviour
+	  in an  C++ std lib friendly manner, for example:
+	   // just show the buffer
+	   circular_buffer<int> circle(64) ;
+	   for ( auto & el : circle ) { std::printf(" %4d ", el ); }
+	*/
+	using iterator = T * ;
+	iterator begin () noexcept { return std::address_of( buf_[head_] ); }
+	iterator end   () noexcept { return std::address_of( buf_[tail_] ); }
+	// and so on ...
+	
+	/* DBJ 2019-02-03 -- put/get behaviour is perhaps more applicable to 'stack', not 'buffer'?
+	   I have no enough context and requirements, thus I am not sure if this is ok comment
+         */
 	explicit circular_buffer(size_t size) :
-		buf_(std::unique_ptr<T[]>(new T[size])),
+		buf_(std::make_unique<T[]>(size)),
 		max_size_(size)
 	{
 
 	}
-
-	void put(T item)
+	/* DBJ 2019-02-03 this requires T to be trivialy copyable */
+	void put(T item) /* use noexcept wherever you can */
 	{
-		std::lock_guard<std::mutex> lock(mutex_);
+		lock_unlock auto_lock_;
 
 		buf_[head_] = item;
 
@@ -29,12 +70,20 @@ public:
 		full_ = head_ == tail_;
 	}
 
-	T get()
+	// DBJ 2019-02-03 -- se the comment bellow
+	// std::optional<T> get () const noexcept
+	T get()  
 	{
-		std::lock_guard<std::mutex> lock(mutex_);
+		lock_unlock auto_lock_;
 
 		if(empty())
 		{
+			// DBJ 2019-02-03 
+			// this requires T to have default constructor
+			// also this requires logicaly "empty" state of T
+			// which is not doable for every T
+			// using C++17 std::optional<T> as return value
+			// makes this kind of issues solvable
 			return T();
 		}
 
@@ -48,7 +97,7 @@ public:
 
 	void reset()
 	{
-		std::lock_guard<std::mutex> lock(mutex_);
+		lock_unlock auto_lock_;
 		head_ = tail_;
 		full_ = false;
 	}
@@ -85,17 +134,19 @@ public:
 				size = max_size_ + head_ - tail_;
 			}
 		}
-
 		return size;
 	}
 
 private:
-	std::mutex mutex_;
-	std::unique_ptr<T[]> buf_;
-	size_t head_ = 0;
-	size_t tail_ = 0;
-	const size_t max_size_;
-	bool full_ = 0;
+	/* DBJ 2019-02-03 -- Please consider using "mutable", to ease the 
+	implementation of the behavior of const instance of the circular_buffer
+	*/
+	// dbj removed -- mutable std::mutex mutex_;
+	mutable std::unique_ptr<T[]> buf_;
+	mutable size_t head_ = 0;
+	mutable size_t tail_ = 0;
+	const   size_t max_size_;
+	mutable bool full_ = 0;
 };
 
 int main(void)
