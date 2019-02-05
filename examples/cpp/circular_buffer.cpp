@@ -3,6 +3,34 @@
 #include <memory>
 #include <mutex>
 
+//C++11 implementation of make_unique
+namespace cpp11 
+{
+	using namespace std;
+
+	template<bool _Test, class T = void>
+	using enable_if_t = typename enable_if<_Test, T>::type;
+
+	template<class T>
+	using remove_extent_t = typename remove_extent<T>::type;
+
+	template<class T,
+		class... A,
+		enable_if_t<!is_array<T>::value, int> = 0>
+		inline unique_ptr<T> make_unique(A&&... args_)
+	{	
+		return (unique_ptr<T>(new T(forward<A>(args_)...)));
+	}
+
+	template<class T,
+		enable_if_t<is_array<T>::value && extent<T>::value == 0, int> = 0>
+		inline unique_ptr<T> make_unique(size_t size_)
+	{	
+		typedef remove_extent_t<T> E;
+		return (unique_ptr<T>(new E[size_]()));
+	}
+}
+
 /* DBJ 2019-02-03 --  standard ISO C++ is C++17, is this ok in the context of this project? */
 /* DBJ 2019-02-03 --  re-use this whenever you need functions to work in presence of multiple threads
    see the usage bellow
@@ -48,7 +76,7 @@ public:
 	   I have no enough context and requirements, thus I am not sure if this is ok comment
          */
 	explicit circular_buffer(size_t size) :
-		buf_(std::make_unique<T[]>(size)),
+		buf_(cpp11::make_unique<T[]>(size)),
 		max_size_(size)
 	{
 
@@ -70,7 +98,7 @@ public:
 		full_ = head_ == tail_;
 	}
 
-	// DBJ 2019-02-03 -- se the comment bellow
+	// DBJ 2019-02-03 -- see the comment bellow
 	// std::optional<T> get () const noexcept
 	T get()  
 	{
