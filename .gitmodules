@@ -1,6 +1,3 @@
-[submodule "build"]
-	path = build
-	url = git@github.com:embeddedartistry/premake-buildsystem.git
 [submodule "examples/cpp/etl"]
 	path = examples/cpp/etl
 	url = https://github.com/ETLCPP/etl
