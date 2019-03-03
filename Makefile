@@ -13,43 +13,24 @@ endif
 export BUILDTOP := $(shell pwd)
 export BUILDRESULTS := $(shell pwd)/buildresults/
 
-all: c cpp interview libc libcpp
+all: examples
 
-.PHONY: c
-c:
-	$(Q)echo Building C Examples
-	$(Q)make -C examples/c/
+.PHONY: groundwork
+groundwork:
+	$(Q)if [ -d "$(BUILDRESULTS)" ]; then mkdir -p $(BUILDRESULTS); fi
+	$(Q)if [ ! -e "$(BUILDRESULTS)/build.ninja" ]; then meson $(BUILDRESULTS); fi
 
-.PHONY: cpp
-cpp:
-	$(Q)echo Building CPP Examples
-	$(Q)make -C examples/cpp/
 
-.PHONY: interview
-interview:
-	$(Q)echo Building Interview Examples
-	$(Q)make -C interview/
-
-.PHONY: libc
-libc:
-	$(Q)echo Building libc
-	$(Q)make -C examples/libc
-
-.PHONY: libcpp
-libcpp:
-	$(Q)echo Building libcpp
-	$(Q)make -C examples/libcpp
+.PHONY: examples
+examples: groundwork
+	$(Q)cd $(BUILDRESULTS); ninja
 
 .PHONY: clean
 clean:
 	$(Q)echo Cleaning Build Output
-	$(Q)rm -rf $(BUILDRESULTS)
-ifneq ("$(wildcard $(BUILDRESULTS))","")
-	$(Q)rm -rf $(BUILDRESULTS)
-endif
-	$(Q)make -C examples/libc clean
-	$(Q)make -C interview clean
-	$(Q)make -C examples/cpp clean
-	$(Q)make -C examples/c clean
-	$(Q)make -C examples/libcpp clean
+	$(Q)cd $(BUILDRESULTS); ninja clean
 
+.PHONY: purify
+purify:
+	$(Q)echo Removing all build output
+	$(Q)rm -rf $(BUILDRESULTS)
