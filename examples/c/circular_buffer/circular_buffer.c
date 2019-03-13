@@ -1,7 +1,6 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include <stddef.h>
-#include <stdbool.h>
 #include <assert.h>
 
 #include "circular_buffer.h"
