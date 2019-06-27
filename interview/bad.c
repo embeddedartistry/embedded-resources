@@ -8,8 +8,8 @@ void foo(void)
 
 void bar(void)
 {
-	int a;
-	printf("%d\n", a++);
+	int x;
+	printf("%d\n", x++);
 }
 
 int main(void)
