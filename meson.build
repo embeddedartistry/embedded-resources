@@ -6,6 +6,8 @@ project('Embedded Resources',
 # Process Build Options #
 #########################
 
+add_project_arguments('-Wno-unknown-pragmas', language: ['cpp', 'c'])
+
 if get_option('disable-rtti') == true
 	add_project_arguments('-fno-rtti', language : 'cpp')
 endif
