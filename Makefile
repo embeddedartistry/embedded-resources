@@ -28,7 +28,7 @@ examples: groundwork
 .PHONY: clean
 clean:
 	$(Q)echo Cleaning Build Output
-	$(Q)cd $(BUILDRESULTS); ninja clean
+	$(Q)if [ -d "$(BUILDRESULTS)" ]; then cd $(BUILDRESULTS); ninja -t clean; fi
 
 .PHONY: purify
 purify:
