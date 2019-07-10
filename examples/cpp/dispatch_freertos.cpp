@@ -109,8 +109,6 @@ dispatch_queue::dispatch_queue(std::string name, size_t thread_cnt, size_t threa
 
 dispatch_queue::~dispatch_queue()
 {
-	BaseType_t status;
-
 	// Signal to dispatch threads that it's time to wrap up
 	quit_ = true;
 
