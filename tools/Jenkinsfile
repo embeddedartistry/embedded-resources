@@ -35,11 +35,26 @@ pipeline
   {
     always
     {
-      //Scan console log for Clang warnings
-      warnings(canResolveRelativePaths: true, categoriesPattern: '', consoleParsers: [[parserName: 'Clang (LLVM based)']], defaultEncoding: '', excludePattern: '', healthy: '', includePattern: '', messagesPattern: '', unHealthy: '', useStableBuildAsReference: true)
-
-      // Scan workspace to check open tasks
-      openTasks(defaultEncoding: '', excludePattern: 'lib/external/**, os/**, build/gen/**, build/examples/**', healthy: '', high: 'FIXME, FIX', ignoreCase: true, low: '', normal: 'TODO', pattern: '**/*.c, **/*.h, **/*.cpp, **/*.hpp, *.lua **/*.sh', unHealthy: '')
+      // Scan for open tasks, warnings, issues, etc.
+      recordIssues(
+        enabledForFailure: true,
+        healthy: 5,
+        unhealthy: 10,
+        referenceJobName: 'ea-nightly/embedded-resources/master',
+        qualityGates: [
+          // 3 new issue: unstable
+          [threshold: 3, type: 'DELTA', unstable: true],
+          // 5 new issues: failed build
+          [threshold: 5, type: 'DELTA', unstable: false],
+          // 10 total issues: unstable
+          [threshold: 10, type: 'TOTAL', unstable: true],
+          // 20 total issues: fail
+          [threshold: 20, type: 'TOTAL', unstable: false]
+        ],
+        tools: [
+          clang(),
+        ]
+      )
 
       // Report Status
       slackNotify(currentBuild.currentResult)
