@@ -75,7 +75,7 @@ private:
 #pragma mark - Implementation -
 
 dispatch_queue::dispatch_queue(std::string name, size_t thread_cnt, size_t thread_stack_size) :
-	name_(name), threads_(thread_cnt)
+	name_{std::move(name)}, threads_(thread_cnt)
 {
 	// Create the event flags
 	uint8_t status = tx_event_flags_create(&notify_flags_, "Dispatch Event Flags");
