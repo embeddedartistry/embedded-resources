@@ -50,23 +50,23 @@ static LIST_INIT(free_list);
 */
 void defrag_free_list(void)
 {
-	alloc_node_t *b, *lb = NULL, *t;
+	alloc_node_t *block, *last_block = NULL, *t;
 
-	list_for_each_entry_safe(b, t, &free_list, node)
+	list_for_each_entry_safe(block, t, &free_list, node)
 	{
-		if(lb)
+		if(last_block)
 		{
-			if((((uintptr_t)&lb->block) + lb->size) == (uintptr_t)b)
+			if((((uintptr_t)&last_block->block) + last_block->size)
+				== (uintptr_t)block)
 			{
-				lb->size += sizeof(*b) + b->size;
-				list_del(&b->node);
+				last_block->size += sizeof(*block) + block->size;
+				list_del(&block->node);
 				continue;
 			}
 		}
-		lb = b;
+		last_block = block;
 	}
 }
-
 #pragma mark - APIs -
 
 void * fl_malloc(size_t size)
