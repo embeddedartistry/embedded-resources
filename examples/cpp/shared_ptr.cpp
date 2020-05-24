@@ -23,7 +23,10 @@ public:
 	// to a private ctor - we use this to create objects
 	template<typename ... T>
 	static std::shared_ptr<SharedThing> create(T&& ... t) {
-		return std::shared_ptr<SharedThing>(new SharedThing(std::forward<T>(t)...));
+		struct EnableMakeShared : public SharedThing {
+			EnableMakeShared(Arg&&... arg) : SharedThing(std::forward<Arg>(arg)...) {}
+		};
+		return std::make_shared<EnableMakeShared>(std::forward<Arg>(arg)...);
 	}
 
 private:
