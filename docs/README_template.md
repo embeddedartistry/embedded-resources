@@ -67,7 +67,7 @@ Examples should be included
 
 ## Getting the Source
 
-Include a link to your github reposistory (you have no idea how people will findy our code), and also a summary of how to clone.
+Include a link to your github reposistory (you have no idea how people will find your code), and also a summary of how to clone.
 
 
 This project is [hosted on GitHub](https://github.com/embeddedartistry/embedded-resources). You can clone this project directly using this command:
