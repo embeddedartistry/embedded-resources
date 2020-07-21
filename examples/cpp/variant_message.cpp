@@ -28,6 +28,9 @@ constexpr auto make_genericMSG(std::string_view name, T... values)
     // I don't know how to do this count with a mix of values or fieldInfo_t structs
     using TisFieldInfo = std::conjunction<std::is_same<T,fieldInfo_t>...>;
     constexpr std::size_t count = TisFieldInfo::value ? sizeof...(T) : sizeof...(T) >> 1;
+
+    // Clang warns us about missing braces with values... here. But this will break
+    // initialization in the temp1 example.
     return genericMsg_t{name, count, {{values...}}};
 }
 
@@ -49,10 +52,11 @@ int main( int argc, char * argv[]) {
     constexpr std::array<genericMsg_t, NUM_MESSAGES> messages{ temp1, loc1 };
 
     for(const auto& message : messages) {
-        printf("---%.*s---\n", message.msgName.size(), message.msgName.data());
+        // The printf %.*s format string is used because we can't get a standard C string out of std::string_view
+        printf("---%.*s---\n", static_cast<int>(message.msgName.size()), message.msgName.data());
         for(int field_idx = 0; field_idx < message.numFields; ++field_idx) {
             const auto thisField = message.fields[field_idx];
-            printf("%.*s: ", thisField.name.size(), thisField.name.data());
+            printf("%.*s: ", static_cast<int>(thisField.name.size()), thisField.name.data());
             std::visit([](auto&& v){
                 using T = std::decay_t<decltype(v)>;
                 if constexpr (std::is_same_v<T, int>)

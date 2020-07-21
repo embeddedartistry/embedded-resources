@@ -1,7 +1,10 @@
 # C++ examples Meson Build File
 
+no_braces = meson.get_compiler('cpp').get_supported_arguments('-Wno-missing-braces')
+
 executable('variant_message',
-	'variant_message.cpp'
+	'variant_message.cpp',
+	cpp_args: no_braces
 )
 
 executable('circular_buffer',
