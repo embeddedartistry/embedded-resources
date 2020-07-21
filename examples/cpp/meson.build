@@ -1,5 +1,9 @@
 # C++ examples Meson Build File
 
+executable('variant_message',
+	'variant_message.cpp'
+)
+
 executable('circular_buffer',
 	'circular_buffer.cpp',
 )
