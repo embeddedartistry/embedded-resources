@@ -21,7 +21,7 @@ static_assert(std::is_trivially_copyable_v<genericMsg_t>,
 
 // Takes raw parameters or fieldInfo_t
 template<typename... T>
-constexpr auto make_genericMSG(std::string_view name, T... values)
+constexpr genericMsg_t make_genericMsg(std::string_view name, T... values)
 {
     // If we're all fieldInfo_t values, sizeof() is the # of parameters
     // Else, assume raw values are used and divide by 2
@@ -38,12 +38,12 @@ int main( int argc, char * argv[]) {
     constexpr int NUM_MESSAGES = 2;
 
     // We can call our make_ function with raw values
-    constexpr genericMsg_t temp1 = make_genericMSG("Temp msg",
+    constexpr genericMsg_t temp1 = make_genericMsg("Temp msg",
                                     "Temp", 4.5f,
                                     "Samples", 10);
 
     // Or we can pass field info structs as elements
-    constexpr genericMsg_t loc1 = make_genericMSG("Loc msg",
+    constexpr genericMsg_t loc1 = make_genericMsg("Loc msg",
                             fieldInfo_t{ .value=33.4567f,  .name="Lat"  },
                             fieldInfo_t{ .value='N',       .name="N/S"  },
                             fieldInfo_t{ .value=124.8724f, .name="Long" },
