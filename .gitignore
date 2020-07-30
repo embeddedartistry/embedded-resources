@@ -6,3 +6,7 @@
 **/buildresults/**/*
 **/build/gen/**
 .DS_Store
+
+# Meson subprojects
+**/subprojects/**
+!**/subprojects/*.wrap
