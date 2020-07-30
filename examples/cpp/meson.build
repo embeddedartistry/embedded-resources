@@ -1,5 +1,7 @@
 # C++ examples Meson Build File
 
+subdir('driver_abstraction')
+
 no_braces = meson.get_compiler('cpp').get_supported_arguments('-Wno-missing-braces')
 
 executable('variant_message',
