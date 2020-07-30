@@ -11,6 +11,10 @@ executable('circular_buffer',
 	'circular_buffer.cpp',
 )
 
+executable('assembly_source_location',
+	'assembly_source_location.cpp'
+)
+
 executable('dispatch',
 	'dispatch.cpp',
 )
