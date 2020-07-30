@@ -1,0 +1,10 @@
+[wrap-file]
+directory = GSL-3.1.0
+
+source_url = https://github.com/microsoft/GSL/archive/v3.1.0.zip
+source_filename = GSL-3.1.0.zip
+source_hash = a1041e41e60f9cb3789036f1c84ea9b4298823cbe94d16b096971fdc3de485b7
+
+patch_url = https://wrapdb.mesonbuild.com/v1/projects/microsoft-gsl/3.1.0/1/get_zip
+patch_filename = microsoft-gsl-3.1.0-1-wrap.zip
+patch_hash = 775d992f3e958655ed00395a08f169a0b990240ee0fcb4d5e7a2364e9a6e65e8
