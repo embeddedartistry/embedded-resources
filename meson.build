@@ -26,6 +26,14 @@ endif
 
 #TODO: always-enable-assert
 
+###############
+# Subprojects #
+###############
+
+# Temporarily disabled until the gsl::narrow issue is resolved (#905)
+# microsoft_gsl = subproject('microsoft-gsl')
+# icrosoft_gsl_dep = microsoft_gsl.get_variable('microsoft_gsl_dep')
+
 #######################
 # Process source tree #
 #######################s
