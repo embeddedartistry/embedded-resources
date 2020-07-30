@@ -5,3 +5,4 @@
 *.bin
 **/buildresults/**/*
 **/build/gen/**
+.DS_Store
