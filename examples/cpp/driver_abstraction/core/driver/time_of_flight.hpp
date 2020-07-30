@@ -113,10 +113,6 @@ enum class status
  */
 class sensor
 {
-  public:
-	/// ToF Callback function which retuns distance in mm
-	using read_cb_t = stdext::inplace_function<void(uint16_t)>;
-
   protected:
 	/** Default constructor.
 	 *
@@ -153,11 +149,13 @@ class sensor
 	~sensor() noexcept = default;
 
   public:
-  	/// Put the sensor into an operational state.
-	virtual void start() noexcept = 0;
+/// Turn on the device, put it into a fully operational state, and apply
+/// necessary configuration options.
+virtual void start() noexcept = 0;
 
-	/// Put the sensor into a non-operational state.
-	virtual void stop() noexcept = 0;
+/// Put the sensor into a non-operational state. If possible, the device should be powered down
+/// or put into the lowest power state.
+virtual void stop() noexcept = 0;
 
 	/** Check the maximum range in the dark.
 	 *
@@ -197,25 +195,27 @@ class sensor
 	 *
 	 * @param cb The functor which will be called when read() completes.
 	 */
-	virtual void registerReadCallback(const read_cb_t& cb) noexcept = 0;
+	virtual void registerReadCallback(const cb_t& cb) noexcept = 0;
 
 	/** Register a callback for the read() function.
 	 *
 	 * The read() function works asynchronously, and the result will be provided
 	 * to consumers through a callback function. When the read() operation completes,
-	 * the callback will be invoked with the result.
+	 * the callback will be invoked with the resulting range (in mm).
 	 *
 	 * This function must be implemented by the derived class.
 	 *
 	 * @param cb The functor which will be called when read() completes.
 	 */
-	virtual void registerReadCallback(read_cb_t&& cb) noexcept = 0;
+	virtual void registerReadCallback(cb_t&& cb) noexcept = 0;
 
 	/** Trigger a sensor read.
 	 *
 	 * Trigger an asynchronous read of the ToF sensor. The result will be provided
 	 * to consumers through a callback function. When the read() operation completes,
 	 * the callback will be invoked with the result.
+	 *
+	 * The sensor result will be presented as current range in mm.
 	 */
 	virtual void read() noexcept = 0;
 

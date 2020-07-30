@@ -231,12 +231,12 @@ class nRFi2cController final : public embvm::i2c::controller
 		return pullups;
 	}
 
-	void enableInterrupts() noexcept final
+	void enableInterrupts() noexcept
 	{
 		nRFTWIMTranslator::enable_interrupts(TTWIIndex);
 	}
 
-	void disableInterrupts() noexcept final
+	void disableInterrupts() noexcept
 	{
 		nRFTWIMTranslator::disable_interrupts(TTWIIndex);
 	}

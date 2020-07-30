@@ -133,7 +133,7 @@ enum class pullups : uint8_t
 struct op_t
 {
 	/// Slave device address (7-bit).
-	uint8_t address{0};
+	addr_t address{0};
 
 	/// Operation to perform.
 	operation op{operation::stop};
@@ -274,10 +274,10 @@ class controller
 	controller& operator=(controller&&) = delete;
 
   public:
-  	/// Put the driver in an operational state.
+	/// Put the driver in an operational state, fully configured
 	virtual void start() noexcept = 0;
 
-	/// Put the driver in a non-operational state (e.g., powered off).
+	/// Put the driver in a non-operational state (powered off if possible).
 	virtual void stop() noexcept = 0;
 
 	/** Configure the I2C bus.
@@ -462,6 +462,8 @@ class controller
 	 * Callback is passed in for drivers which enqueue operations or use AO model.
 	 * The base class handles the callback, so there is no need to worry about invoking
 	 * the callback from a client driver.
+	 *
+	 * This function must be asynchronous and not block.
 	 *
 	 * Just mark your callback `(void)callback` if you aren't using it.
 	 *

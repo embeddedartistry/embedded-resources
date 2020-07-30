@@ -334,8 +334,6 @@ void vl53l1x::readReg(const uint16_t* reg_buf, uint8_t* rx_buffer, size_t rx_siz
 	i2c_.transfer(t, cb);
 }
 
-// TODO: can't I do a write-read?
-// TODO: remove this stupid double byteswap! All the hardcoded valeus above are byteswapped!
 void vl53l1x::writeReg(uint16_t reg, const uint8_t* tx_buffer, size_t tx_size,
 					   const embvm::i2c::controller::cb_t& cb) noexcept
 {
@@ -381,7 +379,6 @@ void vl53l1x::readOscillatorCal() noexcept
 
 void vl53l1x::clearInterrupt() noexcept
 {
-	// TODO: byteswap?
 	auto* int_clear = create(VL53L1_INT_CLR);
 	writeReg(SYSTEM_INTERUPT_CLEAR, int_clear, sizeof(uint16_t), [&](auto op, auto status) {
 		(void)op;
@@ -393,8 +390,6 @@ void vl53l1x::clearInterrupt() noexcept
 
 void vl53l1x::readTrim() noexcept
 {
-	// TODO: I hate this allocation scheme with this kind of iteration... Can we read a block?
-	// (Naive block read didn't work)
 	// Constants lifted from Sparkfun's Arduino code
 
 	for(uint16_t i = 1; i < VL53L1X_TRIM_BYTE_COUNT; i++)
