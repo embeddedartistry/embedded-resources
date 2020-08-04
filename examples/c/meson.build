@@ -1,5 +1,9 @@
 # C examples Meson Build File
 
+static_library('interrupt_latency',
+	'interrupt_latency.c'
+)
+
 executable('circular_buffer',
 	[
 		'circular_buffer_test.c',
