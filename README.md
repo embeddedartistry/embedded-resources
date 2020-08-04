@@ -13,6 +13,18 @@ Contains templates, documents, and source code examples referenced on https://em
 
 # Requirements
 
+This repository uses submodules. You can clone the repository recursively to automatically setup submodules:
+
+```
+$ git clone https://github.com/embeddedartistry/embedded-resources.git --recursive
+```
+
+You can also initialize submodules after cloning:
+
+```
+$ git submodule update --init --recursive
+```
+
 ## git-lfs
 
 This repository requires git-lfs.  If you do not have this installed, please visit https://git-lfs.github.com
