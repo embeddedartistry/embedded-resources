@@ -4,6 +4,10 @@ static_library('interrupt_latency',
 	'interrupt_latency.c'
 )
 
+executable('refactoring_global_data',
+	'refactoring_global_data.c'
+)
+
 executable('circular_buffer',
 	[
 		'circular_buffer_test.c',
