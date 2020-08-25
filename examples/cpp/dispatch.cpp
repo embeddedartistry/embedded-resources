@@ -40,7 +40,7 @@ private:
 dispatch_queue::dispatch_queue(std::string name, size_t thread_cnt) :
 	name_{std::move(name)}, threads_(thread_cnt)
 {
-	printf("Creating dispatch queue: %s\n", name.c_str());
+	printf("Creating dispatch queue: %s\n", name_.c_str());
 	printf("Dispatch threads: %zu\n", thread_cnt);
 
 	for(size_t i = 0; i < threads_.size(); i++)
