@@ -17,6 +17,15 @@ executable('circular_buffer',
 	c_args: '-DCOMPILE_AS_EXAMPLE'
 )
 
+executable('circular_buffer_no_modulo',
+	[
+		'circular_buffer_test.c',
+		'circular_buffer/circular_buffer_no_modulo.c'
+	],
+	include_directories: include_directories('circular_buffer'),
+	c_args: '-DCOMPILE_AS_EXAMPLE'
+)
+
 executable('malloc_aligned',
 	'malloc_aligned.c',
 	c_args: '-DCOMPILE_AS_EXAMPLE',
