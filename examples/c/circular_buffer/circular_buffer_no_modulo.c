@@ -20,7 +20,7 @@ static void advance_pointer(cbuf_handle_t cbuf)
 {
 	assert(cbuf);
 
-	if(cbuf->full)
+	if(circular_buf_full(cbuf))
     {
     	if(++(cbuf->tail) == cbuf->max)
     	{
@@ -87,7 +87,7 @@ size_t circular_buf_size(cbuf_handle_t cbuf)
 
 	size_t size = cbuf->max;
 
-	if(!cbuf->full)
+	if(!circular_buf_full(cbuf))
 	{
 		if(cbuf->head >= cbuf->tail)
 		{
@@ -156,7 +156,7 @@ bool circular_buf_empty(cbuf_handle_t cbuf)
 {
 	assert(cbuf);
 
-    return (!cbuf->full && (cbuf->head == cbuf->tail));
+    return (!circular_buf_full(cbuf) && (cbuf->head == cbuf->tail));
 }
 
 bool circular_buf_full(cbuf_handle_t cbuf)
