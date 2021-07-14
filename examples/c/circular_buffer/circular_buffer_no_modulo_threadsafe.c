@@ -47,7 +47,7 @@ static void retreat_pointer(cbuf_handle_t cbuf)
 
 cbuf_handle_t circular_buf_init(uint8_t* buffer, size_t size)
 {
-	assert(buffer && size);
+	assert(buffer && size > 1);
 
 	cbuf_handle_t cbuf = malloc(sizeof(circular_buf_t));
 	assert(cbuf);

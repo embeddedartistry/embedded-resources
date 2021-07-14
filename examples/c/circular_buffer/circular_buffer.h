@@ -10,7 +10,8 @@ typedef struct circular_buf_t circular_buf_t;
 typedef circular_buf_t* cbuf_handle_t;
 
 /// Pass in a storage buffer and size, returns a circular buffer handle
-/// Requires: buffer is not NULL, size > 0
+/// Requires: buffer is not NULL, size > 0 (size > 1 for the threadsafe
+//  version, because it holds size - 1 elements)
 /// Ensures: cbuf has been created and is returned in an empty state
 cbuf_handle_t circular_buf_init(uint8_t* buffer, size_t size);
 
