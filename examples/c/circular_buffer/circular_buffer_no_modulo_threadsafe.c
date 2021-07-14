@@ -150,7 +150,7 @@ bool circular_buf_empty(cbuf_handle_t cbuf)
 {
 	assert(cbuf);
 
-    return (!circular_buf_full(cbuf) && (cbuf->head == cbuf->tail));
+    return cbuf->head == cbuf->tail;
 }
 
 bool circular_buf_full(circular_buf_t* cbuf)
