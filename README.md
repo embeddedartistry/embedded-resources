@@ -1,5 +1,4 @@
-# embedded-resources
-Embedded Artistry Public Resources
+# Embedded Artistry Public Resources
 
 Contains templates, documents, and source code examples referenced on https://embeddedartistry.com.
 
@@ -10,8 +9,9 @@ Contains templates, documents, and source code examples referenced on https://em
 	2. [meson](#meson)
 2. [Structure](#structure)
 3. [Building](#building)
+4. [Tests](#tests)
 
-# Requirements
+## Requirements
 
 This repository uses submodules. You can clone the repository recursively to automatically setup submodules:
 
@@ -25,13 +25,13 @@ You can also initialize submodules after cloning:
 $ git submodule update --init --recursive
 ```
 
-## git-lfs
+### git-lfs
 
 This repository requires git-lfs.  If you do not have this installed, please visit https://git-lfs.github.com
 
 If you cloned this repository before installing git-lfs, please run `git lfs pull`.  Otherwise clone will automatically perform a `git lfs pull`.
 
-## meson
+### meson
 
 This repository builds with [meson](ttps://mesonbuild.com), which requires Python 3 and Ninja.
 
@@ -53,7 +53,7 @@ The best way to get Meson is through pip:
 $ pip3 install meson
 ```
 
-# Structure
+## Structure
 
 * `build/`
 	* Common build scripts and definitions
@@ -73,7 +73,7 @@ $ pip3 install meson
 * `manufacturing/`
 	* Documents & templates that are useful for the manufacturing side of the embedded world.
 
-# Building
+## Building
 
 You can run `make` from the top level to build all examples.  Output will be placed in a folder called `buildresults/` at the top level.
 
@@ -96,7 +96,24 @@ To clean the builds, run `make clean` from the project root or `ninja clean` in 
 
 Binaries will be stored under the `buildresults/` folder at the same hierarchical level as in the source tree.For example, the `bad_c` interview demo application will be in `buildresults/interview/`.
 
-# Further Reading
+## Tests
+
+This repository now includes tests. Tests can be run with `make test`, which will build the project, run the tests, and give you the summary report from Meson's test runner. In this scenario, test results are stored in XML files found at `buildresults/test`
+
+To see human readable output, build the project as you normally would (`make` or `make test`), and then issue this command:
+
+```
+$ ninja -C buildresults/ embedded-resources-tests
+ninja: Entering directory `buildresults/'
+[0/1] Running external command embedde...es-tests (wrapped by meson to set env)
+[==========] Running 1 test(s).
+[ RUN      ] test_case
+[       OK ] test_case
+[==========] 1 test(s) run.
+[  PASSED  ] 1 test(s).
+```
+
+## Further Reading
 
 * [Meson](https://www.mesonbuild.com)
 * [Full Embedded Artistry libc implementation](https://github.com/embeddedartistry/libc)
