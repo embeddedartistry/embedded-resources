@@ -1,10 +1,21 @@
 project('Embedded Resources',
-	['cpp', 'c'],
-	default_options : ['cpp_std=c++17'])
+	[
+		'cpp',
+		'c'
+	],
+	default_options : [
+		'cpp_std=c++17',
+		'c_std=c11'
+	])
 
 #########################
 # Process Build Options #
 #########################
+
+# Pick up our common compiler variables + desired_*_flags variables
+subdir('build/compiler')
+subdir('build/compiler/c')
+subdir('build/compiler/cpp')
 
 add_project_arguments('-Wno-unknown-pragmas', language: ['cpp', 'c'])
 
@@ -24,15 +35,16 @@ if get_option('enable-pedantic-error') == true
 	add_project_arguments('-pedantic-error', language : ['cpp', 'c'])
 endif
 
-#TODO: always-enable-assert
+#################
+# Build Modules #
+#################
 
-###############
-# Subprojects #
-###############
+subdir('build/linker/linker-map')
+subdir('build/test/cmocka')
 
-# Temporarily disabled until the gsl::narrow issue is resolved (#905)
-# microsoft_gsl = subproject('microsoft-gsl')
-# icrosoft_gsl_dep = microsoft_gsl.get_variable('microsoft_gsl_dep')
+# Pre-declare this variable here so that we can add files to the list
+# throughout the source tree, passing them to the test tree later.
+cmocka_test_deps = []
 
 #######################
 # Process source tree #
@@ -40,3 +52,4 @@ endif
 
 subdir('examples')
 subdir('interview')
+subdir('test')
