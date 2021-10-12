@@ -53,3 +53,25 @@ cmocka_test_deps = []
 subdir('examples')
 subdir('interview')
 subdir('test')
+
+###################
+# Tooling Modules #
+###################
+
+clangformat_targets = [
+	meson.source_root() / 'examples',
+	meson.source_root() / 'interview',
+	meson.source_root() / 'test',
+]
+
+clangformat_excludes = [
+	meson.source_root() / 'examples/cpp/etl',
+	meson.source_root() / 'examples/rtos',
+	meson.source_root() / 'examples/libcpp',
+]
+
+subdir('build/analysis/clang-tidy')
+subdir('build/analysis/complexity')
+subdir('build/analysis/cppcheck')
+subdir('build/analysis/sloccount')
+subdir('build/format')
