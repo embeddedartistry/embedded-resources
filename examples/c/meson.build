@@ -1,5 +1,7 @@
 # C examples Meson Build File
 
+subdir('fixed_point')
+
 static_library('interrupt_latency',
 	'interrupt_latency.c'
 )
