@@ -22,10 +22,10 @@ namespace embdrv
  *
  * @ingroup AardvarkDrivers
  */
-class aardvarkI2CController final
-	: public embvm::i2c::controller,
-	  public embutil::activeObject<aardvarkI2CController,
-								   std::pair<embvm::i2c::op_t, const embvm::i2c::controller::cb_t>>
+class aardvarkI2CController final :
+	public embvm::i2c::controller,
+	public embutil::activeObject<aardvarkI2CController,
+								 std::pair<embvm::i2c::op_t, const embvm::i2c::controller::cb_t>>
 {
 	/// The storage type that the active object stores.
 	using storagePair_t = std::pair<embvm::i2c::op_t, const embvm::i2c::controller::cb_t>;
@@ -35,8 +35,8 @@ class aardvarkI2CController final
 	 *
 	 * @param base_driver The aardvarkAdapter instance associated with this driver.
 	 */
-	explicit aardvarkI2CController(aardvarkAdapter& base_driver) noexcept
-		: embvm::i2c::controller(), base_driver_(base_driver)
+	explicit aardvarkI2CController(aardvarkAdapter& base_driver) noexcept :
+		embvm::i2c::controller(), base_driver_(base_driver)
 	{
 	}
 

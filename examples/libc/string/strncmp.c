@@ -1,13 +1,13 @@
 #include <string.h>
 
 /*
-* PJ: my own strncmp implementation
-*
-* strncmp with short-circuit support: very common when you have const strings
-* combined by the compiler.
-* Otherwise we compare the strings as normal
-* We bail out when s1 ends (null-term) or n bytes have been analyzed
-*/
+ * PJ: my own strncmp implementation
+ *
+ * strncmp with short-circuit support: very common when you have const strings
+ * combined by the compiler.
+ * Otherwise we compare the strings as normal
+ * We bail out when s1 ends (null-term) or n bytes have been analyzed
+ */
 
 int strncmp(const char* s1, const char* s2, size_t n)
 {

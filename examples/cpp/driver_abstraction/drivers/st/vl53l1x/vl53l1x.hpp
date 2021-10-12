@@ -10,12 +10,12 @@
 
 #define ENABLE_THREADING
 #ifdef ENABLE_THREADING
-#include <mutex>
-#define VL53L1X_LOCK() lock_.lock()
-#define VL53L1X_UNLOCK() lock_.unlock()
+	#include <mutex>
+	#define VL53L1X_LOCK() lock_.lock()
+	#define VL53L1X_UNLOCK() lock_.unlock()
 #else
-#define VL53L1X_UNLOCK()
-#define VL53L1X_LOCK()
+	#define VL53L1X_UNLOCK()
+	#define VL53L1X_LOCK()
 #endif
 
 namespace embdrv
@@ -63,8 +63,10 @@ class vl53l1x final : public embvm::tof::sensor
 	 * @param i2c The i2c controller driver that this device is connected to.
 	 * @param address The i2c address of the sensor.
 	 */
-	explicit vl53l1x(embvm::i2c::controller& i2c, uint8_t address = VL53L1X_DEFAULT_I2C_ADDR) noexcept
-		: embvm::tof::sensor("ST VL53L1X ToF"), i2c_(i2c), address_(address)
+	explicit vl53l1x(embvm::i2c::controller& i2c,
+					 uint8_t address = VL53L1X_DEFAULT_I2C_ADDR) noexcept :
+		embvm::tof::sensor("ST VL53L1X ToF"),
+		i2c_(i2c), address_(address)
 	{
 	}
 

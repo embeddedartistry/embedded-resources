@@ -140,7 +140,7 @@ class sensor
 	 *
 	 * @param name The name of the ToF instance.
 	 */
-	sensor(const std::string_view& name) noexcept :  name_(name)
+	sensor(const std::string_view& name) noexcept : name_(name)
 	{
 		// Empty body
 	}
@@ -149,13 +149,13 @@ class sensor
 	~sensor() noexcept = default;
 
   public:
-/// Turn on the device, put it into a fully operational state, and apply
-/// necessary configuration options.
-virtual void start() noexcept = 0;
+	/// Turn on the device, put it into a fully operational state, and apply
+	/// necessary configuration options.
+	virtual void start() noexcept = 0;
 
-/// Put the sensor into a non-operational state. If possible, the device should be powered down
-/// or put into the lowest power state.
-virtual void stop() noexcept = 0;
+	/// Put the sensor into a non-operational state. If possible, the device should be powered down
+	/// or put into the lowest power state.
+	virtual void stop() noexcept = 0;
 
 	/** Check the maximum range in the dark.
 	 *

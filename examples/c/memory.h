@@ -2,11 +2,12 @@
 #define __MEMORY_H_
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif //__cplusplus
 
-void * aligned_malloc(size_t align, size_t size);
-void aligned_free(void * ptr);
+	void* aligned_malloc(size_t align, size_t size);
+	void aligned_free(void* ptr);
 
 #ifdef __cplusplus
 }

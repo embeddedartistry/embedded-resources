@@ -8,4 +8,4 @@
 
 int simple_fixed_point_test_suite(void);
 
-#endif //SIMPLE_FIXED_POINT_TESTS_H_
+#endif // SIMPLE_FIXED_POINT_TESTS_H_

@@ -12,37 +12,39 @@
 #pragma mark - Definitions -
 
 /// Definitions for dispatch event flags
-#define DISPATCH_WAKE_EVT	(0x1)
-#define DISPATCH_EXIT_EVT	(0x2)
+#define DISPATCH_WAKE_EVT (0x1)
+#define DISPATCH_EXIT_EVT (0x2)
 
 /// Example thread priority and time slice
 #define DISPATCH_Q_PRIORITY 15
 #define DISPATCH_TIME_SLICE 5
 
 /// Thread type
-struct tx_thread_t {
+struct tx_thread_t
+{
 	TX_THREAD thread;
 	std::string name;
 	std::unique_ptr<uint8_t> stack;
 };
 
 /// This Bounce implementation is pulled from bounce.cpp
-template<class T, class Method, Method m, class ...Params>
-static auto bounce(void *priv, Params... params) ->
-		decltype(((*reinterpret_cast<T *>(priv)).*m)(params...))
+template<class T, class Method, Method m, class... Params>
+static auto bounce(void* priv, Params... params)
+	-> decltype(((*reinterpret_cast<T*>(priv)).*m)(params...))
 {
-	return ((*reinterpret_cast<T *>(priv)).*m)(params...);
+	return ((*reinterpret_cast<T*>(priv)).*m)(params...);
 }
 
 /// Convenience macro to simplify bounce statement usage
-#define BOUNCE(c,m) bounce<c, decltype(&c::m), &c::m>
+#define BOUNCE(c, m) bounce<c, decltype(&c::m), &c::m>
 
 #pragma mark - Dispatch Class -
 
-class dispatch_queue {
+class dispatch_queue
+{
 	typedef std::function<void(void)> fp_t;
 
-public:
+  public:
 	dispatch_queue(std::string name, size_t thread_cnt = 1, size_t thread_stack = 1024);
 	~dispatch_queue();
 
@@ -57,7 +59,7 @@ public:
 	dispatch_queue(dispatch_queue&& rhs) = delete;
 	dispatch_queue& operator=(dispatch_queue&& rhs) = delete;
 
-private:
+  private:
 	std::string name_;
 	TX_MUTEX mutex_;
 
@@ -96,19 +98,16 @@ dispatch_queue::dispatch_queue(std::string name, size_t thread_cnt, size_t threa
 		threads_[i].name = std::string("Dispatch Thread " + std::to_string(i));
 
 		// Create and autostart the thread
-		status = tx_thread_create(&threads_[i].thread, threads_[i].name.c_str(),
-				reinterpret_cast<void(*)(ULONG)>(
-					BOUNCE(dispatch_queue, dispatch_thread_handler)),
-				reinterpret_cast<ULONG>(this),
-				threads_[i].stack.get(), thread_stack_size,
-				DISPATCH_Q_PRIORITY, DISPATCH_Q_PRIORITY, DISPATCH_TIME_SLICE,
-				TX_AUTO_START);
+		status = tx_thread_create(
+			&threads_[i].thread, threads_[i].name.c_str(),
+			reinterpret_cast<void (*)(ULONG)>(BOUNCE(dispatch_queue, dispatch_thread_handler)),
+			reinterpret_cast<ULONG>(this), threads_[i].stack.get(), thread_stack_size,
+			DISPATCH_Q_PRIORITY, DISPATCH_Q_PRIORITY, DISPATCH_TIME_SLICE, TX_AUTO_START);
 		assert(status == TX_SUCCESS && "Failed to create thread!");
 	}
 }
 
-
-//TODO: review
+// TODO: review
 dispatch_queue::~dispatch_queue()
 {
 	uint8_t status;
@@ -117,23 +116,23 @@ dispatch_queue::~dispatch_queue()
 	quit_ = true;
 
 	// We will join each thread to confirm exiting
-	for (size_t i = 0; i < threads_.size(); ++i) {
+	for(size_t i = 0; i < threads_.size(); ++i)
+	{
 		UINT state;
 		ULONG flags;
-		do {
+		do
+		{
 			// Signal wake - check exit flag
 			tx_event_flags_set(&notify_flags_, DISPATCH_WAKE_EVT, TX_OR);
 
 			// Wait until a thread signals exit. Timeout is acceptable.
-			tx_event_flags_get(&notify_flags_, DISPATCH_EXIT_EVT, TX_OR_CLEAR,
-					&flags, 10);
+			tx_event_flags_get(&notify_flags_, DISPATCH_EXIT_EVT, TX_OR_CLEAR, &flags, 10);
 
 			// If it was not thread_[i], that is ok, but we will loop around
 			// until threads_[i] has exited
-			tx_thread_info_get(&threads_[i].thread, nullptr, &state,
-					nullptr, nullptr, nullptr, nullptr,
-					nullptr, nullptr);
-		} while (state != TX_COMPLETED);
+			tx_thread_info_get(&threads_[i].thread, nullptr, &state, nullptr, nullptr, nullptr,
+							   nullptr, nullptr, nullptr);
+		} while(state != TX_COMPLETED);
 
 		// threads_[i] has exited - let's delete it and move on to the next one
 		status = tx_thread_delete(&threads_[i].thread);
@@ -184,14 +183,15 @@ void dispatch_queue::dispatch_thread_handler(void)
 	uint8_t status = tx_mutex_get(&mutex_, TX_WAIT_FOREVER);
 	assert(status == TX_SUCCESS && "Failed to lock mutex!");
 
-	do {
-		//after wait, we own the lock
+	do
+	{
+		// after wait, we own the lock
 		if(!quit_ && q_.size())
 		{
 			auto op = std::move(q_.front());
 			q_.pop();
 
-			//unlock now that we're done messing with the queue
+			// unlock now that we're done messing with the queue
 			status = tx_mutex_put(&mutex_);
 			assert(status == TX_SUCCESS && "Failed to unlock mutex!");
 
@@ -206,14 +206,14 @@ void dispatch_queue::dispatch_thread_handler(void)
 			assert(status == TX_SUCCESS && "Failed to unlock mutex!");
 
 			// Wait for new work
-			status = tx_event_flags_get(&notify_flags_, DISPATCH_WAKE_EVT, TX_OR_CLEAR,
-					&flags, TX_WAIT_FOREVER);
+			status = tx_event_flags_get(&notify_flags_, DISPATCH_WAKE_EVT, TX_OR_CLEAR, &flags,
+										TX_WAIT_FOREVER);
 			assert(status == TX_SUCCESS && "Failed to get event flags!");
 
 			status = tx_mutex_get(&mutex_, TX_WAIT_FOREVER);
 			assert(status == TX_SUCCESS && "Failed to lock mutex!");
 		}
-	} while (!quit_);
+	} while(!quit_);
 
 	// We were holding the mutex after we woke up
 	status = tx_mutex_put(&mutex_);

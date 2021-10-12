@@ -37,7 +37,7 @@ int circular_buf_put2(cbuf_handle_t cbuf, uint8_t data);
 /// Retrieve a value from the buffer
 /// Requires: cbuf is valid and created by circular_buf_init
 /// Returns 0 on success, -1 if the buffer is empty
-int circular_buf_get(cbuf_handle_t cbuf, uint8_t * data);
+int circular_buf_get(cbuf_handle_t cbuf, uint8_t* data);
 
 /// CHecks if the buffer is empty
 /// Requires: cbuf is valid and created by circular_buf_init
@@ -59,7 +59,7 @@ size_t circular_buf_capacity(cbuf_handle_t cbuf);
 /// Returns the current number of elements in the buffer
 size_t circular_buf_size(cbuf_handle_t cbuf);
 
-//TODO: int circular_buf_get_range(circular_buf_t cbuf, uint8_t *data, size_t len);
-//TODO: int circular_buf_put_range(circular_buf_t cbuf, uint8_t * data, size_t len);
+// TODO: int circular_buf_get_range(circular_buf_t cbuf, uint8_t *data, size_t len);
+// TODO: int circular_buf_put_range(circular_buf_t cbuf, uint8_t * data, size_t len);
 
-#endif //CIRCULAR_BUFFER_H_
+#endif // CIRCULAR_BUFFER_H_

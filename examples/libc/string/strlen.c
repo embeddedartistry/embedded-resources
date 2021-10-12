@@ -62,7 +62,7 @@ static const unsigned long mask80 = 0x80808080;
 static const unsigned long mask01 = 0x0101010101010101;
 static const unsigned long mask80 = 0x8080808080808080;
 #else
-#error Unsupported word size
+	#error Unsupported word size
 #endif
 
 #define LONGPTR_MASK (sizeof(long) - 1)

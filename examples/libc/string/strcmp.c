@@ -1,13 +1,13 @@
 #include <string.h>
 
 /*
-* PJ: my own strcmp implementation
-*
-* strcmp with short-circuit support: very common when you have const strings
-* combined by the compiler.
-* Otherwise we compare the strings as normal.
-* We bail out when s1 ends (null-term)
-*/
+ * PJ: my own strcmp implementation
+ *
+ * strcmp with short-circuit support: very common when you have const strings
+ * combined by the compiler.
+ * Otherwise we compare the strings as normal.
+ * We bail out when s1 ends (null-term)
+ */
 
 int strcmp(const char* s1, const char* s2)
 {

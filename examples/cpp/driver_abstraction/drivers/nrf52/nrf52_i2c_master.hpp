@@ -7,21 +7,21 @@
 #include <driver/i2c.hpp>
 
 #if __CORTEX_M == (0x00U)
-#define NRF_IRQ_PRIOR_MAX 0
-#define NRF_IRQ_PRIOR_HIGH 1
-#define NRF_IRQ_PRIOR_MID 2
-#define NRF_IRQ_PRIOR_LOW 3
-#define NRF_IRQ_PRIOR_LOWEST 3
-#define NRF_IRQ_PRIOR_THREAD 4
+	#define NRF_IRQ_PRIOR_MAX 0
+	#define NRF_IRQ_PRIOR_HIGH 1
+	#define NRF_IRQ_PRIOR_MID 2
+	#define NRF_IRQ_PRIOR_LOW 3
+	#define NRF_IRQ_PRIOR_LOWEST 3
+	#define NRF_IRQ_PRIOR_THREAD 4
 #elif __CORTEX_M == (0x04U)
-#define NRF_IRQ_PRIOR_MAX 0
-#define NRF_IRQ_PRIOR_HIGH 2
-#define NRF_IRQ_PRIOR_MID 4
-#define NRF_IRQ_PRIOR_LOW 6
-#define NRF_IRQ_PRIOR_LOWEST 8
-#define NRF_IRQ_PRIOR_THREAD 15
+	#define NRF_IRQ_PRIOR_MAX 0
+	#define NRF_IRQ_PRIOR_HIGH 2
+	#define NRF_IRQ_PRIOR_MID 4
+	#define NRF_IRQ_PRIOR_LOW 6
+	#define NRF_IRQ_PRIOR_LOWEST 8
+	#define NRF_IRQ_PRIOR_THREAD 15
 #else
-#error "No platform defined"
+	#error "No platform defined"
 #endif
 
 /** DMA-capable I2C controller (TBlocking)
@@ -46,13 +46,13 @@ class nRFi2cController final : public embvm::i2c::controller
 	static constexpr uint8_t PRIORITY_DEFAULT = NRF_IRQ_PRIOR_MID;
 
   public:
-	nRFi2cController(uint8_t priority = PRIORITY_DEFAULT) noexcept
-		: embvm::i2c::controller("nRF I2C Master"), priority_(priority)
+	nRFi2cController(uint8_t priority = PRIORITY_DEFAULT) noexcept :
+		embvm::i2c::controller("nRF I2C Master"), priority_(priority)
 	{
 	}
 
-	nRFi2cController(const char* name, uint8_t priority = PRIORITY_DEFAULT) noexcept
-		: embvm::i2c::controller(name), priority_(priority)
+	nRFi2cController(const char* name, uint8_t priority = PRIORITY_DEFAULT) noexcept :
+		embvm::i2c::controller(name), priority_(priority)
 	{
 	}
 
@@ -74,7 +74,9 @@ class nRFi2cController final : public embvm::i2c::controller
 
 		if constexpr(!TBlocking)
 		{
-			nRFTWIM_cb_t cb = [this](embvm::i2c::status status) { this->twim_callback_(status); };
+			nRFTWIM_cb_t cb = [this](embvm::i2c::status status) {
+				this->twim_callback_(status);
+			};
 
 			nRFTWIMTranslator::setCallback(TTWIIndex, cb);
 			nRFTWIMTranslator::set_interrupt_priority(TTWIIndex, priority_);
@@ -95,7 +97,9 @@ class nRFi2cController final : public embvm::i2c::controller
 	}
 
   private:
-	void configure_(embvm::i2c::pullups pullup) noexcept final {}
+	void configure_(embvm::i2c::pullups pullup) noexcept final
+	{
+	}
 
 	embvm::i2c::status transfer_(const embvm::i2c::op_t& op,
 								 const embvm::i2c::controller::cb_t& cb) noexcept final
@@ -114,39 +118,46 @@ class nRFi2cController final : public embvm::i2c::controller
 		switch(op.op)
 		{
 			case embvm::i2c::operation::continueWriteStop:
-			case embvm::i2c::operation::write: {
+			case embvm::i2c::operation::write:
+			{
 				status = nRFTWIMTranslator::tx_transfer_blocking(
 					TTWIIndex, op.tx_buffer, op.tx_size, nRFTWIMTranslator::STOP);
 				break;
 			}
 			case embvm::i2c::operation::writeNoStop:
-			case embvm::i2c::operation::continueWriteNoStop: {
+			case embvm::i2c::operation::continueWriteNoStop:
+			{
 				status = nRFTWIMTranslator::tx_transfer_blocking(
 					TTWIIndex, op.tx_buffer, op.tx_size, nRFTWIMTranslator::NO_STOP);
 				break;
 			}
-			case embvm::i2c::operation::read: {
+			case embvm::i2c::operation::read:
+			{
 				status =
 					nRFTWIMTranslator::rx_transfer_blocking(TTWIIndex, op.rx_buffer, op.rx_size);
 				break;
 			}
-			case embvm::i2c::operation::writeRead: {
+			case embvm::i2c::operation::writeRead:
+			{
 				status = nRFTWIMTranslator::txrx_transfer_blocking(
 					TTWIIndex, op.tx_buffer, op.tx_size, op.rx_buffer, op.rx_size);
 				break;
 			}
-			case embvm::i2c::operation::ping: {
+			case embvm::i2c::operation::ping:
+			{
 				static uint8_t ping_dummy_byte_;
 
 				status = nRFTWIMTranslator::rx_transfer_blocking(TTWIIndex, &ping_dummy_byte_,
 																 sizeof(ping_dummy_byte_));
 				break;
 			}
-			case embvm::i2c::operation::stop: {
+			case embvm::i2c::operation::stop:
+			{
 				nRFTWIMTranslator::stop_condition(TTWIIndex);
 				break;
 			}
-			case embvm::i2c::operation::restart: {
+			case embvm::i2c::operation::restart:
+			{
 				// TODO: is this enough?
 				nRFTWIMTranslator::stop_condition(TTWIIndex);
 				break;
@@ -178,38 +189,45 @@ class nRFi2cController final : public embvm::i2c::controller
 		switch(op.op)
 		{
 			case embvm::i2c::operation::continueWriteStop:
-			case embvm::i2c::operation::write: {
+			case embvm::i2c::operation::write:
+			{
 				status = nRFTWIMTranslator::tx_transfer(TTWIIndex, op.tx_buffer, op.tx_size,
 														nRFTWIMTranslator::STOP);
 				break;
 			}
 			case embvm::i2c::operation::writeNoStop:
-			case embvm::i2c::operation::continueWriteNoStop: {
+			case embvm::i2c::operation::continueWriteNoStop:
+			{
 				status = nRFTWIMTranslator::tx_transfer(TTWIIndex, op.tx_buffer, op.tx_size,
 														nRFTWIMTranslator::NO_STOP);
 				break;
 			}
-			case embvm::i2c::operation::read: {
+			case embvm::i2c::operation::read:
+			{
 				status = nRFTWIMTranslator::rx_transfer(TTWIIndex, op.rx_buffer, op.rx_size);
 				break;
 			}
-			case embvm::i2c::operation::writeRead: {
+			case embvm::i2c::operation::writeRead:
+			{
 				status = nRFTWIMTranslator::txrx_transfer(TTWIIndex, op.tx_buffer, op.tx_size,
 														  op.rx_buffer, op.rx_size);
 				break;
 			}
-			case embvm::i2c::operation::ping: {
+			case embvm::i2c::operation::ping:
+			{
 				static uint8_t ping_dummy_byte_;
 
 				status = nRFTWIMTranslator::rx_transfer(TTWIIndex, &ping_dummy_byte_,
 														sizeof(ping_dummy_byte_));
 				break;
 			}
-			case embvm::i2c::operation::stop: {
+			case embvm::i2c::operation::stop:
+			{
 				nRFTWIMTranslator::stop_condition(TTWIIndex);
 				break;
 			}
-			case embvm::i2c::operation::restart: {
+			case embvm::i2c::operation::restart:
+			{
 				// TODO: is this enough?
 				nRFTWIMTranslator::stop_condition(TTWIIndex);
 				break;

@@ -60,8 +60,8 @@ class aardvarkAdapter
 	 * @param m The aardvark adapter mode.
 	 * @param USBPort The id of the USB port the aardvarkAdapter is connected to.
 	 */
-	explicit aardvarkAdapter(aardvarkMode m = aardvarkMode::SpiI2C, uint8_t USBPort = 0) noexcept
-		: port_(USBPort), mode_(m)
+	explicit aardvarkAdapter(aardvarkMode m = aardvarkMode::SpiI2C, uint8_t USBPort = 0) noexcept :
+		port_(USBPort), mode_(m)
 	{
 	}
 

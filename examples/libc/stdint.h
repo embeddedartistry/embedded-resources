@@ -9,9 +9,9 @@
 #include <limits.h>
 
 #if __LP64__
-#define __WORDSIZE 64
+	#define __WORDSIZE 64
 #else
-#define __WORDSIZE 32
+	#define __WORDSIZE 32
 #endif
 
 /* from ISO/IEC 988:1999 spec */
@@ -116,17 +116,17 @@ typedef uint64_t uint_fast64_t;
 /* 7.18.2.4 Limits of integer types capable of holding object pointers */
 
 #if __WORDSIZE == 64
-#define INTPTR_MIN INT64_MIN
-#define INTPTR_MAX INT64_MAX
+	#define INTPTR_MIN INT64_MIN
+	#define INTPTR_MAX INT64_MAX
 #else
-#define INTPTR_MIN INT32_MIN
-#define INTPTR_MAX INT32_MAX
+	#define INTPTR_MIN INT32_MIN
+	#define INTPTR_MAX INT32_MAX
 #endif
 
 #if __WORDSIZE == 64
-#define UINTPTR_MAX UINT64_MAX
+	#define UINTPTR_MAX UINT64_MAX
 #else
-#define UINTPTR_MAX UINT32_MAX
+	#define UINTPTR_MAX UINT32_MAX
 #endif
 
 /* 7.18.2.5 Limits of greatest-width integer types */
@@ -137,29 +137,29 @@ typedef uint64_t uint_fast64_t;
 
 /* 7.18.3 "Other" */
 #if __WORDSIZE == 64
-#define PTRDIFF_MIN INT64_MIN
-#define PTRDIFF_MAX INT64_MAX
+	#define PTRDIFF_MIN INT64_MIN
+	#define PTRDIFF_MAX INT64_MAX
 #else
-#define PTRDIFF_MIN INT32_MIN
-#define PTRDIFF_MAX INT32_MAX
+	#define PTRDIFF_MIN INT32_MIN
+	#define PTRDIFF_MAX INT32_MAX
 #endif
 
 #if __WORDSIZE == 64
-#define SIZE_MAX UINT64_MAX
+	#define SIZE_MAX UINT64_MAX
 #else
-#define SIZE_MAX UINT32_MAX
+	#define SIZE_MAX UINT32_MAX
 #endif
 
 #if defined(__STDC_WANT_LIB_EXT1__) && __STDC_WANT_LIB_EXT1__ >= 1
-#define RSIZE_MAX (SIZE_MAX >> 1)
+	#define RSIZE_MAX (SIZE_MAX >> 1)
 #endif
 
 #ifndef WCHAR_MAX
-#ifdef __WCHAR_MAX__
-#define WCHAR_MAX __WCHAR_MAX__
-#else
-#define WCHAR_MAX 0x7fffffff
-#endif
+	#ifdef __WCHAR_MAX__
+		#define WCHAR_MAX __WCHAR_MAX__
+	#else
+		#define WCHAR_MAX 0x7fffffff
+	#endif
 #endif
 
 /* WCHAR_MIN should be 0 if wchar_t is an unsigned type and
@@ -167,11 +167,11 @@ typedef uint64_t uint_fast64_t;
    it turns out that -fshort-wchar changes the signedness of
    the type. */
 #ifndef WCHAR_MIN
-#if WCHAR_MAX == 0xffff
-#define WCHAR_MIN 0
-#else
-#define WCHAR_MIN (-WCHAR_MAX - 1)
-#endif
+	#if WCHAR_MAX == 0xffff
+		#define WCHAR_MIN 0
+	#else
+		#define WCHAR_MIN (-WCHAR_MAX - 1)
+	#endif
 #endif
 
 #define WINT_MIN INT32_MIN
@@ -192,11 +192,11 @@ typedef uint64_t uint_fast64_t;
 #define UINT64_C(v) (v##ULL)
 
 #ifdef __LP64__
-#define INTMAX_C(v) (v##L)
-#define UINTMAX_C(v) (v##UL)
+	#define INTMAX_C(v) (v##L)
+	#define UINTMAX_C(v) (v##UL)
 #else
-#define INTMAX_C(v) (v##LL)
-#define UINTMAX_C(v) (v##ULL)
+	#define INTMAX_C(v) (v##LL)
+	#define UINTMAX_C(v) (v##ULL)
 #endif
 
 #endif /* _STDINT_H_ */

@@ -34,7 +34,7 @@
 
 #include <stddef.h>
 #ifdef DEBUG_STRTOK
-#include <stdio.h>
+	#include <stdio.h>
 #endif
 #include <string.h>
 

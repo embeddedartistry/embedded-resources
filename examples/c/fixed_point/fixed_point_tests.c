@@ -41,7 +41,6 @@ static void double_to_fixed16_test(__attribute__((unused)) void** state)
 	assert_int_equal(0x1009, output_round);
 	// Here, truncate loses precision vs round
 	assert_int_equal(0x1008, output_truncate);
-
 }
 
 static void fixed16_to_double_test(__attribute__((unused)) void** state)
@@ -78,6 +77,3 @@ int simple_fixed_point_test_suite(void)
 
 	return cmocka_run_group_tests(simple_fixed_point_tests, NULL, NULL);
 }
-
-
-

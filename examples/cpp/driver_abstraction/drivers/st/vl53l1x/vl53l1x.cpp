@@ -133,7 +133,7 @@ void vl53l1x::readData() noexcept
 
 		if(status == embvm::i2c::status::ok)
 		{
-			for(const auto& cb : read_cb_list_)
+			for(const auto& cb: read_cb_list_)
 			{
 				cb(range);
 			}
@@ -204,7 +204,7 @@ void vl53l1x::rangeStatusCb(uint8_t status) noexcept
 {
 	auto s = convertStatus(status);
 
-	for(const auto& cb : status_cb_list_)
+	for(const auto& cb: status_cb_list_)
 	{
 		cb(s);
 	}
@@ -244,7 +244,7 @@ void vl53l1x::signalRate() noexcept
 
 		if(status == embvm::i2c::status::ok)
 		{
-			for(const auto& cb : rate_cb_list_)
+			for(const auto& cb: rate_cb_list_)
 			{
 				cb(rate);
 			}
@@ -318,7 +318,9 @@ void vl53l1x::start() noexcept
 	reset(); // Once reset completes, we read trim and kickoff measurements
 }
 
-void vl53l1x::stop() noexcept {}
+void vl53l1x::stop() noexcept
+{
+}
 
 void vl53l1x::readReg(const uint16_t* reg_buf, uint8_t* rx_buffer, size_t rx_size,
 					  const embvm::i2c::controller::cb_t& cb) noexcept

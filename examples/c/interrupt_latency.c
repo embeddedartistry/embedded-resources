@@ -38,5 +38,3 @@ void latency(void)
 	total_latency += time;
 	count++;
 }
-
-

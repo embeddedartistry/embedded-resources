@@ -3,14 +3,12 @@
 #include <memory>
 #include <mutex>
 
-template <class T>
-class circular_buffer {
-public:
-	explicit circular_buffer(size_t size) :
-		buf_(std::unique_ptr<T[]>(new T[size])),
-		max_size_(size)
+template<class T>
+class circular_buffer
+{
+  public:
+	explicit circular_buffer(size_t size) : buf_(std::unique_ptr<T[]>(new T[size])), max_size_(size)
 	{
-
 	}
 
 	void put(T item)
@@ -38,7 +36,7 @@ public:
 			return T();
 		}
 
-		//Read data and advance the tail (we now have a free space)
+		// Read data and advance the tail (we now have a free space)
 		auto val = buf_[tail_];
 		full_ = false;
 		tail_ = (tail_ + 1) % max_size_;
@@ -55,13 +53,13 @@ public:
 
 	bool empty() const
 	{
-		//if head and tail are equal, we are empty
+		// if head and tail are equal, we are empty
 		return (!full_ && (head_ == tail_));
 	}
 
 	bool full() const
 	{
-		//If tail is ahead the head by 1, we are full
+		// If tail is ahead the head by 1, we are full
 		return full_;
 	}
 
@@ -89,7 +87,7 @@ public:
 		return size;
 	}
 
-private:
+  private:
 	std::mutex mutex_;
 	std::unique_ptr<T[]> buf_;
 	size_t head_ = 0;

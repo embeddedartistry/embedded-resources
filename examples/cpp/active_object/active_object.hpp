@@ -198,7 +198,9 @@ class activeObject
 		do
 		{
 			// Wait until we have data or a quit signal
-			cv_.wait(lock, [this] { return (shutdown_ || !op_queue_.empty()); });
+			cv_.wait(lock, [this] {
+				return (shutdown_ || !op_queue_.empty());
+			});
 
 			// after wait, we own the lock
 			if(!shutdown_ && !op_queue_.empty())

@@ -48,13 +48,13 @@
  ========================================================================*/
 
 #ifdef __clang__
-#pragma clang diagnostic ignored "-Wunused-macros"
-#pragma clang diagnostic ignored "-Wsign-conversion"
-#pragma clang diagnostic ignored "-Wsign-conversion"
+	#pragma clang diagnostic ignored "-Wunused-macros"
+	#pragma clang diagnostic ignored "-Wsign-conversion"
+	#pragma clang diagnostic ignored "-Wsign-conversion"
 #elif __GNUC__
-#pragma gcc diagnostic ignored "-Wunused-macros"
-#pragma gcc diagnostic ignored "-Wsign-conversion"
-#pragma gcc diagnostic ignored "-Wsign-conversion"
+	#pragma gcc diagnostic ignored "-Wunused-macros"
+	#pragma gcc diagnostic ignored "-Wsign-conversion"
+	#pragma gcc diagnostic ignored "-Wsign-conversion"
 #endif
 
 /*=========================================================================
@@ -74,10 +74,10 @@
  * the version numbers match.
  */
 #ifndef AA_HEADER_VERSION
-#error Unable to include header file. Please check include path.
+	#error Unable to include header file. Please check include path.
 
 #elif AA_HEADER_VERSION != AA_CFILE_VERSION
-#error Version mismatch between source and header files.
+	#error Version mismatch between source and header files.
 
 #endif
 
@@ -97,26 +97,26 @@
 | LINUX AND DARWIN SUPPORT
  ========================================================================*/
 #if defined(__APPLE_CC__) && !defined(DARWIN)
-#define DARWIN
+	#define DARWIN
 #endif
 
 #if defined(__linux__) || defined(DARWIN)
 
-#include <fcntl.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
+	#include <fcntl.h>
+	#include <stdio.h>
+	#include <stdlib.h>
+	#include <string.h>
+	#include <unistd.h>
 
-#ifdef DARWIN
-#define DLOPEN_NO_WARN
+	#ifdef DARWIN
+		#define DLOPEN_NO_WARN
 extern int _NSGetExecutablePath(char* buf, unsigned long* bufsize);
-#endif
+	#endif
 
-#include <dlfcn.h>
+	#include <dlfcn.h>
 
-#define DLL_HANDLE void*
-#define MAX_SO_PATH 1024
+	#define DLL_HANDLE void*
+	#define MAX_SO_PATH 1024
 
 static char SO_NAME[MAX_SO_PATH + 1] = API_NAME ".so";
 
@@ -157,14 +157,14 @@ static int _checkPath(const char* path)
 
 static int _getExecPath(char* path, unsigned long maxlen)
 {
-#ifdef __linux__
+	#ifdef __linux__
 	return readlink("/proc/self/exe", path, maxlen);
-#endif
+	#endif
 
-#ifdef DARWIN
+	#ifdef DARWIN
 	_NSGetExecutablePath(path, &maxlen);
 	return (int)maxlen;
-#endif
+	#endif
 }
 
 static void _setSearchPath()
@@ -199,11 +199,11 @@ static void _setSearchPath()
 	if(p != 0)
 		_checkPath(path);
 
-#ifdef AARDVARK_LIBRARY_PATH
+	#ifdef AARDVARK_LIBRARY_PATH
 	// Check the fallback directory
 	sprintf(path, "%s", AARDVARK_LIBRARY_PATH);
 	_checkPath(path);
-#endif
+	#endif
 }
 
 #endif
@@ -213,14 +213,14 @@ static void _setSearchPath()
  ========================================================================*/
 #if defined(WIN32) || defined(_WIN32)
 
-#include <stdio.h>
-#include <windows.h>
+	#include <stdio.h>
+	#include <windows.h>
 
-#define DLL_HANDLE HINSTANCE
-#define dlopen(name, flags) LoadLibraryA(name)
-#define dlsym(handle, name) GetProcAddress(handle, name)
-#define dlerror() "Exiting program"
-#define SO_NAME API_NAME ".dll"
+	#define DLL_HANDLE HINSTANCE
+	#define dlopen(name, flags) LoadLibraryA(name)
+	#define dlsym(handle, name) GetProcAddress(handle, name)
+	#define dlerror() "Exiting program"
+	#define SO_NAME API_NAME ".dll"
 
 /*
  * Use the default Windows DLL loading rules:

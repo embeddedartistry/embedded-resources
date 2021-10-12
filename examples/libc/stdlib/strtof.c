@@ -21,10 +21,10 @@
 #include <stdlib.h>
 
 const int maxExponent = 38; /* Largest possible base 10 exponent.  Any
-				 * exponent larger than this will already
-				 * produce underflow or overflow, so there's
-				 * no need to worry about additional digits.
-				 */
+							 * exponent larger than this will already
+							 * produce underflow or overflow, so there's
+							 * no need to worry about additional digits.
+							 */
 
 const float _strtof_powersOf10_[] = { // Table giving binary powers of 10.  Entry
 	10.0f, // is 10^2^i.  Used to convert decimal
@@ -53,20 +53,20 @@ const float _strtof_powersOf10_[] = { // Table giving binary powers of 10.  Entr
  */
 
 float strtof(const char* string, /* A decimal ASCII floating-point number,
-					  * optionally preceded by white space.
-					  * Must have form "-I.FE-X", where I is the
-					  * integer part of the mantissa, F is the
-					  * fractional part of the mantissa, and X
-					  * is the exponent.  Either of the signs
-					  * may be "+", "-", or omitted.  Either I
-					  * or F may be omitted, or both.  The decimal
-					  * point isn't necessary unless F is present.
-					  * The "E" may actually be an "e".  E and X
-					  * may both be omitted (but not just one).
-					  */
+								  * optionally preceded by white space.
+								  * Must have form "-I.FE-X", where I is the
+								  * integer part of the mantissa, F is the
+								  * fractional part of the mantissa, and X
+								  * is the exponent.  Either of the signs
+								  * may be "+", "-", or omitted.  Either I
+								  * or F may be omitted, or both.  The decimal
+								  * point isn't necessary unless F is present.
+								  * The "E" may actually be an "e".  E and X
+								  * may both be omitted (but not just one).
+								  */
 			 char** endPtr /* If non-NULL, store terminating character's
-	   * address here. */
-			 )
+							* address here. */
+)
 {
 	int sign, expSign = false;
 	float fraction, dblExp;
@@ -75,19 +75,19 @@ float strtof(const char* string, /* A decimal ASCII floating-point number,
 	int c;
 	int exp = 0; /* Exponent read from "EX" field. */
 	int fracExp = 0; /* Exponent that derives from the fractional
-* part.  Under normal circumstatnces, it is
-* the negative of the number of digits in F.
-* However, if I is very long, the last digits
-* of I get dropped (otherwise a long I with a
-* large negative exponent could cause an
-* unnecessary overflow on I alone).  In this
-* case, fracExp is incremented one for each
-* dropped digit. */
+					  * part.  Under normal circumstatnces, it is
+					  * the negative of the number of digits in F.
+					  * However, if I is very long, the last digits
+					  * of I get dropped (otherwise a long I with a
+					  * large negative exponent could cause an
+					  * unnecessary overflow on I alone).  In this
+					  * case, fracExp is incremented one for each
+					  * dropped digit. */
 	int mantSize; /* Number of digits in mantissa. */
 	int decPt; /* Number of mantissa digits BEFORE decimal
-* point. */
+				* point. */
 	const char* pExp; /* Temporarily holds location of exponent
-*in string. */
+					   *in string. */
 
 	/*
 	 * Strip off leading blanks and check for a sign.

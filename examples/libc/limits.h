@@ -7,11 +7,11 @@
 /* Support signed or unsigned plain-char */
 
 #if '\0' - 1 > 0
-#define CHAR_MIN 0
-#define CHAR_MAX 255
+	#define CHAR_MIN 0
+	#define CHAR_MAX 255
 #else
-#define CHAR_MIN (-128)
-#define CHAR_MAX 127
+	#define CHAR_MIN (-128)
+	#define CHAR_MAX 127
 #endif
 
 /* Some universal constants... */

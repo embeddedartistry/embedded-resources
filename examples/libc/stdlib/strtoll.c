@@ -47,7 +47,7 @@ long long int strtoll(const char* nptr, char** endptr, int base)
 	int c;
 	int neg, any, cutlim;
 
-/* endptr may be NULL */
+	/* endptr may be NULL */
 
 #ifdef __GNUC__
 	/* This outrageous construct just to shut up a GCC warning. */

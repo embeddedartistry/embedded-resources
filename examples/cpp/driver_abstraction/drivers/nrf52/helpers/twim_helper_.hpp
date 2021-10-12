@@ -27,7 +27,6 @@ enum twi_event_t
 	TWIM_EVENT_TXSTARTED = offsetof(NRF_TWIM_Type, EVENTS_TXSTARTED),
 	TWIM_EVENT_LASTRX = offsetof(NRF_TWIM_Type, EVENTS_LASTRX),
 	TWIM_EVENT_LASTTX = offsetof(NRF_TWIM_Type, EVENTS_LASTTX)
-
 };
 
 /// All TWI interrupts.

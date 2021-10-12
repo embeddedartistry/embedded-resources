@@ -80,26 +80,30 @@ void aardvarkI2CController::process_(const storagePair_t& pair) noexcept
 	switch(op.op)
 	{
 		case embvm::i2c::operation::continueWriteStop:
-		case embvm::i2c::operation::write: {
+		case embvm::i2c::operation::write:
+		{
 			r = aa_i2c_write_ext(base_driver_.handle(), op.address, AA_I2C_NO_FLAGS,
 								 static_cast<uint16_t>(op.tx_size), op.tx_buffer, &num_written);
 			assert(op.tx_size == num_written);
 			break;
 		}
 		case embvm::i2c::operation::writeNoStop:
-		case embvm::i2c::operation::continueWriteNoStop: {
+		case embvm::i2c::operation::continueWriteNoStop:
+		{
 			r = aa_i2c_write_ext(base_driver_.handle(), op.address, AA_I2C_NO_STOP,
 								 static_cast<uint16_t>(op.tx_size), op.tx_buffer, &num_written);
 			assert(op.tx_size == num_written);
 			break;
 		}
-		case embvm::i2c::operation::read: {
+		case embvm::i2c::operation::read:
+		{
 			r = aa_i2c_read_ext(base_driver_.handle(), op.address, AA_I2C_NO_FLAGS,
 								static_cast<uint16_t>(op.rx_size), op.rx_buffer, &num_read);
 			assert(op.rx_size == num_read);
 			break;
 		}
-		case embvm::i2c::operation::writeRead: {
+		case embvm::i2c::operation::writeRead:
+		{
 			r = aa_i2c_write_read(base_driver_.handle(), op.address, AA_I2C_NO_FLAGS,
 								  static_cast<uint16_t>(op.tx_size), op.tx_buffer, &num_written,
 								  static_cast<uint16_t>(op.rx_size), op.rx_buffer, &num_read);
@@ -112,7 +116,8 @@ void aardvarkI2CController::process_(const storagePair_t& pair) noexcept
 			// Unused, but here is how you parse: int write_status = (r & 0xff);
 			break;
 		}
-		case embvm::i2c::operation::ping: {
+		case embvm::i2c::operation::ping:
+		{
 			// Use num_written as a dummy read placeholder
 			r = aa_i2c_read_ext(base_driver_.handle(), op.address, AA_I2C_NO_FLAGS, 1,
 								reinterpret_cast<uint8_t*>(&num_written), &num_read);
@@ -139,7 +144,7 @@ void aardvarkI2CController::process_(const storagePair_t& pair) noexcept
 }
 
 embvm::i2c::status aardvarkI2CController::transfer_(const embvm::i2c::op_t& op,
-												const embvm::i2c::controller::cb_t& cb) noexcept
+													const embvm::i2c::controller::cb_t& cb) noexcept
 {
 	enqueue({op, cb});
 

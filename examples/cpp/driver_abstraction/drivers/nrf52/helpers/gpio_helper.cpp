@@ -8,7 +8,7 @@
 #pragma mark - Types and Definitions -
 
 #ifndef NRF_P0
-#define NRF_P0 NRF_GPIO
+	#define NRF_P0 NRF_GPIO
 #endif
 
 static inline NRF_GPIO_Type* portDecode(uint8_t port) noexcept

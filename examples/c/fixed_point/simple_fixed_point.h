@@ -26,4 +26,4 @@ fixed_point_t double_to_fixed_truncate(double input);
 /// and truncation instead of rounding
 double fixed16_to_double(fixed_point_t input, uint8_t fractional_bits);
 
-#endif //SIMPLE_FIXED_POINT_H_
+#endif // SIMPLE_FIXED_POINT_H_

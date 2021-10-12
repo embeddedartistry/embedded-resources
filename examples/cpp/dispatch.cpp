@@ -8,10 +8,11 @@
 #include <string>
 #include <condition_variable>
 
-class dispatch_queue {
+class dispatch_queue
+{
 	typedef std::function<void(void)> fp_t;
 
-public:
+  public:
 	dispatch_queue(std::string name, size_t thread_cnt = 1);
 	~dispatch_queue();
 
@@ -26,7 +27,7 @@ public:
 	dispatch_queue(dispatch_queue&& rhs) = delete;
 	dispatch_queue& operator=(dispatch_queue&& rhs) = delete;
 
-private:
+  private:
 	std::string name_;
 	std::mutex lock_;
 	std::vector<std::thread> threads_;
@@ -76,7 +77,7 @@ void dispatch_queue::dispatch(const fp_t& op)
 	q_.push(op);
 
 	// Manual unlocking is done before notifying, to avoid waking up
-    // the waiting thread only to block again (see notify_one for details)
+	// the waiting thread only to block again (see notify_one for details)
 	lock.unlock();
 	cv_.notify_one();
 }
@@ -87,7 +88,7 @@ void dispatch_queue::dispatch(fp_t&& op)
 	q_.push(std::move(op));
 
 	// Manual unlocking is done before notifying, to avoid waking up
-    // the waiting thread only to block again (see notify_one for details)
+	// the waiting thread only to block again (see notify_one for details)
 	lock.unlock();
 	cv_.notify_one();
 }
@@ -96,26 +97,27 @@ void dispatch_queue::dispatch_thread_handler(void)
 {
 	std::unique_lock<std::mutex> lock(lock_);
 
-	do {
-		//Wait until we have data or a quit signal
-		cv_.wait(lock, [this]{
+	do
+	{
+		// Wait until we have data or a quit signal
+		cv_.wait(lock, [this] {
 			return (q_.size() || quit_);
 		});
 
-		//after wait, we own the lock
+		// after wait, we own the lock
 		if(!quit_ && q_.size())
 		{
 			auto op = std::move(q_.front());
 			q_.pop();
 
-			//unlock now that we're done messing with the queue
+			// unlock now that we're done messing with the queue
 			lock.unlock();
 
 			op();
 
 			lock.lock();
 		}
-	} while (!quit_);
+	} while(!quit_);
 }
 
 int main(void)
@@ -123,10 +125,18 @@ int main(void)
 	int r = 0;
 	dispatch_queue q("Phillip's Demo Dispatch Queue", 4);
 
-	q.dispatch([]{printf("Dispatch 1!\n");});
-	q.dispatch([]{printf("Dispatch 2!\n");});
-	q.dispatch([]{printf("Dispatch 3!\n");});
-	q.dispatch([]{printf("Dispatch 4!\n");});
+	q.dispatch([] {
+		printf("Dispatch 1!\n");
+	});
+	q.dispatch([] {
+		printf("Dispatch 2!\n");
+	});
+	q.dispatch([] {
+		printf("Dispatch 3!\n");
+	});
+	q.dispatch([] {
+		printf("Dispatch 4!\n");
+	});
 
 	return r;
 }

@@ -7,18 +7,18 @@
 #pragma mark - NULL -
 
 #ifdef __cplusplus
-#define NULL 0L
+	#define NULL 0L
 #else
-// not C++
-#define NULL ((void*)0)
+	// not C++
+	#define NULL ((void*)0)
 #endif
 
 #pragma mark - offsetof -
 
 #if __GNUC__ > 3
-#define offsetof(type, member) __builtin_offsetof(type, member)
+	#define offsetof(type, member) __builtin_offsetof(type, member)
 #else
-#define offsetof(type, member) ((size_t)((char*)&(((type*)0)->member) - (char*)0))
+	#define offsetof(type, member) ((size_t)((char*)&(((type*)0)->member) - (char*)0))
 #endif
 
 #pragma mark - max_align_t -

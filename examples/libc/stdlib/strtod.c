@@ -81,19 +81,19 @@ strtod(string, endPtr)
 	register int c;
 	int exp = 0; /* Exponent read from "EX" field. */
 	int fracExp = 0; /* Exponent that derives from the fractional
-		  * part.  Under normal circumstatnces, it is
-		  * the negative of the number of digits in F.
-		  * However, if I is very long, the last digits
-		  * of I get dropped (otherwise a long I with a
-		  * large negative exponent could cause an
-		  * unnecessary overflow on I alone).  In this
-		  * case, fracExp is incremented one for each
-		  * dropped digit. */
+					  * part.  Under normal circumstatnces, it is
+					  * the negative of the number of digits in F.
+					  * However, if I is very long, the last digits
+					  * of I get dropped (otherwise a long I with a
+					  * large negative exponent could cause an
+					  * unnecessary overflow on I alone).  In this
+					  * case, fracExp is incremented one for each
+					  * dropped digit. */
 	int mantSize; /* Number of digits in mantissa. */
 	int decPt; /* Number of mantissa digits BEFORE decimal
-		* point. */
+				* point. */
 	const char* pExp; /* Temporarily holds location of exponent
-		   * in string. */
+					   * in string. */
 
 	/*
 	 * Strip off leading blanks and check for a sign.

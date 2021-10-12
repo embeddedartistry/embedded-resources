@@ -15,35 +15,37 @@
 #pragma mark - Definitions -
 
 /// Definitions for dispatch event flags
-#define DISPATCH_WAKE_EVT	(0x1)
-#define DISPATCH_EXIT_EVT	(0x2)
+#define DISPATCH_WAKE_EVT (0x1)
+#define DISPATCH_EXIT_EVT (0x2)
 
 /// Example thread priority and time slice
 #define DISPATCH_Q_PRIORITY 15
 
 /// Thread type
-struct freertos_thread_t {
+struct freertos_thread_t
+{
 	TaskHandle_t thread;
 	std::string name;
 };
 
 /// This Bounce implementation is pulled from bounce.cpp
-template<class T, class Method, Method m, class ...Params>
-static auto bounce(void *priv, Params... params) ->
-		decltype(((*reinterpret_cast<T *>(priv)).*m)(params...))
+template<class T, class Method, Method m, class... Params>
+static auto bounce(void* priv, Params... params)
+	-> decltype(((*reinterpret_cast<T*>(priv)).*m)(params...))
 {
-	return ((*reinterpret_cast<T *>(priv)).*m)(params...);
+	return ((*reinterpret_cast<T*>(priv)).*m)(params...);
 }
 
 /// Convenience macro to simplify bounce statement usage
-#define BOUNCE(c,m) bounce<c, decltype(&c::m), &c::m>
+#define BOUNCE(c, m) bounce<c, decltype(&c::m), &c::m>
 
 #pragma mark - Dispatch Class -
 
-class dispatch_queue {
+class dispatch_queue
+{
 	typedef std::function<void(void)> fp_t;
 
-public:
+  public:
 	dispatch_queue(std::string name, size_t thread_cnt = 1, size_t thread_stack = 1024);
 	~dispatch_queue();
 
@@ -58,7 +60,7 @@ public:
 	dispatch_queue(dispatch_queue&& rhs) = delete;
 	dispatch_queue& operator=(dispatch_queue&& rhs) = delete;
 
-private:
+  private:
 	std::string name_;
 
 	// FreeRTOS uses semaphore handles for mutexes
@@ -96,13 +98,10 @@ dispatch_queue::dispatch_queue(std::string name, size_t thread_cnt, size_t threa
 		threads_[i].name = std::string("Dispatch Thread " + std::to_string(i));
 
 		// Create the thread
-		BaseType_t status = xTaskCreate(reinterpret_cast<void(*)(void*)>(
-								BOUNCE(dispatch_queue, dispatch_thread_handler)),
-								threads_[i].name.c_str(),
-								thread_stack_size,
-								reinterpret_cast<void*>(this),
-								DISPATCH_Q_PRIORITY,
-								&threads_[i].thread);
+		BaseType_t status = xTaskCreate(
+			reinterpret_cast<void (*)(void*)>(BOUNCE(dispatch_queue, dispatch_thread_handler)),
+			threads_[i].name.c_str(), thread_stack_size, reinterpret_cast<void*>(this),
+			DISPATCH_Q_PRIORITY, &threads_[i].thread);
 		assert(status == pdPASS && "Failed to create thread!");
 	}
 }
@@ -113,10 +112,12 @@ dispatch_queue::~dispatch_queue()
 	quit_ = true;
 
 	// We will join each thread to confirm exiting
-	for (size_t i = 0; i < threads_.size(); ++i) {
+	for(size_t i = 0; i < threads_.size(); ++i)
+	{
 		eTaskState state;
 
-		do {
+		do
+		{
 			// Signal wake - check exit flag
 			xEventGroupSetBits(notify_flags_, DISPATCH_WAKE_EVT);
 
@@ -126,7 +127,7 @@ dispatch_queue::~dispatch_queue()
 			// If it was not thread_[i], that is ok, but we will loop around
 			// until threads_[i] has exited
 			state = eTaskGetState(threads_[i].thread);
-		} while (state != eDeleted);
+		} while(state != eDeleted);
 
 		threads_[i].name.clear();
 	}
@@ -170,14 +171,15 @@ void dispatch_queue::dispatch_thread_handler(void)
 	BaseType_t status = xSemaphoreTakeRecursive(mutex_, portMAX_DELAY);
 	assert(status == pdTRUE && "Failed to lock mutex!");
 
-	do {
-		//after wait, we own the lock
+	do
+	{
+		// after wait, we own the lock
 		if(!quit_ && q_.size())
 		{
 			auto op = std::move(q_.front());
 			q_.pop();
 
-			//unlock now that we're done messing with the queue
+			// unlock now that we're done messing with the queue
 			status = xSemaphoreGiveRecursive(mutex_);
 			assert(status == pdTRUE && "Failed to unlock mutex!");
 
@@ -197,7 +199,7 @@ void dispatch_queue::dispatch_thread_handler(void)
 			status = xSemaphoreTakeRecursive(mutex_, portMAX_DELAY);
 			assert(status == pdTRUE && "Failed to lock mutex!");
 		}
-	} while (!quit_);
+	} while(!quit_);
 
 	// We were holding the mutex after we woke up
 	status = xSemaphoreGiveRecursive(mutex_);

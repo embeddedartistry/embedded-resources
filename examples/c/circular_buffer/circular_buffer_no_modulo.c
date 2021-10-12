@@ -6,11 +6,12 @@
 #include "circular_buffer.h"
 
 // The definition of our circular buffer structure is hidden from the user
-struct circular_buf_t {
-	uint8_t * buffer;
+struct circular_buf_t
+{
+	uint8_t* buffer;
 	size_t head;
 	size_t tail;
-	size_t max; //of the buffer
+	size_t max; // of the buffer
 	bool full;
 };
 
@@ -21,14 +22,14 @@ static void advance_pointer(cbuf_handle_t cbuf)
 	assert(cbuf);
 
 	if(circular_buf_full(cbuf))
-    {
-    	if(++(cbuf->tail) == cbuf->max)
-    	{
-    		cbuf->tail = 0;
-    	}
-    }
+	{
+		if(++(cbuf->tail) == cbuf->max)
+		{
+			cbuf->tail = 0;
+		}
+	}
 
-    if(++(cbuf->head) == cbuf->max)
+	if(++(cbuf->head) == cbuf->max)
 	{
 		cbuf->head = 0;
 	}
@@ -74,11 +75,11 @@ void circular_buf_free(cbuf_handle_t cbuf)
 
 void circular_buf_reset(cbuf_handle_t cbuf)
 {
-    assert(cbuf);
+	assert(cbuf);
 
-    cbuf->head = 0;
-    cbuf->tail = 0;
-    cbuf->full = false;
+	cbuf->head = 0;
+	cbuf->tail = 0;
+	cbuf->full = false;
 }
 
 size_t circular_buf_size(cbuf_handle_t cbuf)
@@ -97,7 +98,6 @@ size_t circular_buf_size(cbuf_handle_t cbuf)
 		{
 			size = (cbuf->max + cbuf->head - cbuf->tail);
 		}
-
 	}
 
 	return size;
@@ -114,54 +114,54 @@ void circular_buf_put(cbuf_handle_t cbuf, uint8_t data)
 {
 	assert(cbuf && cbuf->buffer);
 
-    cbuf->buffer[cbuf->head] = data;
+	cbuf->buffer[cbuf->head] = data;
 
-    advance_pointer(cbuf);
+	advance_pointer(cbuf);
 }
 
 int circular_buf_put2(cbuf_handle_t cbuf, uint8_t data)
 {
-    int r = -1;
+	int r = -1;
 
-    assert(cbuf && cbuf->buffer);
+	assert(cbuf && cbuf->buffer);
 
-    if(!circular_buf_full(cbuf))
-    {
-        cbuf->buffer[cbuf->head] = data;
-        advance_pointer(cbuf);
-        r = 0;
-    }
+	if(!circular_buf_full(cbuf))
+	{
+		cbuf->buffer[cbuf->head] = data;
+		advance_pointer(cbuf);
+		r = 0;
+	}
 
-    return r;
+	return r;
 }
 
-int circular_buf_get(cbuf_handle_t cbuf, uint8_t * data)
+int circular_buf_get(cbuf_handle_t cbuf, uint8_t* data)
 {
-    assert(cbuf && data && cbuf->buffer);
+	assert(cbuf && data && cbuf->buffer);
 
-    int r = -1;
+	int r = -1;
 
-    if(!circular_buf_empty(cbuf))
-    {
-        *data = cbuf->buffer[cbuf->tail];
-        retreat_pointer(cbuf);
+	if(!circular_buf_empty(cbuf))
+	{
+		*data = cbuf->buffer[cbuf->tail];
+		retreat_pointer(cbuf);
 
-        r = 0;
-    }
+		r = 0;
+	}
 
-    return r;
+	return r;
 }
 
 bool circular_buf_empty(cbuf_handle_t cbuf)
 {
 	assert(cbuf);
 
-    return (!circular_buf_full(cbuf) && (cbuf->head == cbuf->tail));
+	return (!circular_buf_full(cbuf) && (cbuf->head == cbuf->tail));
 }
 
 bool circular_buf_full(cbuf_handle_t cbuf)
 {
 	assert(cbuf);
 
-    return cbuf->full;
+	return cbuf->full;
 }

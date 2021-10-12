@@ -5,12 +5,13 @@
 #include <stdint.h>
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif //__cplusplus
 
-int fls(int mask);
-int flsl(long mask);
-int flsll(long long mask);
+	int fls(int mask);
+	int flsl(long mask);
+	int flsll(long long mask);
 
 #ifdef __cplusplus
 }

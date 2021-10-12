@@ -328,9 +328,9 @@ class controller
 	}
 
 	/** Check whether the driver has started
-	*
-	* @returns true if the driver is operational.
-	*/
+	 *
+	 * @returns true if the driver is operational.
+	 */
 	bool started() const noexcept
 	{
 		return started_;
@@ -349,8 +349,8 @@ class controller
 	 * return immediately with a result.
 	 *
 	 * If the derived driver class returns a status code other than i2c::status::enqueued or
-	 * i2c::status::busy, the callback will be immediately invoked. If the operation was enqueued, the
-	 * final status will be reported when the callback is called.
+	 * i2c::status::busy, the callback will be immediately invoked. If the operation was enqueued,
+	 *the final status will be reported when the callback is called.
 	 *
 	 * @param op A bus transfer is defined by an operation (op). The derived class will use the
 	 *	data supplied in the op to configure the bus and transfer the data.

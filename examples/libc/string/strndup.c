@@ -30,7 +30,7 @@
  */
 
 #if 0
-#include <sys/cdefs.h>
+	#include <sys/cdefs.h>
 __FBSDID("$FreeBSD: src/lib/libc/string/strndup.c,v 1.1 2008/12/06 09:37:54 kib Exp $");
 #endif
 

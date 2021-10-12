@@ -4,13 +4,14 @@
 #include <stdlib.h>
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif //__cplusplus
 
-/**
-* Initialize malloc with a memory address and pool size
-*/
-void malloc_addblock(void *addr, size_t size);
+	/**
+	 * Initialize malloc with a memory address and pool size
+	 */
+	void malloc_addblock(void* addr, size_t size);
 
 #ifdef __cplusplus
 }

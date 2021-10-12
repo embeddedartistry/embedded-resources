@@ -57,10 +57,10 @@ static inline void swapfunc(char*, char*, int, int) __attribute__((always_inline
 		} while(--i > 0);               \
 	}
 
-#define SWAPINIT(a, es)                                                  \
-	swaptype = ((char*)a - (char*)0) % sizeof(long) || es % sizeof(long) \
-				   ? 2                                                   \
-				   : es == sizeof(long) ? 0 : 1;
+#define SWAPINIT(a, es)                                                        \
+	swaptype = ((char*)a - (char*)0) % sizeof(long) || es % sizeof(long) ? 2 : \
+			   es == sizeof(long)										 ? 0 : \
+																			 1;
 
 static inline void swapfunc(a, b, n, swaptype) char *a, *b;
 int n, swaptype;
@@ -84,25 +84,26 @@ int n, swaptype;
 	swapfunc(a, b, n, swaptype)
 
 #ifdef I_AM_QSORT_R
-#define CMP(t, x, y) (cmp((t), (x), (y)))
+	#define CMP(t, x, y) (cmp((t), (x), (y)))
 #else
-#define CMP(t, x, y) (cmp((x), (y)))
+	#define CMP(t, x, y) (cmp((x), (y)))
 #endif
 
-static inline char* med3(char* a, char* b, char* c, cmp_t* cmp, void* thunk
+static inline char* med3(char* a, char* b, char* c, cmp_t* cmp,
+						 void* thunk
 #ifndef I_AM_QSORT_R
 						 __attribute__((unused))
 #endif
-						 )
+)
 {
-	return CMP(thunk, a, b) < 0 ? (CMP(thunk, b, c) < 0 ? b : (CMP(thunk, a, c) < 0 ? c : a))
-								: (CMP(thunk, b, c) > 0 ? b : (CMP(thunk, a, c) < 0 ? a : c));
+	return CMP(thunk, a, b) < 0 ? (CMP(thunk, b, c) < 0 ? b : (CMP(thunk, a, c) < 0 ? c : a)) :
+									(CMP(thunk, b, c) > 0 ? b : (CMP(thunk, a, c) < 0 ? a : c));
 }
 
 #ifdef __LP64__
-#define DEPTH(x) (2 * (flsl((long)(x)) - 1))
+	#define DEPTH(x) (2 * (flsl((long)(x)) - 1))
 #else /* !__LP64__ */
-#define DEPTH(x) (2 * (fls((int)(x)) - 1))
+	#define DEPTH(x) (2 * (fls((int)(x)) - 1))
 #endif /* __LP64__ */
 
 #ifdef I_AM_QSORT_R
@@ -113,7 +114,7 @@ static void _qsort(void* a, size_t n, size_t es,
 #ifdef I_AM_QSORT_R
 				   void* thunk,
 #else
-#define thunk NULL
+	#define thunk NULL
 #endif
 				   cmp_t* cmp, int depth_limit)
 {

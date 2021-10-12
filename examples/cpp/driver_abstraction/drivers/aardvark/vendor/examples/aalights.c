@@ -33,7 +33,7 @@
 #include "aardvark.h"
 
 #ifdef _MSC_VER
-#define fileno _fileno
+	#define fileno _fileno
 #endif
 
 //=========================================================================

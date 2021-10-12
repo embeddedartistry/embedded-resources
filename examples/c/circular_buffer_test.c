@@ -13,7 +13,7 @@ void print_buffer_status(cbuf_handle_t cbuf);
 
 int main(void)
 {
-	uint8_t * buffer  = malloc(EXAMPLE_BUFFER_SIZE * sizeof(uint8_t));
+	uint8_t* buffer = malloc(EXAMPLE_BUFFER_SIZE * sizeof(uint8_t));
 
 	printf("\n=== C Circular Buffer Check ===\n");
 
@@ -94,8 +94,6 @@ int main(void)
 
 void print_buffer_status(cbuf_handle_t cbuf)
 {
-	printf("Full: %d, empty: %d, size: %zu\n",
-		circular_buf_full(cbuf),
-		circular_buf_empty(cbuf),
-		circular_buf_size(cbuf));
+	printf("Full: %d, empty: %d, size: %zu\n", circular_buf_full(cbuf), circular_buf_empty(cbuf),
+		   circular_buf_size(cbuf));
 }
