@@ -15,6 +15,10 @@
 #include <fixed_point_tests.h>
 #include <stdio.h>
 
+/// Want to check some of these values for yourself?
+/// Verify them with this page:
+/// https://www.rfwireless-world.com/calculators/floating-vs-fixed-point-converter.html
+
 static void double_to_fixed16_test(__attribute__((unused)) void** state)
 {
 	fixed_point_t output_round = double_to_fixed_round(11.5);
