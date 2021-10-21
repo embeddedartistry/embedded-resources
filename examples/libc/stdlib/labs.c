@@ -29,7 +29,8 @@
 
 #include <stdlib.h>
 
-long labs(j) long j;
+long labs(j)
+long j;
 {
 	return (j < 0 ? -j : j);
 }

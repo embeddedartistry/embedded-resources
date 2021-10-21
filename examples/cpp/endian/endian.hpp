@@ -69,7 +69,7 @@ constexpr typename std::enable_if<std::is_unsigned<T>::value, T>::type
 	byteswap(T i, T j = 0u, std::size_t n = 0u) noexcept
 {
 	return n == sizeof(T) ?
-				 j :
+			   j :
 				 byteswap<T>(i >> CHAR_BIT,
 						   static_cast<T>((j << CHAR_BIT) |
 										  (i & static_cast<T>(static_cast<unsigned char>(-1)))),

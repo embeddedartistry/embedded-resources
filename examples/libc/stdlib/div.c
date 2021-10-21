@@ -32,7 +32,8 @@
 
 #include <stdlib.h> /* div_t */
 
-div_t div(num, denom) int num, denom;
+div_t div(num, denom)
+int num, denom;
 {
 	div_t r;
 
