@@ -24,23 +24,29 @@ static void double_to_fixed16_test(__attribute__((unused)) void** state)
 	fixed_point_t output_round = double_to_fixed_round(11.5);
 	fixed_point_t output_truncate = double_to_fixed_truncate(11.5);
 	assert_int_equal(0x170, output_truncate);
-	assert_int_equal(output_round, output_truncate); // No difference should occur here
+	assert_int_equal(output_round, output_truncate);
 
 	output_round = double_to_fixed_round(128);
 	output_truncate = double_to_fixed_truncate(128);
 	assert_int_equal(0x1000, output_truncate);
-	assert_int_equal(output_round, output_truncate); // No difference should occur here
+	assert_int_equal(output_round, output_truncate);
 
 	output_round = double_to_fixed_round(-128);
 	output_truncate = double_to_fixed_truncate(-128);
-	assert_int_equal(-0x1000, output_truncate);
-	assert_int_equal(output_round, output_truncate); // No difference should occur here
+	assert_int_equal((int16_t)0xf000, output_truncate);
+	assert_int_equal(output_round, output_truncate);
 
 	output_round = double_to_fixed_round(128.28);
 	output_truncate = double_to_fixed_truncate(128.28);
 	assert_int_equal(0x1009, output_round);
 	// Here, truncate loses precision vs round
 	assert_int_equal(0x1008, output_truncate);
+
+	output_round = double_to_fixed_round(-64.28);
+	output_truncate = double_to_fixed_truncate(-64.28);
+	assert_int_equal((int16_t)0xf7f7, output_round);
+	// Here, truncate loses precision vs round
+	assert_int_equal((int16_t)0xf7f8, output_truncate);
 }
 
 static void fixed16_to_double_test(__attribute__((unused)) void** state)
@@ -48,8 +54,11 @@ static void fixed16_to_double_test(__attribute__((unused)) void** state)
 	double output = fixed_to_double(0x1000);
 	assert_float_equal(128.0, output, 0.01);
 
-	output = fixed_to_double(-0x1000);
+	output = fixed_to_double(0xf000);
 	assert_float_equal(-128.0, output, 0.01);
+
+	output = fixed_to_double(0xf7f7);
+	assert_float_equal(-64.28125, output, 0.01);
 
 	output = fixed_to_double(0x1009);
 	assert_float_equal(128.28125, output, 0.01);
