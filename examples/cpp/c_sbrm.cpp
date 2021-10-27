@@ -1,5 +1,6 @@
 #include <cstdio>
 #include <memory>
+#include <cstring>
 
 #pragma mark - Definitions -
 

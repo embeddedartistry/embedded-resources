@@ -1,6 +1,6 @@
 /*-
  * Copyright (c) 1990, 1993
- *	The Regents of the University of California.  All rights reserved.
+ *  The Regents of the University of California.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -32,22 +32,45 @@
 /*
  * Find Last Set bit
  */
+#if defined(__clang__)
 int fls(int mask)
 {
-#if __has_builtin(__builtin_fls)
+	#if __has_builtin(__builtin_fls)
 	return __builtin_fls(mask);
-#elif __has_builtin(__builtin_clz)
+	#elif __has_builtin(__builtin_clz)
 	if(mask == 0)
+	{
 		return (0);
+	}
 
-	return (sizeof(mask) << 3) - __builtin_clz(mask);
-#else
+	return ((int)sizeof(mask) << 3) - __builtin_clz((unsigned)mask);
+	#else
 	int bit;
 
 	if(mask == 0)
+	{
 		return (0);
+	}
+
 	for(bit = 1; mask != 1; bit++)
+	{
 		mask = (unsigned)mask >> 1;
+	}
+
 	return (bit);
-#endif
+	#endif
 }
+
+#else // Not clang
+
+int fls(int mask)
+{
+	if(mask == 0)
+	{
+		return (0);
+	}
+
+	return ((int)sizeof(mask) << 3) - __builtin_clz((unsigned)mask);
+}
+
+#endif // if clang

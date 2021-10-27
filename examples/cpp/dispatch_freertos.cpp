@@ -11,6 +11,7 @@
 #include <freertos/task.h>
 #include <freertos/event_groups.h>
 #include <freertos/semphr.h>
+#include <cassert>
 
 #pragma mark - Definitions -
 

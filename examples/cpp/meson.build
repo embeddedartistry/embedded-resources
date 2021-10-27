@@ -64,34 +64,37 @@ libdispatch_threadx = static_library('dispatch_threadx',
 	include_directories: include_directories('../rtos/threadx'),
 )
 
-libdispatch_threadx_stdmutex = static_library('dispatch_threadx_stdmutex',
-	[
-		'dispatch_threadx_stdmutex.cpp',
-		'../libcpp/mutex.cpp'
-	],
-	include_directories: [
-		include_directories('../rtos'),
-		include_directories('../libcpp'),
-	],
-	cpp_args: [
-		'-DTHREADX=1',
-		'-D_LIBCPP_NO_EXCEPTIONS',
-		'-DTHREADING=1',
-		'-D_LIBCPP_HAS_THREAD_API_EXTERNAL',
-		'-fno-builtin',
-		'-static',
-		'-nodefaultlibs'
-	],
-	link_args: [
-		'-static',
-		'-nodefaultlibs',
-		'-nostartfiles',
-		'-Wl,-preload',
-		'-Wl,-all_load',
-		'-Wl,-dead_strip',
-		'-Wl,-prebind'
-	]
-)
+# This example only compiles with clang bc it depends on clang's libcpp
+if native_cpp_compiler_id == 'clang'
+	libdispatch_threadx_stdmutex = static_library('dispatch_threadx_stdmutex',
+		[
+			'dispatch_threadx_stdmutex.cpp',
+			'../libcpp/mutex.cpp'
+		],
+		include_directories: [
+			include_directories('../rtos'),
+			include_directories('../libcpp'),
+		],
+		cpp_args: [
+			'-DTHREADX=1',
+			'-D_LIBCPP_NO_EXCEPTIONS',
+			'-DTHREADING=1',
+			'-D_LIBCPP_HAS_THREAD_API_EXTERNAL',
+			'-fno-builtin',
+			'-static',
+			'-nodefaultlibs'
+		],
+		link_args: [
+			'-static',
+			'-nodefaultlibs',
+			'-nostartfiles',
+			'-Wl,-preload',
+			'-Wl,-all_load',
+			'-Wl,-dead_strip',
+			'-Wl,-prebind'
+		]
+	)
+endif
 
 libdispatch_freertos = static_library('dispatch_freertos',
 	'dispatch_freertos.cpp',

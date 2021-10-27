@@ -1,5 +1,6 @@
 #include <iostream>
 #include <array>
+#include <algorithm>
 
 void carr_func(int* arr, size_t size)
 {

@@ -47,16 +47,6 @@
 |      aardvark_net.dll --  Compiled .NET binding
  ========================================================================*/
 
-#ifdef __clang__
-	#pragma clang diagnostic ignored "-Wunused-macros"
-	#pragma clang diagnostic ignored "-Wsign-conversion"
-	#pragma clang diagnostic ignored "-Wsign-conversion"
-#elif __GNUC__
-	#pragma gcc diagnostic ignored "-Wunused-macros"
-	#pragma gcc diagnostic ignored "-Wsign-conversion"
-	#pragma gcc diagnostic ignored "-Wsign-conversion"
-#endif
-
 /*=========================================================================
 | INCLUDES
  ========================================================================*/

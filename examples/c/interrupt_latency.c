@@ -10,7 +10,7 @@ uint64_t total_latency = 0;
 /// Later in your program you can calculate average latency using total_latency / count.
 uint32_t count = 0;
 
-__attribute__((weak)) inline uint32_t readTimer()
+__attribute__((weak)) uint32_t readTimer()
 {
 	// Override this function to read from the target timer peripheral.
 	// Our advice is to read the raw timer value in as few steps as possible,

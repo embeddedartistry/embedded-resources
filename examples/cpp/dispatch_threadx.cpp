@@ -8,6 +8,7 @@
 #include <string>
 #include <condition_variable>
 #include <tx_api.h>
+#include <cassert>
 
 #pragma mark - Definitions -
 

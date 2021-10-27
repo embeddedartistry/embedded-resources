@@ -45,9 +45,9 @@ int main(int argc, char* argv[])
 
 	// Or we can pass field info structs as elements
 	constexpr genericMsg_t loc1 = make_genericMsg(
-		"Loc msg", fieldInfo_t{.value = 33.4567f, .name = "Lat"},
-		fieldInfo_t{.value = 'N', .name = "N/S"}, fieldInfo_t{.value = 124.8724f, .name = "Long"},
-		fieldInfo_t{.value = 'E', .name = "E/W"});
+		"Loc msg", fieldInfo_t{.name = "Lat", .value = 33.4567f},
+		fieldInfo_t{.name = "N/S", .value = 'N'}, fieldInfo_t{.name = "Long", .value = 124.8724f},
+		fieldInfo_t{.name = "E/W", .value = 'E'});
 
 	constexpr std::array<genericMsg_t, NUM_MESSAGES> messages{temp1, loc1};
 
