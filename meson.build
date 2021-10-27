@@ -42,9 +42,10 @@ endif
 subdir('build/linker/linker-map')
 subdir('build/test/cmocka')
 
-# Pre-declare this variable here so that we can add files to the list
+# Pre-declare these variables here so that we can add files to the list
 # throughout the source tree, passing them to the test tree later.
 cmocka_test_deps = []
+catch2_tests_dep = []
 
 #######################
 # Process source tree #
@@ -53,6 +54,10 @@ cmocka_test_deps = []
 subdir('examples')
 subdir('interview')
 subdir('test')
+
+# Defined after source folders so catch2_dep is fully populated
+# when creating the built-in targets
+subdir('build/test/catch2')
 
 ###################
 # Tooling Modules #
