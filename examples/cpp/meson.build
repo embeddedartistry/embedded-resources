@@ -10,10 +10,14 @@ catch2_tests_dep += declare_dependency(
 
 no_braces = meson.get_compiler('cpp').get_supported_arguments('-Wno-missing-braces')
 
-executable('variant_message',
-	'variant_message.cpp',
-	cpp_args: no_braces
-)
+# Doesn't work with GCC 7
+if (native_cpp_compiler_id == 'clang' or
+	(native_cpp_compiler_id == 'gcc' and native_cpp_compiler.version() > '8'))
+	executable('variant_message',
+		'variant_message.cpp',
+		cpp_args: no_braces
+	)
+endif
 
 executable('assembly_source_location',
 	'assembly_source_location.cpp'
