@@ -30,6 +30,7 @@ executable('aligned_ptr',
 		'smart_ptr_aligned.cpp',
 		'../libc/malloc_aligned.c'
 	],
+	include_directories: memory_inc
 )
 
 executable('array_demo',

@@ -1,7 +1,4 @@
-# Examples Meson Build File
-
-rtos_includes = include_directories('rtos', is_system: true)
-
+subdir('rtos') # Has dependencies used elsewhere
 subdir('c')
 subdir('cpp')
 subdir('libc')

@@ -1,6 +1,11 @@
 # C examples Meson Build File
 
+linked_list_dep = declare_dependency(
+	include_directories: 'linked_list'
+)
+
 subdir('fixed_point')
+subdir('malloc')
 
 #############
 # Libraries #
@@ -8,12 +13,6 @@ subdir('fixed_point')
 
 static_library('interrupt_latency',
 	'interrupt_latency.c'
-)
-
-libmalloc_threadx = static_library('malloc_threadx',
-	'malloc_threadx.c',
-	c_args: '-fno-builtin',
-	include_directories: include_directories('../rtos/threadx')
 )
 
 ###############
@@ -24,22 +23,9 @@ executable('refactoring_global_data',
 	'refactoring_global_data.c'
 )
 
-executable('malloc_aligned',
-	'malloc_aligned.c',
-	c_args: '-DCOMPILE_AS_EXAMPLE',
-)
-
-executable('malloc_freelist',
-	[
-		'malloc_freelist.c',
-		'malloc_test.c'
-	],
-	c_args: '-DCOMPILE_AS_EXAMPLE',
-)
-
-#####################
-# Test Dependencies #
-#####################
+###################
+# Circular Buffer #
+###################
 
 circular_buffer_test_dep = declare_dependency(
 	sources: files(

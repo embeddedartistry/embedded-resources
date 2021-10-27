@@ -2,7 +2,7 @@
 #include <cstdio>
 #include <cstdint>
 #include <string>
-#include "../c/memory.h"
+#include "memory.h"
 
 static void aligned_free_wrapper(void* ptr)
 {
