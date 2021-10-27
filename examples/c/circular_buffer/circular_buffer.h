@@ -2,6 +2,7 @@
 #define CIRCULAR_BUFFER_H_
 
 #include <stdbool.h>
+#include <stdint.h>
 
 /// Opaque circular buffer structure
 typedef struct circular_buf_t circular_buf_t;
@@ -24,15 +25,15 @@ void circular_buf_free(cbuf_handle_t cbuf);
 /// Requires: cbuf is valid and created by circular_buf_init
 void circular_buf_reset(cbuf_handle_t cbuf);
 
-/// Put version 1 continues to add data if the buffer is full
+/// Put that continues to add data if the buffer is full
 /// Old data is overwritten
 /// Requires: cbuf is valid and created by circular_buf_init
 void circular_buf_put(cbuf_handle_t cbuf, uint8_t data);
 
-/// Put Version 2 rejects new data if the buffer is full
+/// Put that rejects new data if the buffer is full
 /// Requires: cbuf is valid and created by circular_buf_init
 /// Returns 0 on success, -1 if buffer is full
-int circular_buf_put2(cbuf_handle_t cbuf, uint8_t data);
+int circular_buf_try_put(cbuf_handle_t cbuf, uint8_t data);
 
 /// Retrieve a value from the buffer
 /// Requires: cbuf is valid and created by circular_buf_init
