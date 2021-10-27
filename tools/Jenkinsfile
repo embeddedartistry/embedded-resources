@@ -37,7 +37,6 @@ pipeline
             healthy: 5,
             unhealthy: 10,
             aggregatingResults: true,
-            referenceJobName: 'ea-nightly/project-skeleton/master',
             sourceDirectory: 'buildresults/',
             filters: [
               excludeFile('subprojects/*')
@@ -73,7 +72,6 @@ pipeline
             healthy: 5,
             unhealthy: 10,
             aggregatingResults: true,
-            referenceJobName: 'ea-nightly/project-skeleton/master',
             sourceDirectory: 'buildresults/gcc-9',
             filters: [
               excludeFile('subprojects/*')
@@ -109,7 +107,6 @@ pipeline
             healthy: 5,
             unhealthy: 10,
             aggregatingResults: true,
-            referenceJobName: 'ea-nightly/project-skeleton/master',
             sourceDirectory: 'buildresults/gcc-8/',
             filters: [
               excludeFile('subprojects/*')
@@ -145,7 +142,6 @@ pipeline
             healthy: 5,
             unhealthy: 10,
             aggregatingResults: true,
-            referenceJobName: 'ea-nightly/project-skeleton/master',
             sourceDirectory: 'buildresults/gcc-7',
             filters: [
               excludeFile('subprojects/*')
@@ -191,7 +187,6 @@ pipeline
         enabledForFailure: true,
         healthy: 5,
         unhealthy: 10,
-        referenceJobName: 'ea-nightly/embedded-resources/master',
         qualityGates: [
           // 3 new issue: unstable
           [threshold: 3, type: 'DELTA', unstable: true],
