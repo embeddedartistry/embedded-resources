@@ -2,15 +2,17 @@
 
 subdir('driver_abstraction')
 
+catch2_tests_dep += declare_dependency(
+	sources: files(
+		'circular_buffer.cpp'
+	)
+)
+
 no_braces = meson.get_compiler('cpp').get_supported_arguments('-Wno-missing-braces')
 
 executable('variant_message',
 	'variant_message.cpp',
 	cpp_args: no_braces
-)
-
-executable('circular_buffer',
-	'circular_buffer.cpp',
 )
 
 executable('assembly_source_location',

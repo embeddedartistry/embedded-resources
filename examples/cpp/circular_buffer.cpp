@@ -1,63 +1,71 @@
+// Copyright 2021 Embedded Artistry LLC
+
 #include <cstdio>
-#include <circular_buffer/circular_buffer.hpp>
+#include <catch2/catch.hpp>
+#include "circular_buffer/circular_buffer.hpp"
 
-int main(void)
+TEST_CASE("Create circular buffer")
 {
-	circular_buffer<uint32_t> circle(10);
-	printf("\n === CPP Circular buffer check ===\n");
-	printf("Size: %zu, Capacity: %zu\n", circle.size(), circle.capacity());
+	circular_buffer<uint32_t> cbuf(10);
+	CHECK(cbuf.size() == 0);
+	CHECK(cbuf.capacity() == 10);
+	CHECK(cbuf.full() == false);
+	CHECK(cbuf.empty() == true);
+}
 
-	uint32_t x = 1;
-	printf("Put 1, val: %d\n", x);
-	circle.put(x);
+TEST_CASE("Circular buffer operations")
+{
+	circular_buffer<uint32_t> cbuf(10);
 
-	x = circle.get();
-	printf("Popped: %d\n", x);
-
-	printf("Empty: %d\n", circle.empty());
-
-	printf("Adding %zu values\n", circle.capacity() - 1);
-	for(uint32_t i = 0; i < circle.capacity() - 1; i++)
+	SECTION("Check empty")
 	{
-		circle.put(i);
+		CHECK(cbuf.empty() == true);
+
+		for(uint32_t i = 0; i < cbuf.capacity(); i++)
+		{
+			cbuf.put(i);
+			CHECK(cbuf.empty() == false);
+		}
 	}
 
-	circle.reset();
-
-	printf("Full: %d\n", circle.full());
-
-	printf("Adding %zu values\n", circle.capacity());
-	for(uint32_t i = 0; i < circle.capacity(); i++)
+	SECTION("Check Full")
 	{
-		circle.put(i);
+		for(uint32_t i = 0; i < cbuf.capacity(); i++)
+		{
+			CHECK(cbuf.full() == false);
+			cbuf.put(i);
+		}
+
+		CHECK(cbuf.full() == true);
+		CHECK(cbuf.size() == cbuf.capacity());
 	}
 
-	printf("Full: %d\n", circle.full());
-
-	printf("Reading back values: ");
-	while(!circle.empty())
+	SECTION("Fill and empty buffer")
 	{
-		printf("%u ", circle.get());
-	}
-	printf("\n");
+		for(uint32_t i = 0; i < cbuf.capacity(); i++)
+		{
+			cbuf.put(i);
+		}
 
-	printf("Adding 15 values\n");
-	for(uint32_t i = 0; i < circle.size() + 5; i++)
-	{
-		circle.put(i);
+		for(uint32_t i = 0; i < cbuf.capacity(); i++)
+		{
+			CHECK(i == cbuf.get());
+		}
 	}
 
-	printf("Full: %d\n", circle.full());
-
-	printf("Reading back values: ");
-	while(!circle.empty())
+	SECTION("Check overflow behavior")
 	{
-		printf("%u ", circle.get());
+		for(uint32_t i = 0; i < cbuf.capacity(); i++)
+		{
+			cbuf.put(i);
+		}
+
+		// Force an overflow
+		cbuf.put(cbuf.capacity());
+
+		for(uint32_t i = 0; i < cbuf.capacity(); i++)
+		{
+			CHECK(i + 1 == cbuf.get());
+		}
 	}
-	printf("\n");
-
-	printf("Empty: %d\n", circle.empty());
-	printf("Full: %d\n", circle.full());
-
-	return 0;
 }
