@@ -10,11 +10,182 @@ pipeline
   }
   stages
   {
-    stage('Build')
+    stage('Clean')
+    {
+      when
+      {
+        expression
+        {
+          /*
+          * If the previous build suceeeded (unstable means test failed but build passed)
+          * then we continue on in CI mode. If the previous build failed we want to
+          * start with a clean environment. This is done to reduce manual user interation.
+          */
+          return !(didLastBuildSucceed())
+        }
+      }
+      steps
+      {
+        echo('Previous build failed: Running a clean build.')
+        sh 'make distclean'
+      }
+    }
+    stage('Build for Clang')
     {
       steps
       {
         sh 'make'
+      }
+      post
+      {
+        always
+        {
+          recordIssues(
+            healthy: 5,
+            unhealthy: 10,
+            aggregatingResults: true,
+            referenceJobName: 'ea-nightly/project-skeleton/master',
+            sourceDirectory: 'buildresults/',
+            filters: [
+              excludeFile('subprojects/*')
+            ],
+            qualityGates: [
+              // 3 new issue: unstable
+              [threshold: 3, type: 'DELTA', unstable: true],
+              // 5 new issues: failed build
+              [threshold: 5, type: 'DELTA', unstable: false],
+              // 10 total issues: unstable
+              [threshold: 10, type: 'TOTAL', unstable: true],
+              // 20 total issues: fail
+              [threshold: 20, type: 'TOTAL', unstable: false]
+            ],
+            tools: [
+              clang(),
+            ]
+          )
+        }
+      }
+    }
+    stage('Build for GCC-9')
+    {
+      steps
+      {
+        sh 'make NATIVE=gcc-9 BUILDRESULTS=buildresults/gcc-9'
+      }
+      post
+      {
+        always
+        {
+          recordIssues(
+            healthy: 5,
+            unhealthy: 10,
+            aggregatingResults: true,
+            referenceJobName: 'ea-nightly/project-skeleton/master',
+            sourceDirectory: 'buildresults/gcc-9',
+            filters: [
+              excludeFile('subprojects/*')
+            ],
+            qualityGates: [
+              // 3 new issue: unstable
+              [threshold: 3, type: 'DELTA', unstable: true],
+              // 5 new issues: failed build
+              [threshold: 5, type: 'DELTA', unstable: false],
+              // 10 total issues: unstable
+              [threshold: 10, type: 'TOTAL', unstable: true],
+              // 20 total issues: fail
+              [threshold: 20, type: 'TOTAL', unstable: false]
+            ],
+            tools: [
+              gcc(id:'gcc-9', name: 'gcc-9'),
+            ]
+          )
+        }
+      }
+    }
+    stage('Build for GCC-8')
+    {
+      steps
+      {
+        sh 'make NATIVE=gcc-8 BUILDRESULTS=buildresults/gcc-8'
+      }
+      post
+      {
+        always
+        {
+          recordIssues(
+            healthy: 5,
+            unhealthy: 10,
+            aggregatingResults: true,
+            referenceJobName: 'ea-nightly/project-skeleton/master',
+            sourceDirectory: 'buildresults/gcc-8/',
+            filters: [
+              excludeFile('subprojects/*')
+            ],
+            qualityGates: [
+              // 3 new issue: unstable
+              [threshold: 3, type: 'DELTA', unstable: true],
+              // 5 new issues: failed build
+              [threshold: 5, type: 'DELTA', unstable: false],
+              // 10 total issues: unstable
+              [threshold: 10, type: 'TOTAL', unstable: true],
+              // 20 total issues: fail
+              [threshold: 20, type: 'TOTAL', unstable: false]
+            ],
+            tools: [
+              gcc(id: 'gcc-8', name: 'gcc-8'),
+            ]
+          )
+        }
+      }
+    }
+    stage('Build for GCC-7')
+    {
+      steps
+      {
+        sh 'make NATIVE=gcc-7 BUILDRESULTS=buildresults/gcc-7'
+      }
+      post
+      {
+        always
+        {
+          recordIssues(
+            healthy: 5,
+            unhealthy: 10,
+            aggregatingResults: true,
+            referenceJobName: 'ea-nightly/project-skeleton/master',
+            sourceDirectory: 'buildresults/gcc-7',
+            filters: [
+              excludeFile('subprojects/*')
+            ],
+            qualityGates: [
+              // 3 new issue: unstable
+              [threshold: 3, type: 'DELTA', unstable: true],
+              // 5 new issues: failed build
+              [threshold: 5, type: 'DELTA', unstable: false],
+              // 10 total issues: unstable
+              [threshold: 10, type: 'TOTAL', unstable: true],
+              // 20 total issues: fail
+              [threshold: 20, type: 'TOTAL', unstable: false]
+            ],
+            tools: [
+              gcc(id: 'gcc-7', name: 'gcc-7'),
+            ]
+          )
+        }
+      }
+    }
+    stage('Test')
+    {
+      steps
+      {
+        sh 'make test'
+      }
+      post
+      {
+        always
+        {
+          junit 'buildresults/test/*.xml'
+        }
       }
     }
   }
