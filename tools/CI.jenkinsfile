@@ -189,26 +189,6 @@ pipeline
   {
     always
     {
-      // Scan for open tasks, warnings, issues, etc.
-      recordIssues(
-        enabledForFailure: true,
-        healthy: 5,
-        unhealthy: 10,
-        qualityGates: [
-          // 3 new issue: unstable
-          [threshold: 3, type: 'DELTA', unstable: true],
-          // 5 new issues: failed build
-          [threshold: 5, type: 'DELTA', unstable: false],
-          // 10 total issues: unstable
-          [threshold: 10, type: 'TOTAL', unstable: true],
-          // 20 total issues: fail
-          [threshold: 20, type: 'TOTAL', unstable: false]
-        ],
-        tools: [
-          clang(),
-        ]
-      )
-
       slackNotify(currentBuild.currentResult)
     }
   }

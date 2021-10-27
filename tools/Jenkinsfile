@@ -213,6 +213,8 @@ pipeline
       */
       githubSetConfig('4c01f168-ca25-483e-bc6d-8d105fc5fb70')
       githubFileIssue()
+      // Report Status
+      slackNotify(currentBuild.currentResult)
       emailNotify(currentBuild.currentResult)
     }
   }
