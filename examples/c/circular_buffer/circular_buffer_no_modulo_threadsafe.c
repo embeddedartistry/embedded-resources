@@ -80,7 +80,8 @@ size_t circular_buf_size(cbuf_handle_t cbuf)
 {
 	assert(cbuf);
 
-	size_t size = cbuf->max;
+	// We account for the space we can't use for thread safety
+	size_t size = cbuf->max - 1;
 
 	if(!circular_buf_full(cbuf))
 	{
@@ -101,7 +102,8 @@ size_t circular_buf_capacity(cbuf_handle_t cbuf)
 {
 	assert(cbuf);
 
-	return cbuf->max;
+	// We account for the space we can't use for thread safety
+	return cbuf->max - 1;
 }
 
 void circular_buf_put(cbuf_handle_t cbuf, uint8_t data)
