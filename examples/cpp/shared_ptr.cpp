@@ -29,7 +29,24 @@ class SharedThing : public std::enable_shared_from_this<SharedThing>
 	template<typename... T>
 	static std::shared_ptr<SharedThing> create(T&&... t)
 	{
-		return std::shared_ptr<SharedThing>(new SharedThing(std::forward<T>(t)...));
+		// C++ core guidelines say we shouldn't do this:
+		// return std::shared_ptr<SharedThing>(new SharedThing(std::forward<T>(t)...));
+
+		// But this doesn't work because our constructor is private, and we want that
+		// for use with enable_shared_from_this
+		// return std::make_shared<SharedThing>(std::forward<T>(t)...);
+
+		// So we'll make a "fake" derived class that constructs our shared thing
+		// using a public constructor...
+		struct EnableMakeShared : public SharedThing
+		{
+			EnableMakeShared(T&&... arg) : SharedThing(std::forward<T>(arg)...)
+			{
+			}
+		};
+
+		// and use that type with make_shared
+		return std::make_shared<EnableMakeShared>(std::forward<T>(t)...);
 	}
 
   private:
