@@ -27,6 +27,28 @@ embedded_resources_tests = executable('embedded_resources_tests',
 	native: true
 )
 
+circular_buffer_no_modulo_tests = executable('circular_buffer_no_modulo_tests',
+	'main_circular_buffer_no_modulo.c',
+	dependencies: [
+		circular_buffer_no_modulo_test_dep,
+		cmocka_native_dep,
+	],
+	link_args: native_map_file.format(meson.current_build_dir() + '/circular_buffer_no_modulo_tests'),
+	c_args: test_suite_compiler_flags,
+	native: true
+)
+
+circular_buffer_no_modulo_threadsafe_tests = executable('circular_buffer_no_modulo_threadsafe_tests',
+	'main_circular_buffer_no_modulo_threadsafe.c',
+	dependencies: [
+		circular_buffer_no_modulo_threadsafe_dep,
+		cmocka_native_dep,
+	],
+	link_args: native_map_file.format(meson.current_build_dir() + '/circular_buffer_no_modulo_threadsafe_tests'),
+	c_args: test_suite_compiler_flags,
+	native: true
+)
+
 #############################
 # Register Tests with Meson #
 #############################
@@ -35,6 +57,20 @@ embedded_resources_tests = executable('embedded_resources_tests',
 
 test('embedded_resources_tests',
 	embedded_resources_tests,
+	env: [
+		'CMOCKA_MESSAGE_OUTPUT=XML',
+		cmocka_test_output_dir
+	])
+
+test('circular_buffer_no_modulo_tests',
+	circular_buffer_no_modulo_tests,
+	env: [
+		'CMOCKA_MESSAGE_OUTPUT=XML',
+		cmocka_test_output_dir
+	])
+
+test('circular_buffer_no_modulo_threadsafe_tests',
+	circular_buffer_no_modulo_threadsafe_tests,
 	env: [
 		'CMOCKA_MESSAGE_OUTPUT=XML',
 		cmocka_test_output_dir
