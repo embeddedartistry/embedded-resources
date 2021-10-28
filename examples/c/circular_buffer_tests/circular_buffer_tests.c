@@ -14,6 +14,7 @@
 #include "circular_buffer/circular_buffer.h"
 
 #define CIRCULAR_BUFFER_SIZE 10
+#define PEEK_ARRAY_SIZE 5
 
 static uint8_t circular_buffer_storage_[CIRCULAR_BUFFER_SIZE] = {0};
 static cbuf_handle_t handle_ = NULL;
@@ -136,6 +137,50 @@ void circular_buffer_get_more_than_stored_test(void** __unused state)
 	assert_int_equal(data, 0);
 }
 
+void circular_buffer_peek_test(void** __unused state)
+{
+	const int capacity = circular_buf_capacity(handle_);
+	uint8_t peek_data[PEEK_ARRAY_SIZE];
+
+	// Fill the buffer
+	for(int i = 0; i < capacity; i++)
+	{
+		circular_buf_put(handle_, i);
+	}
+
+	assert_true(circular_buf_full(handle_));
+
+	int r = circular_buf_peek(handle_, peek_data, PEEK_ARRAY_SIZE);
+	assert_int_equal(r, 0);
+	assert_true(circular_buf_full(handle_)); // Data should remain
+
+	for(int i = 0; i < PEEK_ARRAY_SIZE; i++)
+	{
+		assert_int_equal(peek_data[i], i);
+	}
+
+	for(int i = 0; i < capacity; i++)
+	{
+		uint8_t data;
+		circular_buf_get(handle_, &data);
+		assert_int_equal(data, i);
+	}
+
+	assert_true(circular_buf_empty(handle_));
+
+	// Check empty case
+	r = circular_buf_peek(handle_, peek_data, PEEK_ARRAY_SIZE);
+	assert_int_equal(r, -1);
+
+	// Check more than available
+	for(int i = 0; i < 4; i++)
+	{
+		circular_buf_put(handle_, i);
+	}
+	r = circular_buf_peek(handle_, peek_data, PEEK_ARRAY_SIZE);
+	assert_int_equal(r, -1);
+}
+
 #pragma mark - Public Functions -
 
 int circular_buffer_test_suite(void)
@@ -153,6 +198,8 @@ int circular_buffer_test_suite(void)
 										circular_buffer_teardown),
 		cmocka_unit_test_setup_teardown(circular_buffer_get_more_than_stored_test,
 										circular_buffer_setup, circular_buffer_teardown),
+		cmocka_unit_test_setup_teardown(circular_buffer_peek_test, circular_buffer_setup,
+										circular_buffer_teardown),
 	};
 
 	return cmocka_run_group_tests(circular_buffer_tests, NULL, NULL);

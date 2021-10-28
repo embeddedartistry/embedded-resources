@@ -60,6 +60,13 @@ size_t circular_buf_capacity(cbuf_handle_t cbuf);
 /// Returns the current number of elements in the buffer
 size_t circular_buf_size(cbuf_handle_t cbuf);
 
+/// Look ahead at values stored in the circular buffer without removing the data
+/// Requires:
+///		- cbuf is valid and created by circular_buf_init
+///		- look_ahead_counter is less than or equal to the value returned by circular_buf_size()
+/// Returns 0 if successful, -1 if data is not available
+int circular_buf_peek(cbuf_handle_t cbuf, uint8_t* data, unsigned int look_ahead_counter);
+
 // TODO: int circular_buf_get_range(circular_buf_t cbuf, uint8_t *data, size_t len);
 // TODO: int circular_buf_put_range(circular_buf_t cbuf, uint8_t * data, size_t len);
 
