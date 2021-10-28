@@ -49,8 +49,16 @@ TEST_CASE("Circular buffer operations")
 
 		for(uint32_t i = 0; i < cbuf.capacity(); i++)
 		{
-			CHECK(i == cbuf.get());
+			auto value = cbuf.get();
+			CHECK(value.has_value() == true);
+			CHECK(i == value.value());
 		}
+	}
+
+	SECTION("Get empty value")
+	{
+		auto value = cbuf.get();
+		CHECK(value.has_value() == false);
 	}
 
 	SECTION("Check overflow behavior")
@@ -65,7 +73,9 @@ TEST_CASE("Circular buffer operations")
 
 		for(uint32_t i = 0; i < cbuf.capacity(); i++)
 		{
-			CHECK(i + 1 == cbuf.get());
+			auto value = cbuf.get();
+			CHECK(value.has_value() == true);
+			CHECK(i + 1 == value.value());
 		}
 	}
 }

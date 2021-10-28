@@ -3,6 +3,7 @@
 
 #include <array>
 #include <mutex>
+#include <optional>
 
 template<class T, size_t TElemCount>
 class circular_buffer
@@ -26,13 +27,13 @@ class circular_buffer
 		full_ = head_ == tail_;
 	}
 
-	T get() noexcept
+	std::optional<T> get() const noexcept
 	{
 		std::lock_guard<std::recursive_mutex> lock(mutex_);
 
 		if(empty())
 		{
-			return T();
+			return std::nullopt;
 		}
 
 		// Read data and advance the tail (we now have a free space)
