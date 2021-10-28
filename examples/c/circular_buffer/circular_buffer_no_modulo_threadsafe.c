@@ -5,6 +5,8 @@
 
 #include "circular_buffer.h"
 
+/// This implementation is threadsafe for a single producer and single consumer
+
 // The definition of our circular buffer structure is hidden from the user
 struct circular_buf_t
 {
