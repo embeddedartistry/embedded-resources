@@ -17,36 +17,27 @@ struct circular_buf_t
 
 #pragma mark - Private Functions -
 
-static void advance_pointer(cbuf_handle_t cbuf)
+static inline size_t advance_headtail_value(size_t value, size_t max)
+{
+	if(++value == max)
+	{
+		value = 0;
+	}
+
+	return value;
+}
+
+static void advance_head_pointer(cbuf_handle_t cbuf)
 {
 	assert(cbuf);
 
 	if(circular_buf_full(cbuf))
 	{
-		if(++(cbuf->tail) == cbuf->max)
-		{
-			cbuf->tail = 0;
-		}
+		cbuf->tail = advance_headtail_value(cbuf->tail, cbuf->max);
 	}
 
-	if(++(cbuf->head) == cbuf->max)
-	{
-		cbuf->head = 0;
-	}
-
-	// We mark full because we will advance tail on the next time around
+	cbuf->head = advance_headtail_value(cbuf->head, cbuf->max);
 	cbuf->full = (cbuf->head == cbuf->tail);
-}
-
-static void retreat_pointer(cbuf_handle_t cbuf)
-{
-	assert(cbuf);
-
-	cbuf->full = false;
-	if(++(cbuf->tail) == cbuf->max)
-	{
-		cbuf->tail = 0;
-	}
 }
 
 #pragma mark - APIs -
@@ -116,7 +107,7 @@ void circular_buf_put(cbuf_handle_t cbuf, uint8_t data)
 
 	cbuf->buffer[cbuf->head] = data;
 
-	advance_pointer(cbuf);
+	advance_head_pointer(cbuf);
 }
 
 int circular_buf_try_put(cbuf_handle_t cbuf, uint8_t data)
@@ -128,7 +119,7 @@ int circular_buf_try_put(cbuf_handle_t cbuf, uint8_t data)
 	if(!circular_buf_full(cbuf))
 	{
 		cbuf->buffer[cbuf->head] = data;
-		advance_pointer(cbuf);
+		advance_head_pointer(cbuf);
 		r = 0;
 	}
 
@@ -144,7 +135,8 @@ int circular_buf_get(cbuf_handle_t cbuf, uint8_t* data)
 	if(!circular_buf_empty(cbuf))
 	{
 		*data = cbuf->buffer[cbuf->tail];
-		retreat_pointer(cbuf);
+		cbuf->tail = advance_headtail_value(cbuf->tail, cbuf->max);
+		cbuf->full = false;
 
 		r = 0;
 	}
@@ -182,11 +174,8 @@ int circular_buf_peek(cbuf_handle_t cbuf, uint8_t* data, unsigned int look_ahead
 	pos = cbuf->tail;
 	for(unsigned int i = 0; i < look_ahead_counter; i++)
 	{
-		data[i] = cbuf->buffer[pos++];
-		if(pos == cbuf->max)
-		{
-			pos = 0;
-		}
+		data[i] = cbuf->buffer[pos];
+		pos = advance_headtail_value(pos, cbuf->max);
 	}
 
 	return 0;
