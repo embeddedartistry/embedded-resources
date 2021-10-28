@@ -6,7 +6,7 @@
 
 TEST_CASE("Create circular buffer")
 {
-	circular_buffer<uint32_t> cbuf(10);
+	circular_buffer<uint32_t, 10> cbuf;
 	CHECK(cbuf.size() == 0);
 	CHECK(cbuf.capacity() == 10);
 	CHECK(cbuf.full() == false);
@@ -15,7 +15,7 @@ TEST_CASE("Create circular buffer")
 
 TEST_CASE("Circular buffer operations")
 {
-	circular_buffer<uint32_t> cbuf(10);
+	circular_buffer<uint32_t, 10> cbuf;
 
 	SECTION("Check empty")
 	{

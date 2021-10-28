@@ -1,36 +1,34 @@
 #ifndef CIRCULAR_BUFFER_HPP_
 #define CIRCULAR_BUFFER_HPP_
 
-#include <memory>
+#include <array>
 #include <mutex>
 
-template<class T>
+template<class T, size_t TElemCount>
 class circular_buffer
 {
   public:
-	explicit circular_buffer(size_t size) : buf_(std::unique_ptr<T[]>(new T[size])), max_size_(size)
-	{
-	}
+	explicit circular_buffer() = default;
 
-	void put(T item)
+	void put(T item) noexcept
 	{
-		std::lock_guard<std::mutex> lock(mutex_);
+		std::lock_guard<std::recursive_mutex> lock(mutex_);
 
 		buf_[head_] = item;
 
 		if(full_)
 		{
-			tail_ = (tail_ + 1) % max_size_;
+			tail_ = (tail_ + 1) % TElemCount;
 		}
 
-		head_ = (head_ + 1) % max_size_;
+		head_ = (head_ + 1) % TElemCount;
 
 		full_ = head_ == tail_;
 	}
 
-	T get()
+	T get() noexcept
 	{
-		std::lock_guard<std::mutex> lock(mutex_);
+		std::lock_guard<std::recursive_mutex> lock(mutex_);
 
 		if(empty())
 		{
@@ -40,38 +38,45 @@ class circular_buffer
 		// Read data and advance the tail (we now have a free space)
 		auto val = buf_[tail_];
 		full_ = false;
-		tail_ = (tail_ + 1) % max_size_;
+		tail_ = (tail_ + 1) % TElemCount;
 
 		return val;
 	}
 
-	void reset()
+	void reset() noexcept
 	{
-		std::lock_guard<std::mutex> lock(mutex_);
+		std::lock_guard<std::recursive_mutex> lock(mutex_);
 		head_ = tail_;
 		full_ = false;
 	}
 
-	bool empty() const
+	bool empty() const noexcept
 	{
+		// Can have a race condition in a multi-threaded application
+		std::lock_guard<std::recursive_mutex> lock(mutex_);
 		// if head and tail are equal, we are empty
 		return (!full_ && (head_ == tail_));
 	}
 
-	bool full() const
+	bool full() const noexcept
 	{
 		// If tail is ahead the head by 1, we are full
 		return full_;
 	}
 
-	size_t capacity() const
+	size_t capacity() const noexcept
 	{
-		return max_size_;
+		return TElemCount;
 	}
 
-	size_t size() const
+	size_t size() const noexcept
 	{
-		size_t size = max_size_;
+		// A lock is needed in size ot prevent a race condition, because head_, tail_, and full_
+		// can be updated between executing lines within this function in a multi-threaded
+		// application
+		std::lock_guard<std::recursive_mutex> lock(mutex_);
+
+		size_t size = TElemCount;
 
 		if(!full_)
 		{
@@ -81,7 +86,7 @@ class circular_buffer
 			}
 			else
 			{
-				size = max_size_ + head_ - tail_;
+				size = TElemCount + head_ - tail_;
 			}
 		}
 
@@ -89,12 +94,11 @@ class circular_buffer
 	}
 
   private:
-	std::mutex mutex_;
-	std::unique_ptr<T[]> buf_;
-	size_t head_ = 0;
-	size_t tail_ = 0;
-	const size_t max_size_;
-	bool full_ = 0;
+	mutable std::recursive_mutex mutex_;
+	mutable std::array<T, TElemCount> buf_;
+	mutable size_t head_ = 0;
+	mutable size_t tail_ = 0;
+	mutable bool full_ = 0;
 };
 
 #endif
