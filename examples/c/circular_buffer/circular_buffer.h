@@ -27,10 +27,13 @@ void circular_buf_reset(cbuf_handle_t cbuf);
 
 /// Put that continues to add data if the buffer is full
 /// Old data is overwritten
+/// Note: if you are using the threadsafe version, this API cannot be used, because
+/// it modifies the tail pointer in some cases. Use circular_buf_try_put instead.
 /// Requires: cbuf is valid and created by circular_buf_init
 void circular_buf_put(cbuf_handle_t cbuf, uint8_t data);
 
 /// Put that rejects new data if the buffer is full
+/// Note: if you are using the threadsafe version, *this* is the put you should use
 /// Requires: cbuf is valid and created by circular_buf_init
 /// Returns 0 on success, -1 if buffer is full
 int circular_buf_try_put(cbuf_handle_t cbuf, uint8_t data);
