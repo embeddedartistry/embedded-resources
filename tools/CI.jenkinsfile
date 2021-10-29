@@ -46,7 +46,8 @@ pipeline
             aggregatingResults: true,
             sourceDirectory: 'buildresults/',
             filters: [
-              excludeFile('subprojects/*')
+              excludeFile('subprojects/*'),
+              excludeFile('../interview/bad.c')
             ],
             qualityGates: [
               // 3 new issue: unstable
@@ -81,7 +82,8 @@ pipeline
             aggregatingResults: true,
             sourceDirectory: 'buildresults/gcc-9',
             filters: [
-              excludeFile('subprojects/*')
+              excludeFile('subprojects/*'),
+              excludeFile('interview/bad.c')
             ],
             qualityGates: [
               // 3 new issue: unstable
@@ -116,7 +118,8 @@ pipeline
             aggregatingResults: true,
             sourceDirectory: 'buildresults/gcc-8/',
             filters: [
-              excludeFile('subprojects/*')
+              excludeFile('subprojects/*'),
+              excludeFile('interview/bad.c')
             ],
             qualityGates: [
               // 3 new issue: unstable
@@ -151,7 +154,8 @@ pipeline
             aggregatingResults: true,
             sourceDirectory: 'buildresults/gcc-7',
             filters: [
-              excludeFile('subprojects/*')
+              excludeFile('subprojects/*'),
+              excludeFile('interview/bad.c')
             ],
             qualityGates: [
               // 3 new issue: unstable
