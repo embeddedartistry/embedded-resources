@@ -57,8 +57,8 @@ dispatch_queue::~dispatch_queue()
 	// Signal to dispatch threads that it's time to wrap up
 	std::unique_lock<std::mutex> lock(lock_);
 	quit_ = true;
-	lock.unlock();
 	cv_.notify_all();
+	lock.unlock();
 
 	// Wait for threads to finish before we exit
 	for(size_t i = 0; i < threads_.size(); i++)
@@ -75,10 +75,6 @@ void dispatch_queue::dispatch(const fp_t& op)
 {
 	std::unique_lock<std::mutex> lock(lock_);
 	q_.push(op);
-
-	// Manual unlocking is done before notifying, to avoid waking up
-	// the waiting thread only to block again (see notify_one for details)
-	lock.unlock();
 	cv_.notify_one();
 }
 
@@ -86,10 +82,6 @@ void dispatch_queue::dispatch(fp_t&& op)
 {
 	std::unique_lock<std::mutex> lock(lock_);
 	q_.push(std::move(op));
-
-	// Manual unlocking is done before notifying, to avoid waking up
-	// the waiting thread only to block again (see notify_one for details)
-	lock.unlock();
 	cv_.notify_one();
 }
 
