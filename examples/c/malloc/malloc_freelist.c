@@ -58,7 +58,7 @@ void defrag_free_list(void)
 		{
 			if((((uintptr_t)&last_block->block) + last_block->size) == (uintptr_t)block)
 			{
-				last_block->size += sizeof(*block) + block->size;
+				last_block->size += ALLOC_HEADER_SZ + block->size;
 				list_del(&block->node);
 				continue;
 			}
