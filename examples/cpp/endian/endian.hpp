@@ -70,7 +70,7 @@ constexpr typename std::enable_if<std::is_unsigned<T>::value, T>::type
 {
 	return n == sizeof(T) ?
 			   j :
-				 byteswap<T>(i >> CHAR_BIT,
+			   byteswap<T>(i >> CHAR_BIT,
 						   static_cast<T>((j << CHAR_BIT) |
 										  (i & static_cast<T>(static_cast<unsigned char>(-1)))),
 						   n + 1);
