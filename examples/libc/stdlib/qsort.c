@@ -60,7 +60,7 @@ static inline void swapfunc(char*, char*, int, int) __attribute__((always_inline
 #define SWAPINIT(a, es)                                                        \
 	swaptype = ((char*)a - (char*)0) % sizeof(long) || es % sizeof(long) ? 2 : \
 			   es == sizeof(long)										 ? 0 : \
-																			 1;
+																		   1;
 
 static inline void swapfunc(a, b, n, swaptype) char *a, *b;
 int n, swaptype;
@@ -97,7 +97,7 @@ static inline char* med3(char* a, char* b, char* c, cmp_t* cmp,
 )
 {
 	return CMP(thunk, a, b) < 0 ? (CMP(thunk, b, c) < 0 ? b : (CMP(thunk, a, c) < 0 ? c : a)) :
-									(CMP(thunk, b, c) > 0 ? b : (CMP(thunk, a, c) < 0 ? a : c));
+								  (CMP(thunk, b, c) > 0 ? b : (CMP(thunk, a, c) < 0 ? a : c));
 }
 
 #ifdef __LP64__
