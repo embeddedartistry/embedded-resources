@@ -8,10 +8,15 @@
 
 #include <stdint.h>
 
+//#define USE_UNSIGNED_FIXED_POINT
+
 /// Fixed-point Format: 11.5 (16-bit)
+#ifndef USE_UNSIGNED_FIXED_POINT
 typedef int16_t fixed_point_t;
+#else
 // If your numbers can only be positive, you can use unsigned to increase range
-// typedef uint16_t fixed_point_t;
+typedef uint16_t fixed_point_t;
+#endif
 
 /// Converts 11.5 format -> double
 double fixed_to_double(fixed_point_t input);

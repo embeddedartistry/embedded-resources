@@ -31,10 +31,17 @@ static void double_to_fixed16_test(__attribute__((unused)) void** state)
 	assert_int_equal(0x1000, output_truncate);
 	assert_int_equal(output_round, output_truncate);
 
+#ifndef USE_UNSIGNED_FIXED_POINT
 	output_round = double_to_fixed_round(-128);
 	output_truncate = double_to_fixed_truncate(-128);
 	assert_int_equal((int16_t)0xf000, output_truncate);
 	assert_int_equal(output_round, output_truncate);
+
+	output_round = double_to_fixed_round(-0.968750);
+	output_truncate = double_to_fixed_truncate(-0.968750);
+	assert_int_equal((int16_t)0xffe1, output_truncate);
+	assert_int_equal(output_round, output_truncate);
+#endif
 
 	output_round = double_to_fixed_round(128.28);
 	output_truncate = double_to_fixed_truncate(128.28);
@@ -42,11 +49,13 @@ static void double_to_fixed16_test(__attribute__((unused)) void** state)
 	// Here, truncate loses precision vs round
 	assert_int_equal(0x1008, output_truncate);
 
+#ifndef USE_UNSIGNED_FIXED_POINT
 	output_round = double_to_fixed_round(-64.28);
 	output_truncate = double_to_fixed_truncate(-64.28);
 	assert_int_equal((int16_t)0xf7f7, output_round);
 	// Here, truncate loses precision vs round
 	assert_int_equal((int16_t)0xf7f8, output_truncate);
+#endif
 }
 
 static void fixed16_to_double_test(__attribute__((unused)) void** state)
@@ -54,17 +63,26 @@ static void fixed16_to_double_test(__attribute__((unused)) void** state)
 	double output = fixed_to_double(0x1000);
 	assert_float_equal(128.0, output, 0.01);
 
+#ifndef USE_UNSIGNED_FIXED_POINT
 	output = fixed_to_double(0xf000);
 	assert_float_equal(-128.0, output, 0.01);
 
 	output = fixed_to_double(0xf7f7);
 	assert_float_equal(-64.28125, output, 0.01);
 
+	// Check case presented in website comments
+	output = fixed_to_double(0xffe1);
+	assert_float_equal(-0.968750, output, 0.0001);
+#endif
+
 	output = fixed_to_double(0x1009);
 	assert_float_equal(128.28125, output, 0.01);
 
 	output = fixed_to_double(0x1008);
 	assert_float_equal(128.25, output, 0.01);
+
+	output = fixed_to_double(0x1F);
+	assert_float_equal(0.968750, output, 0.0001);
 
 	// Confirm equivalency
 	output = fixed16_to_double(0x1008, 5);
