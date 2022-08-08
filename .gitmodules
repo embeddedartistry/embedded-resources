@@ -4,3 +4,6 @@
 [submodule "meson-buildsystem"]
 	path = build
 	url = https://github.com/embeddedartistry/meson-buildsystem.git
+[submodule "interfaces/c-interfaces"]
+	path = interfaces/c
+	url = https://github.com/embeddedartistry/c-interfaces.git
