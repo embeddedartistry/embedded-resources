@@ -1,7 +1,7 @@
 // Copyright 2021 Embedded Artistry LLC
 
 #include <cstdio>
-#include <catch2/catch.hpp>
+#include <catch2/catch_test_macros.hpp>
 #include "circular_buffer/circular_buffer.hpp"
 
 TEST_CASE("Create circular buffer")
