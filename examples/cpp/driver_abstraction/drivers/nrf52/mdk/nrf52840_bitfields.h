@@ -15986,8 +15986,8 @@ POSSIBILITY OF SUCH DAMAGE.
 #define TWI_ERRORSRC_OVERRUN_Pos (0UL) /*!< Position of OVERRUN field. */
 #define TWI_ERRORSRC_OVERRUN_Msk \
 	(0x1UL << TWI_ERRORSRC_OVERRUN_Pos) /*!< Bit mask of OVERRUN field. */
-#define TWI_ERRORSRC_OVERRUN_NotPresent (0UL) /*!< Read: no overrun occured */
-#define TWI_ERRORSRC_OVERRUN_Present (1UL) /*!< Read: overrun occured */
+#define TWI_ERRORSRC_OVERRUN_NotPresent (0UL) /*!< Read: no overrun occurred */
+#define TWI_ERRORSRC_OVERRUN_Present (1UL) /*!< Read: overrun occurred */
 
 /* Register: TWI_ENABLE */
 /* Description: Enable TWI */
