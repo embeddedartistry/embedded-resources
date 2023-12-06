@@ -72,7 +72,7 @@ reconfig:
 
 # Runs whenever the build has not been configured successfully
 $(CONFIGURED_BUILD_DEP):
-	$(Q) $(MESON) $(BUILDRESULTS) $(INTERNAL_OPTIONS) $(OPTIONS)
+	$(Q) $(MESON) setup $(BUILDRESULTS) $(INTERNAL_OPTIONS) $(OPTIONS)
 
 .PHONY: cppcheck
 cppcheck: | $(CONFIGURED_BUILD_DEP)
