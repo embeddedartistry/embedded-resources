@@ -64,15 +64,15 @@ subdir('meson/test/catch2')
 ###################
 
 clangformat_targets = [
-	meson.source_root() / 'examples',
-	meson.source_root() / 'interview',
-	meson.source_root() / 'test',
+	meson.project_source_root() / 'examples',
+	meson.project_source_root() / 'interview',
+	meson.project_source_root() / 'test',
 ]
 
 clangformat_excludes = [
-	meson.source_root() / 'examples/cpp/etl',
-	meson.source_root() / 'examples/rtos',
-	meson.source_root() / 'examples/libcpp',
+	meson.project_source_root() / 'examples/cpp/etl',
+	meson.project_source_root() / 'examples/rtos',
+	meson.project_source_root() / 'examples/libcpp',
 ]
 
 subdir('meson/analysis/clang-tidy')
