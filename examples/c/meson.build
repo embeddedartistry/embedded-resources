@@ -12,7 +12,8 @@ subdir('malloc')
 #############
 
 static_library('interrupt_latency',
-	'interrupt_latency.c'
+	'interrupt_latency.c',
+	build_by_default: meson.is_subproject() == false,
 )
 
 ###############
@@ -20,7 +21,8 @@ static_library('interrupt_latency',
 ###############
 
 executable('refactoring_global_data',
-	'refactoring_global_data.c'
+	'refactoring_global_data.c',
+	build_by_default: meson.is_subproject() == false,
 )
 
 ###################
