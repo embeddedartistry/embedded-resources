@@ -2,7 +2,7 @@
 	path = examples/cpp/etl
 	url = https://github.com/ETLCPP/etl
 [submodule "meson-buildsystem"]
-	path = build
+	path = meson
 	url = https://github.com/embeddedartistry/meson-buildsystem.git
 [submodule "interfaces/c-interfaces"]
 	path = interfaces/c
