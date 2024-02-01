@@ -35,6 +35,13 @@ if get_option('enable-pedantic-error') == true
 	add_project_arguments('-pedantic-error', language : ['cpp', 'c'])
 endif
 
+###############
+# Subprojects #
+###############
+
+etl = subproject('etl')
+etl_dep = etl.get_variable('etl_dep')
+
 #################
 # Build Modules #
 #################

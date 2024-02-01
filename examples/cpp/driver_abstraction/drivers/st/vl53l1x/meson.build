@@ -10,7 +10,8 @@ st_vl53l1x_driver = static_library('st_vl53l1x',
 		driver_root_inc,
 		driver_core_inc,
 		framework_includes
-	]
+	],
+	dependencies: etl_dep
 )
 
 st_vl53l1x_driver_dep = declare_dependency(
@@ -18,5 +19,5 @@ st_vl53l1x_driver_dep = declare_dependency(
 	include_directories: [
 		driver_root_inc,
 		driver_core_inc
-	]
+	],
 )
