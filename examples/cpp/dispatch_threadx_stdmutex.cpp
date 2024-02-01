@@ -2,6 +2,7 @@
 #include <vector>
 #include <cstdint>
 #include <cstdio>
+#include <cassert>
 #include <queue>
 #include <mutex>
 #include <string>
