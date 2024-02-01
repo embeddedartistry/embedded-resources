@@ -68,8 +68,9 @@ libdispatch_threadx = static_library('dispatch_threadx',
 	include_directories: include_directories('../rtos/threadx'),
 )
 
-# This example only compiles with clang bc it depends on clang's libcpp
-if native_cpp_compiler_id == 'clang'
+# This example no longer compiles with the latest clang
+# if native_cpp_compiler_id == 'clang'
+if false
 	libdispatch_threadx_stdmutex = static_library('dispatch_threadx_stdmutex',
 		[
 			'dispatch_threadx_stdmutex.cpp',

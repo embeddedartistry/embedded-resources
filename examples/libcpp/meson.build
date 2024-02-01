@@ -1,7 +1,9 @@
 # libcpp Meson Build File
 
-# The mutex example only compiles with clang's libcpp
-if native_cpp_compiler_id == 'clang'
+# The mutex example used to compile with clang's libcpp,
+# but even that does not work with the latest versions.
+#if native_cpp_compiler_id == 'clang'
+if false
     libcpp_threadx = static_library('cpp_threadx',
         'mutex.cpp',
         cpp_args: [
