@@ -14,7 +14,8 @@ aardvark_driver_lib = static_library('aardvark_driver',
 	sources: aardvark_driver_files,
 	include_directories: [driver_core_inc, framework_includes, aardvark_vendor_include],
 	c_args: '-DAARDVARK_LIBRARY_PATH="' + aardvark_library_loc + '"',
-	native: true
+	native: true,
+	dependencies: etl_dep
 )
 
 aardvark_driver_dep = declare_dependency(
