@@ -1,6 +1,3 @@
-[submodule "examples/cpp/etl"]
-	path = examples/cpp/etl
-	url = https://github.com/ETLCPP/etl
 [submodule "meson-buildsystem"]
 	path = meson
 	url = https://github.com/embeddedartistry/meson-buildsystem.git
