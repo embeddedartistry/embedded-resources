@@ -74,9 +74,7 @@
  * Ignores `locale' stuff.  Assumes that the upper and lower case
  * alphabets and digits are each contiguous.
  */
-long strtol(nptr, endptr, base) const char* nptr;
-char** endptr;
-register int base;
+long strtol(const char* nptr, char** endptr, register int base)
 {
 	register const char* s = nptr;
 	register unsigned long acc;
@@ -172,9 +170,7 @@ register int base;
  * Ignores `locale' stuff.  Assumes that the upper and lower case
  * alphabets and digits are each contiguous.
  */
-unsigned long strtoul(nptr, endptr, base) const char* nptr;
-char** endptr;
-register int base;
+unsigned long strtoul(const char* nptr, char** endptr, register int base)
 {
 	register const char* s = nptr;
 	register unsigned long acc;

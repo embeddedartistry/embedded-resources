@@ -32,8 +32,7 @@
 
 #include <stdlib.h> /* ldiv_t */
 
-ldiv_t ldiv(num, denom)
-long num, denom;
+ldiv_t ldiv(long num, long denom)
 {
 	ldiv_t r;
 

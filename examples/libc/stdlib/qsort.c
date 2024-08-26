@@ -62,8 +62,7 @@ static inline void swapfunc(char*, char*, int, int) __attribute__((always_inline
 			   es == sizeof(long)										 ? 0 : \
 																		   1;
 
-static inline void swapfunc(a, b, n, swaptype) char *a, *b;
-int n, swaptype;
+static inline void swapfunc(char *a, char *b, int n, int swaptype)
 {
 	if(swaptype <= 1)
 		swapcode(long, a, b, n) else swapcode(char, a, b, n)
